@@ -1,6 +1,10 @@
-var livesNumber = 5;
-var gemsNumber = 0;
-var victoriesNumber = 0;
+//STATS ON MAIN MENU
+
+var menuStats = {
+  livesNumber: 5,
+  gemsNumber: 0,
+  victoriesNumber: 0
+}
 
 // ENEMIES
 
@@ -34,8 +38,8 @@ Enemy.prototype.update = function(dt) {
 
 function enemyCollision() {
   player.resetPosition();
-  livesNumber --;
-  document.getElementById('livesNumber').textContent = livesNumber;
+  menuStats.livesNumber --;
+  document.getElementById('livesNumber').textContent = menuStats.livesNumber;
 }
 
 Enemy.prototype.render = function() {
@@ -85,8 +89,18 @@ Player.prototype.handleInput = function(keyPressed) {
   }
   if (player.y === -10) {
     setTimeout(this.resetPosition, 500);
-    victoriesNumber ++;
-    document.getElementById('victoriesNumber').textContent = victoriesNumber;
+    menuStats.victoriesNumber ++;
+    document.getElementById('victoriesNumber').textContent = menuStats.victoriesNumber;
+    setTimeout(gem.reset, 500);
+  }
+
+  if (player.x >= gem.x -83
+    && player.x <= gem.x + 83
+    && player.y > gem.y
+    && player.y<gem.y + 83) {
+      menuStats.gemsNumber ++;
+      document.getElementById('gemsNumber').textContent = menuStats.gemsNumber;
+      gem.x = -1000;
   }
 };
 
@@ -123,3 +137,29 @@ var rock2 = new Rock(202, 220);
 
 var allRocks = [rock1, rock2]
 */
+
+
+//OPTIONAL GEM
+var Gem = function(x, y, sprite) {
+  this.x = x;
+  this.y = y;
+  this.sprite = sprite;
+}
+
+var gemStats = {
+  gemPositionX : [0, 101, 202, 303, 404],
+  gemPositionY : [50, 130, 210],
+  gemSprites : ['images/Gem Blue.png', 'images/Gem Green.png', 'images/Gem Orange.png']
+}
+
+Gem.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+Gem.prototype.reset = function() {
+  gem.x = gemStats.gemPositionX[Math.floor(Math.random() * 5) + 0];
+  gem.y = gemStats.gemPositionY[Math.floor(Math.random() * 3) + 0];
+  gem.sprite = gemStats.gemSprites[Math.floor(Math.random() * 3) + 0]
+};
+
+var gem = new Gem(gemStats.gemPositionX[Math.floor(Math.random() * 5) + 0], gemStats.gemPositionY[Math.floor(Math.random() * 3) + 0], gemStats.gemSprites[Math.floor(Math.random() * 3) + 0]);
