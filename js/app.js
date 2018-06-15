@@ -55,13 +55,45 @@ enemyLocation.forEach(function([positionX, positionY]) {
 });
 
 //PLAYER
-
-var Player = function(x, y) {
+//Player constructor function. It starts with a default sprite.
+var Player = function(x, y, sprite) {
   this.x = x;
   this.y = y;
-  this.sprite = 'images/char-princess-girl.png';
+  this.sprite = playerSprites[0];
 }
 
+//Code to change the sprite of the player.
+  var playerSprites = ['images/char-boy.png',
+          'images/char-cat-girl.png',
+          'images/char-horn-girl.png',
+          'images/char-pink-girl.png',
+          'images/char-princess-girl.png'];
+
+var avatars = document.querySelector('table');
+
+avatars.addEventListener('click', function(evt) {
+  if (evt.target.nodeName === 'IMG') {
+    switch (evt.target.getAttribute('src')) {
+      case 'images/char-boy.png':
+      player.sprite = playerSprites[0];
+      break;
+      case 'images/char-cat-girl.png':
+      player.sprite = playerSprites[1];
+      break;
+      case 'images/char-horn-girl.png':
+      player.sprite = playerSprites[2];
+      break;
+      case 'images/char-pink-girl.png':
+      player.sprite = playerSprites[3];
+      break;
+      case 'images/char-princess-girl.png':
+      player.sprite = playerSprites[4];
+      break;
+    }
+  }
+});
+
+//Player prototype functions
 Player.prototype.update = function() {
 };
 
@@ -69,11 +101,14 @@ Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+//Function that resets the position of the player in case of gameover.
 Player.prototype.resetPosition = function() {
     player.x = 202;
     player.y = 405;
 };
 
+//Function to move the characters with the keyboard.
+//It also contains the condition of victory, and the gem.
 Player.prototype.handleInput = function(keyPressed) {
   if (keyPressed === 'left' && player.x > 0) {
     player.x -= 101;
@@ -87,6 +122,7 @@ Player.prototype.handleInput = function(keyPressed) {
   if (keyPressed === 'down' && player.y < 405) {
     player.y += 83;
   }
+
   if (player.y === -10) {
     setTimeout(this.resetPosition, 500);
     menuStats.victoriesNumber ++;

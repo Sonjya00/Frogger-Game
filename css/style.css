@@ -11,6 +11,21 @@ h1 {
   margin: 0;
 }
 
+h2 {
+  margin-bottom: -20px;
+}
+
+.avatars-collection {
+  width: 505px;
+  margin: 0 auto;
+  font-size: 15px;
+}
+
+.avatar-sprite {
+  cursor: pointer;
+  width: 45px;
+}
+
 .game-menu {
   list-style-type: none;
   display:flex;
