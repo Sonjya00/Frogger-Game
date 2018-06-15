@@ -18,7 +18,15 @@ Enemy.prototype.update = function(dt) {
     if (this.x > 505) {
       this.x = -100;
       this.speed = Math.floor(Math.random() * 400) + 150;
-      console.log(this.speed);
+    }
+
+    if (player.x >= this.x -83
+      && player.x <= this.x + 83
+      && player.y > this.y
+      && player.y<this.y + 83) {
+      setTimeout(function () {
+        player.resetPosition();
+      }, 100);
     }
 };
 
@@ -31,15 +39,11 @@ var allEnemies = [];
 var enemyLocation = [[175, 60], [0, 140], [175, 220]];
 
 enemyLocation.forEach(function([positionX, positionY]) {
-    enemy = new Enemy(positionX, positionY, 300);
+    enemy = new Enemy(positionX, positionY, 30);
     allEnemies.push(enemy);
 });
 
 //PLAYER
-
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
 
 var Player = function(x, y) {
   this.x = x;
@@ -54,6 +58,11 @@ Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+Player.prototype.resetPosition = function() {
+    player.x = 202;
+    player.y = 405;
+};
+
 Player.prototype.handleInput = function(keyPressed) {
   if (keyPressed === 'left' && player.x > 0) {
     player.x -= 101;
@@ -63,23 +72,14 @@ Player.prototype.handleInput = function(keyPressed) {
   }
   if (keyPressed === 'up' && player.y > -10) {
     player.y -= 83;
-    console.log(player.y);
   }
   if (keyPressed === 'down' && player.y < 405) {
     player.y += 83;
-    console.log(player.y);
   }
   if (player.y === -10) {
-    setTimeout(function() {
-      player.x = 202;
-      player.y = 405;
-    }, 500);
+    setTimeout(this.resetPosition, 500);
   }
 };
-
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
 
 var player = new Player(202, 405);
 
