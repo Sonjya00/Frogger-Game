@@ -1,3 +1,7 @@
+var livesNumber = 5;
+var gemsNumber = 0;
+var victoriesNumber = 0;
+
 // ENEMIES
 
 //Constructor function for the enemies
@@ -24,13 +28,16 @@ Enemy.prototype.update = function(dt) {
       && player.x <= this.x + 83
       && player.y > this.y
       && player.y<this.y + 83) {
-      setTimeout(function () {
-        player.resetPosition();
-      }, 100);
+        enemyCollision();
     }
 };
 
-// Draw the enemy on the screen, required method for game
+function enemyCollision() {
+  player.resetPosition();
+  livesNumber --;
+  document.getElementById('livesNumber').textContent = livesNumber;
+}
+
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
@@ -39,7 +46,7 @@ var allEnemies = [];
 var enemyLocation = [[175, 60], [0, 140], [175, 220]];
 
 enemyLocation.forEach(function([positionX, positionY]) {
-    enemy = new Enemy(positionX, positionY, 30);
+    enemy = new Enemy(positionX, positionY, 300);
     allEnemies.push(enemy);
 });
 
@@ -78,6 +85,8 @@ Player.prototype.handleInput = function(keyPressed) {
   }
   if (player.y === -10) {
     setTimeout(this.resetPosition, 500);
+    victoriesNumber ++;
+    document.getElementById('victoriesNumber').textContent = victoriesNumber;
   }
 };
 
