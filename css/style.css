@@ -21,22 +21,21 @@ h2 {
   font-size: 15px;
 }
 
-.avatar-sprite {
+.avatar-sprite, figcaption {
   cursor: pointer;
   width: 45px;
 }
 
 .game-menu {
   list-style-type: none;
-  display:flex;
   width: 505px;
   margin: 0 auto;
   margin-bottom: -45px;
 }
 
-.game-menu li {
-  display: inline-block;
-  width: 33%;
+.game-menu td {
+  width: 25%;
+  vertical-align:bottom;
 }
 
 .menu__logo {
