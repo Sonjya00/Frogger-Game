@@ -94,6 +94,8 @@ var Engine = (function(global) {
             enemy.update(dt);
         });
         player.update();
+        gem.update();
+        heart.update();
     }
 
     /* This function initially draws the "game level", it will then call
@@ -149,7 +151,7 @@ var Engine = (function(global) {
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
          */
-
+        heart.render();
         gem.render();
 
         allEnemies.forEach(function(enemy) {
@@ -176,22 +178,25 @@ var Engine = (function(global) {
      * all of these images are properly loaded our game will start.
      */
     Resources.load([
+        //sprites for the environment
         'images/stone-block.png',
         'images/water-block.png',
         'images/grass-block.png',
+        //sprite for the enemies
         'images/enemy-bug.png',
-
-        'images/Rock.png',
-
+        //sprites for the player
         'images/char-boy.png',
         'images/char-cat-girl.png',
         'images/char-horn-girl.png',
         'images/char-pink-girl.png',
         'images/char-princess-girl.png',
-        
+        //sprites for the collectibles
         'images/Gem Blue.png',
         'images/Gem Green.png',
-        'images/Gem Orange.png'
+        'images/Gem Orange.png',
+        'images/Heart.png',
+        //sprite for the rocks
+        'images/Rock.png'
     ]);
     Resources.onReady(init);
 

@@ -3,7 +3,8 @@
 var menuStats = {
   livesNumber: 5,
   gemsNumber: 0,
-  victoriesNumber: 0
+  victoriesNumber: 0,
+  score: 0
 }
 
 // ENEMIES
@@ -128,15 +129,7 @@ Player.prototype.handleInput = function(keyPressed) {
     menuStats.victoriesNumber ++;
     document.getElementById('victoriesNumber').textContent = menuStats.victoriesNumber;
     setTimeout(gem.reset, 500);
-  }
-
-  if (player.x >= gem.x -83
-    && player.x <= gem.x + 83
-    && player.y > gem.y
-    && player.y<gem.y + 83) {
-      menuStats.gemsNumber ++;
-      document.getElementById('gemsNumber').textContent = menuStats.gemsNumber;
-      gem.x = -1000;
+    setTimeout(heart.reset, 500);
   }
 };
 
@@ -175,27 +168,85 @@ var allRocks = [rock1, rock2]
 */
 
 
-//OPTIONAL GEM
+//OPTIONAL collectibles
+
+var Heart = function(x, y) {
+  this.x = x;
+  this.y = y;
+  this.sprite = 'images/Heart.png';
+  this.points = 100;
+}
+
 var Gem = function(x, y, sprite) {
   this.x = x;
   this.y = y;
   this.sprite = sprite;
+  this.points = 200;
 }
 
-var gemStats = {
-  gemPositionX : [0, 101, 202, 303, 404],
-  gemPositionY : [50, 130, 210],
-  gemSprites : ['images/Gem Blue.png', 'images/Gem Green.png', 'images/Gem Orange.png']
-}
+Heart.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
 
 Gem.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-Gem.prototype.reset = function() {
-  gem.x = gemStats.gemPositionX[Math.floor(Math.random() * 5) + 0];
-  gem.y = gemStats.gemPositionY[Math.floor(Math.random() * 3) + 0];
-  gem.sprite = gemStats.gemSprites[Math.floor(Math.random() * 3) + 0]
+
+var collectibles = [
+  /*
+  bluegem1,
+  bluegem2,
+  bluegem3,
+  greengem1,
+  greengem2,
+  orangegem,*/
+  gem,
+  heart];
+
+
+var collectibleStats = {
+  positionX : [0, 101, 202, 303, 404],
+  positionY : [50, 130, 210],
+  gemSprites : ['images/Gem Blue.png', 'images/Gem Green.png', 'images/Gem Orange.png']
+}
+
+Gem.prototype.update = function() {
+  if (player.x >= this.x -83
+    && player.x <= this.x + 83
+    && player.y > this.y
+    && player.y < this.y + 83) {
+      menuStats.gemsNumber ++;
+      document.getElementById('gemsNumber').textContent = menuStats.gemsNumber;
+      menuStats.score += this.points;
+      document.getElementById('score').textContent = menuStats.score;
+      this.x = -1000;
+  }
 };
 
-var gem = new Gem(gemStats.gemPositionX[Math.floor(Math.random() * 5) + 0], gemStats.gemPositionY[Math.floor(Math.random() * 3) + 0], gemStats.gemSprites[Math.floor(Math.random() * 3) + 0]);
+Heart.prototype.update = function() {
+  if (player.x >= this.x -83
+    && player.x <= this.x + 83
+    && player.y > this.y
+    && player.y < this.y + 83) {
+      menuStats.livesNumber ++;
+      document.getElementById('livesNumber').textContent = menuStats.livesNumber;
+      menuStats.score += this.points;
+      document.getElementById('score').textContent = menuStats.score;
+      this.x = -1000;
+  }
+};
+
+Gem.prototype.reset = function() {
+  gem.x = collectibleStats.positionX[Math.floor(Math.random() * 5) + 0];
+  gem.y = collectibleStats.positionY[Math.floor(Math.random() * 3) + 0];
+  gem.sprite = collectibleStats.gemSprites[Math.floor(Math.random() * 3) + 0]
+};
+
+Heart.prototype.reset = function() {
+  heart.x = collectibleStats.positionX[Math.floor(Math.random() * 5) + 0];
+  heart.y = collectibleStats.positionY[Math.floor(Math.random() * 3) + 0];
+};
+
+var gem = new Gem(collectibleStats.positionX[Math.floor(Math.random() * 5) + 0], collectibleStats.positionY[Math.floor(Math.random() * 3) + 0], collectibleStats.gemSprites[Math.floor(Math.random() * 3) + 0]);
+var heart = new Heart(collectibleStats.positionX[Math.floor(Math.random() * 5) + 0], collectibleStats.positionY[Math.floor(Math.random() * 3) + 0]);
