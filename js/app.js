@@ -7,10 +7,16 @@ var menuStats = {
   score: 0
 }
 
-var gamePause = false;
+//Code to pause the game if a btn is clicked
+//The variable is used also to temporarily pause the game in case of gameover
+var gamePause = true;
+var pauseBtn = document.getElementById('pauseBtn');
+pauseBtn.addEventListener('click', function() {
+  gamePause = !gamePause;
+  console.log('pause');
+})
 
 // ENEMIES
-
 //Constructor function for the enemies
 var Enemy = function(x, y, speed) {
     this.x = x;
@@ -77,7 +83,7 @@ var Player = function(x, y, sprite) {
           'images/char-pink-girl.png',
           'images/char-princess-girl.png'];
 
-var avatars = document.querySelector('table');
+var avatars = document.getElementById('avatars');
 
 avatars.addEventListener('click', function(evt) {
   if (evt.target.nodeName === 'IMG') {
@@ -118,19 +124,21 @@ Player.prototype.resetPosition = function() {
 //Function to move the characters with the keyboard.
 //It also contains the condition of victory, and the gem.
 Player.prototype.handleInput = function(keyPressed) {
-  if (keyPressed === 'left' && player.x > 0) {
-    player.x -= 101;
-  }
-  if (keyPressed === 'right' && player.x < 404) {
-    player.x += 101;
-  }
-  if (keyPressed === 'down' && player.y < 405) {
-    player.y += 83;
-  }
-  if (keyPressed === 'up' && player.y > -10) {
-    player.y -= 83;
-    if (player.y === -10) {
-      victory();
+  if (gamePause === false) {
+    if (keyPressed === 'left' && player.x > 0) {
+      player.x -= 101;
+    }
+    if (keyPressed === 'right' && player.x < 404) {
+      player.x += 101;
+    }
+    if (keyPressed === 'down' && player.y < 405) {
+      player.y += 83;
+    }
+    if (keyPressed === 'up' && player.y > -10) {
+      player.y -= 83;
+      if (player.y === -10) {
+        victory();
+      }
     }
   }
 };

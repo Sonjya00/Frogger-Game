@@ -4,53 +4,64 @@
     <meta charset="UTF-8">
     <title>Effective JavaScript: Frogger</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet prefetch" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=Sansita" rel="stylesheet">
 </head>
 <body>
   <h1>Sonia's Frogger Game</h1>
-  <h2>Select a character</h2>
-  <table id="avatars" class="avatars-collection">
-    <tr>
-      <td>
-        <figure>
-          <img class="avatar-sprite" src="images/char-boy.png">
-          <figcaption>Boy</figcaption>
-        </figure>
-      </td>
-      <td>
-        <figure>
-          <img class="avatar-sprite" src="images/char-cat-girl.png">
-          <figcaption>Cat Girl</figcaption>
-        </figure>
-      </td>
-      <td>
-        <figure>
-          <img class="avatar-sprite" src="images/char-horn-girl.png">
-          <figcaption>Horn Girl</figcaption>
-        </figure>
-      </td>
-      <td>
-        <figure>
-          <img class="avatar-sprite" src="images/char-pink-girl.png">
-          <figcaption>Pink Girl</figcaption>
-        </figure>
-      </td>
-      <td>
-        <figure>
-          <img class="avatar-sprite" src="images/char-princess-girl.png">
-          <figcaption>Princess Girl</figcaption>
-        </figure>
-      </td>
-    </tr>
-  </table>
   <table class="game-menu">
     <td><img class="menu__logo" src="images/Heart.png"> x<span id="livesNumber">5</span> lives</td>
     <td><img class="menu__logo" src="images/Gem Blue.png"> x<span id="gemsNumber">0</span> gems</td>
     <td><img class="menu__logo" src="images/Star.png"> x<span id="victoriesNumber">0</span> victories</td>
     <td>Score: <span id="score">0</span></td>
   </table>
+  <button id="pauseBtn"><i class="fa fa-pause"></i></button>
+
+  <div id="gameModal" class="modal__background">
+    <div class="modal__window">
+      <span class="modal__close-btn">&times;</span>
+      <h2>Select a character, then press "Start a new game!"</h2>
+      <table id="avatars" class="avatars-collection">
+        <tr>
+          <td>
+            <figure>
+              <img class="avatar-sprite" src="images/char-boy.png">
+              <figcaption>Boy</figcaption>
+            </figure>
+          </td>
+          <td>
+            <figure>
+              <img class="avatar-sprite" src="images/char-cat-girl.png">
+              <figcaption>Cat Girl</figcaption>
+            </figure>
+          </td>
+          <td>
+            <figure>
+              <img class="avatar-sprite" src="images/char-horn-girl.png">
+              <figcaption>Horn Girl</figcaption>
+            </figure>
+          </td>
+          <td>
+            <figure>
+              <img class="avatar-sprite" src="images/char-pink-girl.png">
+              <figcaption>Pink Girl</figcaption>
+            </figure>
+          </td>
+          <td>
+            <figure>
+              <img class="avatar-sprite" src="images/char-princess-girl.png">
+              <figcaption>Princess Girl</figcaption>
+            </figure>
+          </td>
+        </tr>
+      </table>
+        <button class="modal__restart-btn">Start a new game!</button>
+    </div>
+  </div>
+
 <script src="js/resources.js"></script>
 <script src="js/app.js"></script>
 <script src="js/engine.js"></script>
+<script src="js/modal.js"></script>
 </body>
 </html>
