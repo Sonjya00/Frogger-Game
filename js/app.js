@@ -128,8 +128,14 @@ Player.prototype.handleInput = function(keyPressed) {
     setTimeout(this.resetPosition, 500);
     menuStats.victoriesNumber ++;
     document.getElementById('victoriesNumber').textContent = menuStats.victoriesNumber;
-    setTimeout(gem.reset, 500);
+    setTimeout(blueGem.reset, 500);
+    setTimeout(greenGem.reset, 500);
+    setTimeout(orangeGem.reset, 500);
     setTimeout(heart.reset, 500);
+    setTimeout(function() {
+      randomGem = allGems[randomNum(3, 0)];
+      randomGem.onscreen = true;
+    }, 500)
   }
 };
 
@@ -175,13 +181,15 @@ var Heart = function(x, y) {
   this.y = y;
   this.sprite = 'images/Heart.png';
   this.points = 100;
+  this.onscreen = true;
 }
 
-var Gem = function(x, y, sprite) {
+var Gem = function(x, y, sprite, points) {
   this.x = x;
   this.y = y;
   this.sprite = sprite;
-  this.points = 200;
+  this.points = points;
+  this.onscreen = false;
 }
 
 Heart.prototype.render = function() {
@@ -191,19 +199,6 @@ Heart.prototype.render = function() {
 Gem.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
-
-
-var collectibles = [
-  /*
-  bluegem1,
-  bluegem2,
-  bluegem3,
-  greengem1,
-  greengem2,
-  orangegem,*/
-  gem,
-  heart];
-
 
 var collectibleStats = {
   positionX : [0, 101, 202, 303, 404],
@@ -215,12 +210,13 @@ Gem.prototype.update = function() {
   if (player.x >= this.x -83
     && player.x <= this.x + 83
     && player.y > this.y
-    && player.y < this.y + 83) {
+    && player.y < this.y + 83
+    && this.onscreen === true) {
       menuStats.gemsNumber ++;
       document.getElementById('gemsNumber').textContent = menuStats.gemsNumber;
       menuStats.score += this.points;
       document.getElementById('score').textContent = menuStats.score;
-      this.x = -1000;
+      this.onscreen = false;
   }
 };
 
@@ -228,25 +224,41 @@ Heart.prototype.update = function() {
   if (player.x >= this.x -83
     && player.x <= this.x + 83
     && player.y > this.y
-    && player.y < this.y + 83) {
+    && player.y < this.y + 83
+    && this.onscreen === true) {
       menuStats.livesNumber ++;
       document.getElementById('livesNumber').textContent = menuStats.livesNumber;
       menuStats.score += this.points;
       document.getElementById('score').textContent = menuStats.score;
-      this.x = -1000;
+      this.onscreen = false;
   }
 };
 
+//helper function to randomize
+function randomNum(max, min) {
+  return Math.floor(Math.random() * max) + min;
+}
+
 Gem.prototype.reset = function() {
-  gem.x = collectibleStats.positionX[Math.floor(Math.random() * 5) + 0];
-  gem.y = collectibleStats.positionY[Math.floor(Math.random() * 3) + 0];
-  gem.sprite = collectibleStats.gemSprites[Math.floor(Math.random() * 3) + 0]
+  Gem.x = collectibleStats.positionX[randomNum(5, 0)];
+  Gem.y = collectibleStats.positionY[randomNum(3, 0)];
+  Gem.onscreen = true;
 };
 
 Heart.prototype.reset = function() {
-  heart.x = collectibleStats.positionX[Math.floor(Math.random() * 5) + 0];
-  heart.y = collectibleStats.positionY[Math.floor(Math.random() * 3) + 0];
+  heart.x = collectibleStats.positionX[randomNum(5, 0)];
+  heart.y = collectibleStats.positionY[randomNum(3, 0)];
+  heart.onscreen = true;
 };
 
-var gem = new Gem(collectibleStats.positionX[Math.floor(Math.random() * 5) + 0], collectibleStats.positionY[Math.floor(Math.random() * 3) + 0], collectibleStats.gemSprites[Math.floor(Math.random() * 3) + 0]);
-var heart = new Heart(collectibleStats.positionX[Math.floor(Math.random() * 5) + 0], collectibleStats.positionY[Math.floor(Math.random() * 3) + 0]);
+var heart = new Heart(collectibleStats.positionX[randomNum(5, 0)], collectibleStats.positionY[randomNum(3, 0)]);
+
+var blueGem = new Gem(collectibleStats.positionX[randomNum(5, 0)], collectibleStats.positionY[randomNum(3, 0)], 'images/Gem Blue.png', 100);
+
+var greenGem = new Gem(collectibleStats.positionX[randomNum(5, 0)], collectibleStats.positionY[randomNum(3, 0)], 'images/Gem Green.png', 200);
+
+var orangeGem = new Gem(collectibleStats.positionX[randomNum(5, 0)], collectibleStats.positionY[randomNum(3, 0)], 'images/Gem Orange.png', 300);
+
+var allGems = [blueGem, orangeGem, greenGem];
+var randomGem = allGems[randomNum(3, 0)];
+randomGem.onscreen = true;

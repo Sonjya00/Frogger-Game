@@ -94,7 +94,11 @@ var Engine = (function(global) {
             enemy.update(dt);
         });
         player.update();
-        gem.update();
+
+        blueGem.update();
+        orangeGem.update();
+        greenGem.update();
+        
         heart.update();
     }
 
@@ -151,8 +155,13 @@ var Engine = (function(global) {
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
          */
-        heart.render();
-        gem.render();
+        if(heart.onscreen) {
+          heart.render();
+        }
+
+        if (randomGem.onscreen) {
+        randomGem.render();
+        }
 
         allEnemies.forEach(function(enemy) {
             enemy.render();
