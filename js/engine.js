@@ -77,9 +77,12 @@ var Engine = (function(global) {
      * functionality this way (you could just implement collision detection
      * on the entities themselves within your app.js file).
      */
+
     function update(dt) {
+      if (gamePause === false) {
         updateEntities(dt);
         // checkCollisions();
+      }
     }
 
     /* This is called by the update function and loops through all of the
@@ -93,13 +96,10 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
+        allItems.forEach(function(item) {
+          item.update();
+        })
         player.update();
-
-        blueGem.update();
-        orangeGem.update();
-        greenGem.update();
-        
-        heart.update();
     }
 
     /* This function initially draws the "game level", it will then call
@@ -155,12 +155,9 @@ var Engine = (function(global) {
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
          */
-        if(heart.onscreen) {
-          heart.render();
-        }
 
-        if (randomGem.onscreen) {
-        randomGem.render();
+        if (randomItem.onscreen) {
+        randomItem.render();
         }
 
         allEnemies.forEach(function(enemy) {
