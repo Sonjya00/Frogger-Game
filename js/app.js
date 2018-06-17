@@ -262,24 +262,24 @@ function randomNum(max, min) {
 Gem.prototype.reset = function() {
   Gem.x = collectibleStats.positionX[randomNum(5, 0)];
   Gem.y = collectibleStats.positionY[randomNum(3, 0)];
-  Gem.onscreen = true;
+  Gem.onscreen = false;
 };
 
 Heart.prototype.reset = function() {
   heart.x = collectibleStats.positionX[randomNum(5, 0)];
   heart.y = collectibleStats.positionY[randomNum(3, 0)];
-  heart.onscreen = true;
+  heart.onscreen = false;
 };
 
 var blueGem1 = new Gem(collectibleStats.positionX[randomNum(5, 0)], collectibleStats.positionY[randomNum(3, 0)], 'images/Gem Blue.png', 100);
 
 var blueGem2 = new Gem(collectibleStats.positionX[randomNum(5, 0)], collectibleStats.positionY[randomNum(3, 0)], 'images/Gem Blue.png', 100);
 
-var greenGem1 = new Gem(collectibleStats.positionX[randomNum(5, 0)], collectibleStats.positionY[randomNum(3, 0)], 'images/Gem Green.png', 200);
+var greenGem1 = new Gem(collectibleStats.positionX[randomNum(5, 0)], collectibleStats.positionY[randomNum(3, 0)], 'images/Gem Green.png', 250);
 
-var greenGem2 = new Gem(collectibleStats.positionX[randomNum(5, 0)], collectibleStats.positionY[randomNum(3, 0)], 'images/Gem Green.png', 200);
+var greenGem2 = new Gem(collectibleStats.positionX[randomNum(5, 0)], collectibleStats.positionY[randomNum(3, 0)], 'images/Gem Green.png', 250);
 
-var orangeGem = new Gem(collectibleStats.positionX[randomNum(5, 0)], collectibleStats.positionY[randomNum(3, 0)], 'images/Gem Orange.png', 300);
+var orangeGem = new Gem(collectibleStats.positionX[randomNum(5, 0)], collectibleStats.positionY[randomNum(3, 0)], 'images/Gem Orange.png', 500);
 
 var heart = new Heart(collectibleStats.positionX[randomNum(5, 0)], collectibleStats.positionY[randomNum(3, 0)]);
 
