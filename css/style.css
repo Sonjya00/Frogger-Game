@@ -96,6 +96,7 @@ h2 {
     border-radius: 5px;
     background-color: #02ccba;
     color: #fff;
+    cursor: pointer;
     display: block;
     font-size: 14px;
     margin-left: auto;
@@ -105,4 +106,23 @@ h2 {
 
 .modal__restart-btn:hover {
     background-color: #1e8495;
+}
+
+/* Gameover modal only */
+
+.modal__gameover__background {
+    display: none;
+}
+
+.modal__gameover__window {
+  width: 400px;
+}
+
+.modal__gameover__window h2 {
+  padding: 15px;
+}
+
+.modal__gameover__window ul {
+  list-style: none;
+  padding: 15px;
 }

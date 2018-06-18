@@ -7,6 +7,10 @@ var menuStats = {
   score: 0
 }
 
+var finalGemsNumber = document.getElementById('finalGemsNumber');
+var finalVictoriesNumber = document.getElementById('finalVictoriesNumber');
+var finalScore = document.getElementById('finalScore');
+
 //Code to pause the game if a btn is clicked
 //The variable is used also to temporarily pause the game in case of gameover
 var gamePause = true;
@@ -45,27 +49,57 @@ Enemy.prototype.update = function(dt) {
     }
 };
 
+//If there are no more lives left, gameover modal appears.
+//Else, the player gets back to original position and the game restarts
+function checkIfGameover() {
+  if (menuStats.livesNumber < 0) {
+    /*gamePause === true;*/
+
+    livesNumber.textContent = 0;
+    finalGemsNumber.textContent = menuStats.gemsNumber;
+    finalVictoriesNumber.textContent = menuStats.victoriesNumber;
+    finalScore.textContent = menuStats.score;
+
+    GAMEOVER_MODAL.style.display = 'block';
+    player.resetPosition();
+    enemy.resetPosition();
+  } else {
+    setTimeout(player.resetPosition, 500);
+    setTimeout(enemy.resetPosition, 500);
+    setTimeout(function() {
+      return gamePause = false;
+    }, 500);
+  }
+}
+
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+//Pauses the game, decreases lives, and calls fun to check if gameover
 function enemyCollision() {
   gamePause = true;
-  setTimeout(player.resetPosition, 500);
   menuStats.livesNumber --;
   document.getElementById('livesNumber').textContent = menuStats.livesNumber;
-  setTimeout(function() {
-    return gamePause = false;
-  }, 500);
+  checkIfGameover();
 }
 
+//Code to create enemies at the beginning
 var allEnemies = [];
 var enemyLocation = [[175, 60], [0, 140], [175, 220]];
-
 enemyLocation.forEach(function([positionX, positionY]) {
     enemy = new Enemy(positionX, positionY, 300);
     allEnemies.push(enemy);
 });
+
+//Code to recreate enemies once gameover
+Enemy.prototype.resetPosition = function(enemy) {
+    allEnemies = [];
+    enemyLocation.forEach(function([positionX, positionY]) {
+        enemy = new Enemy(positionX, positionY, 300);
+        allEnemies.push(enemy);
+    });
+};
 
 //PLAYER
 //Player constructor function. It starts with a default sprite.

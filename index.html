@@ -17,7 +17,7 @@
   </table>
   <button id="pauseBtn"><i class="fa fa-pause"></i></button>
 
-  <div id="gameModal" class="modal__background">
+  <div id="characterModal" class="modal__background">
     <div class="modal__window">
       <span class="modal__close-btn">&times;</span>
       <h2>Select a character, then press "Start a new game!"</h2>
@@ -55,7 +55,21 @@
           </td>
         </tr>
       </table>
-        <button class="modal__restart-btn">Start a new game!</button>
+        <button id="newGameBtn" class="modal__restart-btn">Start a new game!</button>
+    </div>
+  </div>
+
+  <div id="gameOverModal" class="modal__background modal__gameover__background">
+    <div class="modal__window modal__gameover__window">
+      <span class="modal__close-btn">&times;</span>
+        <h2>Game Over!</h2>
+        <ul>
+          <li><strong>Collected gems: </strong><span id="finalGemsNumber"></span></li>
+          <li><strong>Victories: </strong><span id="finalVictoriesNumber"></span></li>
+          <li><strong>Total Score: </strong><span id="finalScore"></span></li>
+        </ul>
+        <h3>Play again?</h3>
+        <button id="restartGameBtn" class="modal__restart-btn">Start a new game!</button>
     </div>
   </div>
 
