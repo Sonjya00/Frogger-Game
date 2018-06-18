@@ -9,6 +9,7 @@ const NEW_GAME_BTN = document.getElementById('newGameBtn');
 NEW_GAME_BTN.onclick = function() {
   CHARACTER_MODAL.style.display = 'none';
   gamePause = false;
+  newGameStarted = true;
   startTimer();
 };
 
@@ -60,6 +61,7 @@ ESCAPE_MODAL_BTN2.onclick = function() {
  CONF_YES_BTN.onclick = function() {
    GAMEOVER_MODAL.style.display = 'block';
    CONFIRMATION_MODAL.style.display = 'none';
+   newGameStarted = false;
    gameOver();
  }
 

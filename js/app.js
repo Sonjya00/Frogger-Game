@@ -15,6 +15,10 @@ var finalVictoriesNumber = document.getElementById('finalVictoriesNumber');
 var finalTime = document.getElementById('finalTime');
 var finalScore = document.getElementById('finalScore');
 
+// Variable to check whether a new game have started or not (for the modal)
+// Useful to decide which modal to open with the restart btn
+var newGameStarted = false;
+
 // helper function to generate a random number
 function randomNum(max, min) {
   return Math.floor(Math.random() * max) + min;
@@ -33,7 +37,11 @@ var restartBtn = document.getElementById('restartBtn');
 restartBtn.onclick = function() {
   gamePause = true;
   clearTimer();
-  CONFIRMATION_MODAL.style.display = 'block';
+  if (newGameStarted === true) {
+    CONFIRMATION_MODAL.style.display = 'block';
+  } else {
+    CHARACTER_MODAL.style.display = 'block';
+  }
 }
 
 /*
