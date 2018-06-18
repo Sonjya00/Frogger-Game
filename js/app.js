@@ -65,14 +65,18 @@ function checkIfGameover() {
   if (menuStats.livesNumber < 0) {
     /*gamePause === true;*/
 
+    //resetting 1st half of settings for new game
     livesNumber.textContent = 0;
+    player.resetPosition();
+    enemy.resetPosition();
+    enemyStats.speedMax = 400;
+    enemyStats.speedMin = 150;
+
+    //Writing modal content
     finalGemsNumber.textContent = menuStats.gemsNumber;
     finalVictoriesNumber.textContent = menuStats.victoriesNumber;
     finalScore.textContent = menuStats.score;
-
     GAMEOVER_MODAL.style.display = 'block';
-    player.resetPosition();
-    enemy.resetPosition();
   } else {
     setTimeout(player.resetPosition, 500);
     setTimeout(enemy.resetPosition, 500);
@@ -202,10 +206,8 @@ function victory() {
     randomItem.onscreen = true;
   }, 500)
 
-  allEnemies.forEach(function (enemy) {
     enemyStats.speedMax += 10;
     enemyStats.speedMin += 10;
-  });
 
   setTimeout(function() {
     return gamePause = false;

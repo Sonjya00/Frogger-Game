@@ -22,6 +22,8 @@ const RESTART_GAME_BTN = document.getElementById('restartGameBtn');
 RESTART_GAME_BTN.onclick = function() {
   GAMEOVER_MODAL.style.display = 'none';
   CHARACTER_MODAL.style.display = 'block';
+
+  //resetting 2nd half of settings for new game
   menuStats.livesNumber = 5;
   menuStats.gemsNumber = 0;
   menuStats.victoriesNumber = 0;
