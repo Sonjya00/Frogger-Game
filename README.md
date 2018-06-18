@@ -17,6 +17,8 @@ Build an arcade game clone using JavaScript object-oriented programming features
 
 ## How to play
 
+To start the game, open the file index.html.
+
 ## Overview
 
 ### Game Mechanics

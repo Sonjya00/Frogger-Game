@@ -1,5 +1,7 @@
-//STATS ON MAIN MENU
-
+/*
+ * GLOBAL
+ */
+// Stats on the main menu
 var menuStats = {
   livesNumber: 5,
   gemsNumber: 0,
@@ -7,95 +9,120 @@ var menuStats = {
   score: 0
 }
 
+// Variables for the gameover modal
 var finalGemsNumber = document.getElementById('finalGemsNumber');
 var finalVictoriesNumber = document.getElementById('finalVictoriesNumber');
 var finalScore = document.getElementById('finalScore');
 
-//helper function to randomize
+// helper function to generate a random number
 function randomNum(max, min) {
   return Math.floor(Math.random() * max) + min;
 }
 
-//Code to pause the game if a btn is clicked
-//The variable is used also to temporarily pause the game in case of gameover
+// Code to pause the game if a button is clicked
+// The variable is also used to temporarily pause the game in case of victory/gameover
 var gamePause = true;
 var pauseBtn = document.getElementById('pauseBtn');
 pauseBtn.addEventListener('click', function() {
   gamePause = !gamePause;
-  console.log('pause');
 })
 
-// ENEMIES
-//Constructor function for the enemies
+/*
+ * TIMER
+ */
+var timer;
+var sec = 0;
+var secondsElapsed = document.getElementById('secondsElapsed');
+
+function startTimer() {
+  timer = setInterval(countseconds, 1000);
+}
+
+function countseconds() {
+  sec++;
+  secondsElapsed.textContent = sec;
+}
+
+function clearTimer() {
+  clearInterval(timer);
+}
+
+/*
+ * ENEMIES
+ */
+// Constructor function for the enemies
 var Enemy = function(x, y, speed) {
-    this.x = x;
-    this.y = y;
-    this.speed = speed;
-    this.sprite = 'images/enemy-bug.png';
+  this.x = x;
+  this.y = y;
+  this.speed = speed;
+  this.sprite = 'images/enemy-bug.png';
 };
 
+// Variables used to update the enemies speed
 var enemyStats = {
   speedMax: 400,
   speedMin: 150
-}
-
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
-    this.x += this.speed * dt;
-    if (this.x > 505) {
-      this.x = -100;
-      this.speed = randomNum(enemyStats.speedMax, enemyStats.speedMin);
-    }
-
-    if (player.x >= this.x -83
-      && player.x <= this.x + 83
-      && player.y > this.y
-      && player.y<this.y + 83) {
-        enemyCollision();
-    }
-};
-
-//If there are no more lives left, gameover modal appears.
-//Else, the player gets back to original position and the game restarts
-function checkIfGameover() {
-  if (menuStats.livesNumber < 0) {
-    /*gamePause === true;*/
-
-    //resetting 1st half of settings for new game
-    livesNumber.textContent = 0;
-    player.resetPosition();
-    enemy.resetPosition();
-    enemyStats.speedMax = 400;
-    enemyStats.speedMin = 150;
-
-    //Writing modal content
-    finalGemsNumber.textContent = menuStats.gemsNumber;
-    finalVictoriesNumber.textContent = menuStats.victoriesNumber;
-    finalScore.textContent = menuStats.score;
-    GAMEOVER_MODAL.style.display = 'block';
-  } else {
-    setTimeout(player.resetPosition, 500);
-    setTimeout(enemy.resetPosition, 500);
-    setTimeout(function() {
-      return gamePause = false;
-    }, 500);
-  }
 }
 
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-//Pauses the game, decreases lives, and calls fun to check if gameover
+// Update the enemies position. It moves them to the right and if they reach
+// the right border, it resets their position. Also, it checks for collision.
+// Parameter: dt, a time delta between ticks
+// Any movement is multiplied by the dt parameter
+// which will ensure the game runs at the same speed for all computers.
+Enemy.prototype.update = function(dt) {
+
+  this.x += this.speed * dt;
+  if (this.x > 505) {
+    this.x = -100;
+    this.speed = randomNum(enemyStats.speedMax, enemyStats.speedMin);
+  }
+
+  if (player.x >= this.x - 83
+    && player.x <= this.x + 83
+    && player.y > this.y
+    && player.y < this.y + 83) {
+      enemyCollision();
+  }
+};
+
+// It pauses the game, decreases lives number, and calls function to check if gameover
 function enemyCollision() {
   gamePause = true;
   menuStats.livesNumber --;
   document.getElementById('livesNumber').textContent = menuStats.livesNumber;
   checkIfGameover();
+}
+
+//If there are no more lives left, a gameover modal appears.
+//Else, the player and the enemies get back to the original position and the game restarts
+function checkIfGameover() {
+  if (menuStats.livesNumber < 1) {
+
+    // Reset player/enemies position, and enemies speed
+    player.resetPosition();
+    enemy.resetPosition();
+    enemyStats.speedMax = 400;
+    enemyStats.speedMin = 150;
+    clearTimer();
+
+    // Write modal content with final stats
+    finalGemsNumber.textContent = menuStats.gemsNumber;
+    finalVictoriesNumber.textContent = menuStats.victoriesNumber;
+    finalScore.textContent = menuStats.score;
+    GAMEOVER_MODAL.style.display = 'block';
+
+  } else {
+    // Reset player/enemies position, and restarts current game
+    setTimeout(player.resetPosition, 500);
+    setTimeout(enemy.resetPosition, 500);
+    setTimeout(function() {
+      return gamePause = false;
+    }, 500);
+  }
 }
 
 //Code to create enemies at the beginning
@@ -106,7 +133,7 @@ enemyLocation.forEach(function([positionX, positionY]) {
     allEnemies.push(enemy);
 });
 
-//Code to recreate enemies once gameover
+//Code to recreate enemies if gameover
 Enemy.prototype.resetPosition = function(enemy) {
     allEnemies = [];
     enemyLocation.forEach(function([positionX, positionY]) {
@@ -115,7 +142,10 @@ Enemy.prototype.resetPosition = function(enemy) {
     });
 };
 
-//PLAYER
+/*
+ * PLAYER
+ */
+
 //Player constructor function. It starts with a default sprite.
 var Player = function(x, y, sprite) {
   this.x = x;
@@ -123,13 +153,14 @@ var Player = function(x, y, sprite) {
   this.sprite = playerSprites[0];
 }
 
-//Code to change the sprite of the player.
-  var playerSprites = [
-          'images/char-boy.png',
-          'images/char-cat-girl.png',
-          'images/char-horn-girl.png',
-          'images/char-pink-girl.png',
-          'images/char-princess-girl.png'];
+//Code for the initial modal, to change the sprite of the player.
+var playerSprites = [
+  'images/char-boy.png',
+  'images/char-cat-girl.png',
+  'images/char-horn-girl.png',
+  'images/char-pink-girl.png',
+  'images/char-princess-girl.png'
+];
 
 var avatars = document.getElementById('avatars');
 
@@ -155,22 +186,25 @@ avatars.addEventListener('click', function(evt) {
   }
 });
 
-//Player prototype functions
-Player.prototype.update = function() {
-};
-
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-//Function that resets the position of the player in case of gameover.
-Player.prototype.resetPosition = function() {
-    player.x = 202;
-    player.y = 405;
+Player.prototype.update = function() {
 };
 
-//Function to move the characters with the keyboard.
-//It also contains the condition of victory, and the gem.
+// Function that resets the position of the player in case of gameover.
+Player.prototype.resetPosition = function() {
+  player.x = 202;
+  player.y = 405;
+};
+
+// Player is initialized
+var player = new Player(202, 405);
+
+// Function to move the characters with the keyboard.
+// It works only if the game isn't paused.
+// It also contains the condition of victory.
 Player.prototype.handleInput = function(keyPressed) {
   if (gamePause === false) {
     if (keyPressed === 'left' && player.x > 0) {
@@ -191,6 +225,10 @@ Player.prototype.handleInput = function(keyPressed) {
   }
 };
 
+// In case of victory, the game momentarily pauses, victory n. increases,
+// the random item is reset (a new one will appear),
+// and the enemies speed will be increased to make each level harder.
+// Finally, the game restarts
 function victory() {
   gamePause = true;
   setTimeout(player.resetPosition, 500);
@@ -214,10 +252,8 @@ function victory() {
   }, 500);
 }
 
-var player = new Player(202, 405);
-
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
+// This listens for key presses and sends the keys to
+// Player.handleInput() method.
 
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
@@ -226,7 +262,6 @@ document.addEventListener('keyup', function(e) {
         39: 'right',
         40: 'down'
     };
-
     player.handleInput(allowedKeys[e.keyCode]);
 });
 
@@ -249,8 +284,11 @@ var allRocks = [rock1, rock2]
 */
 
 
-//Items (gems and heart)
+/*
+ * COLLECTIBLE ITEMS
+ */
 
+// Constructor function for hearts
 var Heart = function(x, y) {
   this.x = x;
   this.y = y;
@@ -259,12 +297,19 @@ var Heart = function(x, y) {
   this.onscreen = false;
 }
 
+// Constructor function for gems
 var Gem = function(x, y, sprite, points) {
   this.x = x;
   this.y = y;
   this.sprite = sprite;
   this.points = points;
   this.onscreen = false;
+}
+
+// Object with arrays containing all the possible positions for the items
+var collectibleStats = {
+  positionX : [0, 101, 202, 303, 404],
+  positionY : [50, 130, 210],
 }
 
 Heart.prototype.render = function() {
@@ -275,35 +320,38 @@ Gem.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-var collectibleStats = {
-  positionX : [0, 101, 202, 303, 404],
-  positionY : [50, 130, 210],
-}
-
+//If player grabs the gem, it adds a gem to the menu, adds points, and makes the gem disappear
 Gem.prototype.update = function() {
   if (player.x >= this.x -83
     && player.x <= this.x + 83
     && player.y > this.y
     && player.y < this.y + 83
     && this.onscreen === true) {
+
       menuStats.gemsNumber ++;
       document.getElementById('gemsNumber').textContent = menuStats.gemsNumber;
+
       menuStats.score += this.points;
       document.getElementById('score').textContent = menuStats.score;
+
       this.onscreen = false;
   }
 };
 
+//If player grabs the heart, it adds a life to the menu, adds points, and makes the heart disappear
 Heart.prototype.update = function() {
   if (player.x >= this.x -83
     && player.x <= this.x + 83
     && player.y > this.y
     && player.y < this.y + 83
     && this.onscreen === true) {
+
       menuStats.livesNumber ++;
       document.getElementById('livesNumber').textContent = menuStats.livesNumber;
+
       menuStats.score += this.points;
       document.getElementById('score').textContent = menuStats.score;
+
       this.onscreen = false;
   }
 };
@@ -320,6 +368,7 @@ Heart.prototype.reset = function() {
   heart.onscreen = false;
 };
 
+// Initialize all items
 var blueGem1 = new Gem(collectibleStats.positionX[randomNum(5, 0)], collectibleStats.positionY[randomNum(3, 0)], 'images/Gem Blue.png', 100);
 
 var blueGem2 = new Gem(collectibleStats.positionX[randomNum(5, 0)], collectibleStats.positionY[randomNum(3, 0)], 'images/Gem Blue.png', 100);
@@ -332,6 +381,7 @@ var orangeGem = new Gem(collectibleStats.positionX[randomNum(5, 0)], collectible
 
 var heart = new Heart(collectibleStats.positionX[randomNum(5, 0)], collectibleStats.positionY[randomNum(3, 0)]);
 
+// Create an array with all the items to get a random one each time
 var allItems = [blueGem1, blueGem2, greenGem1, greenGem2, orangeGem, heart];
 var randomItem = allItems[randomNum(6, 0)];
 randomItem.onscreen = true;
