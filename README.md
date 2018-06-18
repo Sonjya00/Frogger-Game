@@ -17,10 +17,48 @@ Build an arcade game clone using JavaScript object-oriented programming features
 
 ## How to play
 
-To start the game, open the file index.html.
+To start the game, open the file index.html. A modal will appear explaining the instructions of the game, and prompting you to choose one character among the 5 characters provided. Once you hit the button "Start a new game!", the game will start.
+
+The game requires the use of the keyboard to be played, as the character is moved by pressing on the arrow keys.
 
 ## Overview
 
+The objective of the game is to bring the character to the other side of the board where the river tiles are. The player can control the character by pressing on the arrow keys on the keyboard.
+
+While attempting to do so, the player must avoid the bugs that are constantly running across the road from left to right. If they hit the character, one life is lost, and the character goes back to the start position. When all the lives are lost, the game is over.
+
+The player can restore the lives number by picking up the hearts that randomly spawn on the board.
+
+The player can also collect gems on the board to get more points. Each gem gives a different amount of point.
+
+Every time the player wins, the bugs gets faster, to make the game increasingly hard.
+
 ### Game Mechanics
 
+### Board
+The board is composed by 5x5 tiles. The character starts in the middle grass tile of the lower row.
+The bugs position is set to always be on the three rows made of stone tiles, one per row.
+The water tiles is the goal of the character: once it is reached, a victory is added, and the player goes back to the original position.
+
+### Enemies
+The bugs run from left to right at a random speed, which at the beginning is set to be between 150 and 400. Every time the player wins, the minimum and maximum speed will be both increased by 10, resulting in the game being harder.
+
+### Collectible items
+Once a new game has started, and every time the player wins, a new item will be spawned on the board. This may be a heart, or a gem of three colors (blue, green, orange). Hearts restore 1 life. Gems can give 100, 250, or 500 points, depending on their color.
+Items position is generated randomly, but they will only spawn on the stone tiles, where the bugs are running.
+The items have different probabilities of being spawned, with more valuable items being less common: blue gems and green gems have 1/3 of probability of appearing, while hearts and orange gems have only 1/6.
+
+### Stats menu
+It is possible to check how many lives are left, how many gems have been collected, how many times the player has won, and the current score so far on the menu on top of the board.
+
+### Game over modal
+If the player loses the game, a game over modal will appear with the stats displayed on the menu (total of gems collected, total of victories, and final score). The modal will ask if the player wants to start a new game. If the player clicks on the "Start a new game!" button, the initial modal (the one containing the instructions and the character selection) will appear.
+
+### Restart button
+The player can restart a game any time by clicking the restart button. The game will be paused, and a modal will ask the player if s/he wants to restart the game. If the player clicks on yes, either the game over modal, or the initial modal  will appear depending on whether a new game had already been started or not. If the player clicks on no, the game will simply restart from the pause.
+
 ## Credits
+
+- Body font: [Google Font](https://fonts.google.com/)
+- Background brick pattern: [https://www.heropatterns.com/](https://www.heropatterns.com/)
+- Icons: [BootstrapCDN](https://www.bootstrapcdn.com/)

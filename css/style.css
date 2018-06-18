@@ -1,44 +1,61 @@
 body {
-    text-align: center;
+    background-color: #b27647;
+    background-image: url("data:image/svg+xml,%3Csvg width='42' height='44' viewBox='0 0 42 44' xmlns='http://www.w3.org/2000/svg'%3E%3Cg id='Page-1' fill='none' fill-rule='evenodd'%3E%3Cg id='brick-wall' fill='%23ffd600' fill-opacity='0.19'%3E%3Cpath d='M0 0h42v44H0V0zm1 1h40v20H1V1zM0 23h20v20H0V23zm22 0h20v20H22V23z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    color: black;
     font-family: 'Sansita', sans-serif;
-      color: black;
-      background-color: #b27647;
-      background-image: url("data:image/svg+xml,%3Csvg width='42' height='44' viewBox='0 0 42 44' xmlns='http://www.w3.org/2000/svg'%3E%3Cg id='Page-1' fill='none' fill-rule='evenodd'%3E%3Cg id='brick-wall' fill='%23ffd600' fill-opacity='0.19'%3E%3Cpath d='M0 0h42v44H0V0zm1 1h40v20H1V1zM0 23h20v20H0V23zm22 0h20v20H22V23z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    text-align: center;
 }
 
 h1 {
-  font-size: 45px;
-  margin: 0;
-}
-
-.game-menu {
-  list-style-type: none;
-  width: 505px;
-  margin: 0 auto;
-  margin-bottom: -45px;
-}
-
-.game-menu td {
-  width: 20%;
-  vertical-align:bottom;
-}
-
-.menu__logo {
-  width: 20px;
-  margin-bottom: -5px;
-}
-
-#pauseBtn {
-  cursor:pointer;
-}
-
-#restartButton {
-  cursor:pointer;
-  display: inline-block;
+    font-size: 45px;
+    margin: 0;
 }
 
 /*
- * Styles for Modal
+ * Styles for Game menu
+ */
+
+.game-menu {
+    margin: 0 auto;
+    margin-bottom: -45px;
+    list-style-type: none;
+    width: 505px;
+}
+
+.game-menu td {
+    vertical-align:bottom;
+    width: 20%;
+}
+
+.menu__logo {
+    margin-bottom: -5px;
+    width: 20px;
+}
+
+/*
+#pauseBtn {
+  cursor:pointer;
+}
+*/
+
+#restartBtn {
+    background-color: #fffff0;
+    border-radius: 5px;
+    cursor:pointer;
+    display: inline-block;
+    left: 620px;
+    padding: 15px;
+    position: absolute;
+    top: 590px;
+}
+
+#restartBtn:hover {
+    background-color: #bfbfbf;
+    border: 2px solid #7a7777;
+}
+
+/*
+ * Styles for all Modals
  */
 
 .modal__background {
@@ -55,7 +72,7 @@ h1 {
 }
 
 .modal__window {
-    background-color: #fff;
+    background-color: #fffff0;
     border: 1px solid #888;
     font-size: 16px;
     margin: 15% auto;
@@ -78,13 +95,13 @@ h1 {
 .modal__close-btn:hover,
 .modal__close-btn:focus {
     color: black;
-    text-decoration: none;
     cursor: pointer;
+    text-decoration: none;
 }
 
 .modal__restart-btn {
-    border-radius: 5px;
     background-color: #02ccba;
+    border-radius: 5px;
     color: #fff;
     cursor: pointer;
     display: block;
@@ -98,62 +115,68 @@ h1 {
     background-color: #1e8495;
 }
 
-/* Characters modal only */
+/*
+ * Styles for initial modal only
+ */
 
 .modal__character__window {
-  margin: 8% auto;
+    margin: 8% auto;
 }
 
 .instructions {
-  width: 80%;
-  margin: auto;
-  line-height: 25px;
-  text-align: justify;
+    line-height: 25px;
+    margin: auto;
+    text-align: justify;
+    width: 80%;
 }
 
 .avatars-collection {
-  width: 70%;
-  margin: 0 auto;
-  font-size: 15px;
+    font-size: 15px;
+    margin: 0 auto;
+    width: 70%;
 }
 
 .avatar-sprite, figcaption {
-  cursor: pointer;
-  width: 45px;
+    cursor: pointer;
+    width: 45px;
 }
 
 .character-selection-form input {
-  margin-left: 60px;
-  margin-right: 55px;
-  margin-bottom: 40px;
+    margin-bottom: 40px;
+    margin-left: 60px;
+    margin-right: 55px;
 }
 
-/* Gameover modal only */
+/*
+ * Styles for game over modal only
+ */
 
 .modal__gameover__background {
     display: none;
 }
 
 .modal__gameover__window {
-  width: 400px;
+    width: 400px;
 }
 
 .modal__gameover__window ul {
-  list-style: none;
-  padding: 15px;
+    list-style: none;
+    padding: 15px;
 }
 
-/* Confirmation modal only */
+/*
+ * Styles for confirmation modal only
+ */
 
 .modal__confirmation__background {
     display: none;
 }
 
 .modal__confirmation__window {
-  width: 350px;
+    width: 350px;
 }
 
 #confirmYesBtn, #confirmNoBtn {
-  display: inline-block;
-  margin: 20px;
+    display: inline-block;
+    margin: 20px;
 }
