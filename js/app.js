@@ -11,6 +11,11 @@ var finalGemsNumber = document.getElementById('finalGemsNumber');
 var finalVictoriesNumber = document.getElementById('finalVictoriesNumber');
 var finalScore = document.getElementById('finalScore');
 
+//helper function to randomize
+function randomNum(max, min) {
+  return Math.floor(Math.random() * max) + min;
+}
+
 //Code to pause the game if a btn is clicked
 //The variable is used also to temporarily pause the game in case of gameover
 var gamePause = true;
@@ -29,6 +34,11 @@ var Enemy = function(x, y, speed) {
     this.sprite = 'images/enemy-bug.png';
 };
 
+var enemyStats = {
+  speedMax: 400,
+  speedMin: 150
+}
+
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
@@ -38,7 +48,7 @@ Enemy.prototype.update = function(dt) {
     this.x += this.speed * dt;
     if (this.x > 505) {
       this.x = -100;
-      this.speed = Math.floor(Math.random() * 400) + 150;
+      this.speed = randomNum(enemyStats.speedMax, enemyStats.speedMin);
     }
 
     if (player.x >= this.x -83
@@ -88,7 +98,7 @@ function enemyCollision() {
 var allEnemies = [];
 var enemyLocation = [[175, 60], [0, 140], [175, 220]];
 enemyLocation.forEach(function([positionX, positionY]) {
-    enemy = new Enemy(positionX, positionY, 300);
+    enemy = new Enemy(positionX, positionY, randomNum(enemyStats.speedMax, enemyStats.speedMin));
     allEnemies.push(enemy);
 });
 
@@ -96,7 +106,7 @@ enemyLocation.forEach(function([positionX, positionY]) {
 Enemy.prototype.resetPosition = function(enemy) {
     allEnemies = [];
     enemyLocation.forEach(function([positionX, positionY]) {
-        enemy = new Enemy(positionX, positionY, 300);
+        enemy = new Enemy(positionX, positionY, randomNum(enemyStats.speedMax, enemyStats.speedMin));
         allEnemies.push(enemy);
     });
 };
@@ -180,8 +190,10 @@ Player.prototype.handleInput = function(keyPressed) {
 function victory() {
   gamePause = true;
   setTimeout(player.resetPosition, 500);
+
   menuStats.victoriesNumber ++;
   document.getElementById('victoriesNumber').textContent = menuStats.victoriesNumber;
+
   setTimeout(allItems.forEach(function(item) {
     item.reset();
   }), 500);
@@ -189,6 +201,12 @@ function victory() {
     randomItem = allItems[randomNum(6, 0)];
     randomItem.onscreen = true;
   }, 500)
+
+  allEnemies.forEach(function (enemy) {
+    enemyStats.speedMax += 10;
+    enemyStats.speedMin += 10;
+  });
+
   setTimeout(function() {
     return gamePause = false;
   }, 500);
@@ -287,11 +305,6 @@ Heart.prototype.update = function() {
       this.onscreen = false;
   }
 };
-
-//helper function to randomize
-function randomNum(max, min) {
-  return Math.floor(Math.random() * max) + min;
-}
 
 Gem.prototype.reset = function() {
   Gem.x = collectibleStats.positionX[randomNum(5, 0)];
