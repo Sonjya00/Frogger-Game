@@ -12,15 +12,17 @@
   <table class="game-menu">
     <td><img class="menu__logo" src="images/Heart.png"> x<span id="livesNumber">5</span></td>
     <td><img class="menu__logo" src="images/Gem Blue.png"> x<span id="gemsNumber">0</span></td>
-    <td><img class="menu__logo" src="images/Star.png"> x<span id="victoriesNumber">0</span> victories</td>
+    <td><img class="menu__logo" src="images/Star.png"> x<span id="victoriesNumber">0</span> wins</td>
     <td><span id="secondsElapsed">0</span> s</td>
     <td>Score: <span id="score">0</span></td>
   </table>
-  <button id="pauseBtn"><i class="fa fa-pause"></i></button>
+
+  <button id="restartBtn"><i class="fa fa-repeat"></i></button>
+  <!--<button id="pauseBtn"><i class="fa fa-pause"></i></button>-->
 
   <div id="characterModal" class="modal__background">
     <div class="modal__window">
-      <span class="modal__close-btn">&times;</span>
+      <!--<span class="modal__close-btn">&times;</span>-->
       <h2>Select a character, then press "Start a new game!"</h2>
       <table id="avatars" class="avatars-collection">
         <tr>
@@ -67,10 +69,20 @@
         <ul>
           <li><strong>Collected gems: </strong><span id="finalGemsNumber"></span></li>
           <li><strong>Victories: </strong><span id="finalVictoriesNumber"></span></li>
+          <li><strong>Elapsed time: </strong><span id="finalTime"></span> s</li>
           <li><strong>Total Score: </strong><span id="finalScore"></span></li>
         </ul>
         <h3>Play again?</h3>
         <button id="restartGameBtn" class="modal__restart-btn">Start a new game!</button>
+    </div>
+  </div>
+
+  <div id="confirmationModal" class="modal__background modal__confirmation__background">
+    <div class="modal__window modal__confirmation__window">
+      <span class="modal__close-btn">&times;</span>
+        <h2>Restart game?</h2>
+        <button id="confirmYesBtn" class="modal__restart-btn">Yes</button>
+        <button id="confirmNoBtn" class="modal__restart-btn">No</button>
     </div>
   </div>
 

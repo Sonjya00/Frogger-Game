@@ -11,10 +11,6 @@ h1 {
   margin: 0;
 }
 
-h2 {
-  margin-bottom: -20px;
-}
-
 .avatars-collection {
   width: 505px;
   margin: 0 auto;
@@ -45,6 +41,11 @@ h2 {
 
 #pauseBtn {
   cursor:pointer;
+}
+
+#restartButton {
+  cursor:pointer;
+  display: inline-block;
 }
 
 /*
@@ -118,11 +119,22 @@ h2 {
   width: 400px;
 }
 
-.modal__gameover__window h2 {
-  padding: 15px;
-}
-
 .modal__gameover__window ul {
   list-style: none;
   padding: 15px;
+}
+
+/* Confirmation modal only */
+
+.modal__confirmation__background {
+    display: none;
+}
+
+.modal__confirmation__window {
+  width: 350px;
+}
+
+#confirmYesBtn, #confirmNoBtn {
+  display: inline-block;
+  margin: 20px;
 }

@@ -12,6 +12,7 @@ var menuStats = {
 // Variables for the gameover modal
 var finalGemsNumber = document.getElementById('finalGemsNumber');
 var finalVictoriesNumber = document.getElementById('finalVictoriesNumber');
+var finalTime = document.getElementById('finalTime');
 var finalScore = document.getElementById('finalScore');
 
 // helper function to generate a random number
@@ -23,9 +24,17 @@ function randomNum(max, min) {
 // The variable is also used to temporarily pause the game in case of victory/gameover
 var gamePause = true;
 var pauseBtn = document.getElementById('pauseBtn');
+/*
 pauseBtn.addEventListener('click', function() {
   gamePause = !gamePause;
-})
+})*/
+
+var restartBtn = document.getElementById('restartBtn');
+restartBtn.onclick = function() {
+  gamePause = true;
+  clearTimer();
+  CONFIRMATION_MODAL.style.display = 'block';
+}
 
 /*
  * TIMER
@@ -101,28 +110,35 @@ function enemyCollision() {
 //Else, the player and the enemies get back to the original position and the game restarts
 function checkIfGameover() {
   if (menuStats.livesNumber < 1) {
-
-    // Reset player/enemies position, and enemies speed
-    player.resetPosition();
-    enemy.resetPosition();
-    enemyStats.speedMax = 400;
-    enemyStats.speedMin = 150;
-    clearTimer();
-
-    // Write modal content with final stats
-    finalGemsNumber.textContent = menuStats.gemsNumber;
-    finalVictoriesNumber.textContent = menuStats.victoriesNumber;
-    finalScore.textContent = menuStats.score;
-    GAMEOVER_MODAL.style.display = 'block';
-
+    gameOver();
   } else {
-    // Reset player/enemies position, and restarts current game
-    setTimeout(player.resetPosition, 500);
-    setTimeout(enemy.resetPosition, 500);
-    setTimeout(function() {
-      return gamePause = false;
-    }, 500);
+    lifeLost();
   }
+}
+
+function gameOver() {
+  // Reset player/enemies position, and enemies speed
+  player.resetPosition();
+  enemy.resetPosition();
+  enemyStats.speedMax = 400;
+  enemyStats.speedMin = 150;
+  clearTimer();
+
+  // Write modal content with final stats
+  finalGemsNumber.textContent = menuStats.gemsNumber;
+  finalVictoriesNumber.textContent = menuStats.victoriesNumber;
+  finalTime.textContent = sec;
+  finalScore.textContent = menuStats.score;
+  GAMEOVER_MODAL.style.display = 'block';
+}
+
+function lifeLost() {
+  // Reset player/enemies position, and restarts current game
+  setTimeout(player.resetPosition, 500);
+  setTimeout(enemy.resetPosition, 500);
+  setTimeout(function() {
+    return gamePause = false;
+  }, 500);
 }
 
 //Code to create enemies at the beginning
