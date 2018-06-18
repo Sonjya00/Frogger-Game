@@ -178,7 +178,18 @@ var playerSprites = [
   'images/char-princess-girl.png'
 ];
 
-var avatars = document.getElementById('avatars');
+var form = document.querySelector("form");
+var charSelection = document.getElementsByName('charSelection');
+
+form.addEventListener("submit", function(event) {
+  for (var i = 0; i < playerSprites.length; i++) {
+    if(charSelection[i].checked) {
+      player.sprite = playerSprites[i];
+    }
+  } event.preventDefault();
+}, false);
+
+/*var avatars = document.getElementById('avatars');
 
 avatars.addEventListener('click', function(evt) {
   if (evt.target.nodeName === 'IMG') {
@@ -200,7 +211,7 @@ avatars.addEventListener('click', function(evt) {
       break;
     }
   }
-});
+});*/
 
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);

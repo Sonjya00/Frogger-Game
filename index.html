@@ -20,11 +20,20 @@
   <button id="restartBtn"><i class="fa fa-repeat"></i></button>
   <!--<button id="pauseBtn"><i class="fa fa-pause"></i></button>-->
 
-  <div id="characterModal" class="modal__background">
-    <div class="modal__window">
+<!--FIRST MODAL -->
+  <div id="characterModal" class="modal__background modal__character__background">
+    <div class="modal__window modal__character__window">
       <!--<span class="modal__close-btn">&times;</span>-->
-      <h2>Select a character, then press "Start a new game!"</h2>
-      <table id="avatars" class="avatars-collection">
+      <h2>Welcome to my Frogger Game!</h2>
+      <ul class="instructions">
+        <li>Bring your character to the other side of the board by clicking on the arrow keys.</li>
+        <li>Avoid the bugs running across the road. If they hit you, you will lose a life. When you lose all your lives, the game is over.</li>
+        <li>You can restore your lives by picking up the hearts on the board.</li>
+        <li>Collect as many gems as you can to get more points. Each gem type gives you a different amount of points.</li>
+        <li>Every time you win, the bugs gets faster, so beware!</li>
+      </ul>
+      <h3>To start, select a character, then press "Start a new game!"</h3>
+      <table id="avatars" class="avatars-collection" name="charSelForm">
         <tr>
           <td>
             <figure>
@@ -58,7 +67,15 @@
           </td>
         </tr>
       </table>
-        <button id="newGameBtn" class="modal__restart-btn">Start a new game!</button>
+
+      <form class="character-selection-form">
+        <input type="radio" name="charSelection" value="Boy">
+        <input type="radio" name="charSelection" value="Cat Girl">
+        <input type="radio" name="charSelection" value="Horn Girl">
+        <input type="radio" name="charSelection" value="Pink Girl">
+        <input type="radio" name="charSelection" value="Princess Girl">
+        <button id="newGameBtn" class="modal__restart-btn" type="submit">Start a new game!</button>
+      </form>
     </div>
   </div>
 
@@ -80,7 +97,8 @@
   <div id="confirmationModal" class="modal__background modal__confirmation__background">
     <div class="modal__window modal__confirmation__window">
       <span class="modal__close-btn">&times;</span>
-        <h2>Restart game?</h2>
+        <h2>Game paused</h2>
+        <p>Quit current game and start new game?</p>
         <button id="confirmYesBtn" class="modal__restart-btn">Yes</button>
         <button id="confirmNoBtn" class="modal__restart-btn">No</button>
     </div>

@@ -11,17 +11,6 @@ h1 {
   margin: 0;
 }
 
-.avatars-collection {
-  width: 505px;
-  margin: 0 auto;
-  font-size: 15px;
-}
-
-.avatar-sprite, figcaption {
-  cursor: pointer;
-  width: 45px;
-}
-
 .game-menu {
   list-style-type: none;
   width: 505px;
@@ -107,6 +96,36 @@ h1 {
 
 .modal__restart-btn:hover {
     background-color: #1e8495;
+}
+
+/* Characters modal only */
+
+.modal__character__window {
+  margin: 8% auto;
+}
+
+.instructions {
+  width: 80%;
+  margin: auto;
+  line-height: 25px;
+  text-align: justify;
+}
+
+.avatars-collection {
+  width: 70%;
+  margin: 0 auto;
+  font-size: 15px;
+}
+
+.avatar-sprite, figcaption {
+  cursor: pointer;
+  width: 45px;
+}
+
+.character-selection-form input {
+  margin-left: 60px;
+  margin-right: 55px;
+  margin-bottom: 40px;
 }
 
 /* Gameover modal only */
