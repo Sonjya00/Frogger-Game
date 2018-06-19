@@ -2,7 +2,7 @@
  * GLOBAL
  */
 // Stats on the main menu
-var menuStats = {
+let menuStats = {
   livesNumber: 5,
   gemsNumber: 0,
   starsNumber: 0,
@@ -11,11 +11,11 @@ var menuStats = {
 }
 
 // Variables for the gameover modal
-var finalGemsNumber = document.getElementById('finalGemsNumber');
-var finalStarsNumber = document.getElementById('finalStarsNumber');
-var finalLevelNumber = document.getElementById('finalLevelNumber');
-var finalTime = document.getElementById('finalTime');
-var finalScore = document.getElementById('finalScore');
+const F_GEMS_NUM = document.getElementById('finalGemsNumber');
+const F_STARS_NUM = document.getElementById('finalStarsNumber');
+const F_LEVEL_NUM = document.getElementById('finalLevelNumber');
+const F_TIME = document.getElementById('finalTime');
+const F_SCORE = document.getElementById('finalScore');
 
 // helper function to generate a random number
 function randomNum(max, min) {
@@ -80,8 +80,8 @@ class Enemy {
   }
 
   reset() {
-    this.x = collectibleStats.positionX[randomNum(5, 0)];
-    this.y = collectibleStats.positionY[randomNum(3, 0)];
+    this.x = COLLECTIBLES_POS.positionX[randomNum(5, 0)];
+    this.y = COLLECTIBLES_POS.positionY[randomNum(3, 0)];
     this.onscreen = false;
   }
 
@@ -118,8 +118,8 @@ var enemyStats = {
 var allEnemies = [];
 var enemyLocation = [[175, 60], [0, 140], [175, 220]];
 enemyLocation.forEach(function([positionX, positionY]) {
-    enemy = new Enemy(positionX, positionY, randomNum(enemyStats.speedMax, enemyStats.speedMin));
-    allEnemies.push(enemy);
+  enemy = new Enemy(positionX, positionY, randomNum(enemyStats.speedMax, enemyStats.speedMin));
+  allEnemies.push(enemy);
 });
 
 // It pauses the game, decreases lives number, and calls function to check if gameover
@@ -157,11 +157,11 @@ function gameOver() {
   clearTimer();
 
   // Write modal content with final stats
-  finalGemsNumber.textContent = menuStats.gemsNumber;
-  finalStarsNumber.textContent = menuStats.starsNumber;
-  finalLevelNumber.textContent = menuStats.levelNumber;
-  finalTime.textContent = sec;
-  finalScore.textContent = menuStats.score;
+  F_GEMS_NUM.textContent = menuStats.gemsNumber;
+  F_STARS_NUM.textContent = menuStats.starsNumber;
+  F_LEVEL_NUM.textContent = menuStats.levelNumber;
+  F_TIME.textContent = sec;
+  F_SCORE.textContent = menuStats.score;
   GAMEOVER_MODAL.style.display = 'block';
 }
 
@@ -228,7 +228,7 @@ class Player {
   constructor(x, y, sprite) {
     this.x = x;
     this.y = y;
-    this.sprite = playerSprites[0];
+    this.sprite = PLAYER_SPRITES[0];
   }
 
   render() {
@@ -268,7 +268,7 @@ class Player {
 }
 
 //Code for the initial modal, to change the sprite of the player.
-var playerSprites = [
+const PLAYER_SPRITES = [
   'images/char-boy.png',
   'images/char-cat-girl.png',
   'images/char-horn-girl.png',
@@ -276,26 +276,26 @@ var playerSprites = [
   'images/char-princess-girl.png'
 ];
 
-var form = document.querySelector("form");
-var charSelection = document.getElementsByName('charSelection');
+const FORM = document.querySelector("form");
+const CHAR_SEL_RADIO = document.getElementsByName('charSelection');
 
-form.addEventListener("submit", function(event) {
-  for (var i = 0; i < playerSprites.length; i++) {
-    if(charSelection[i].checked) {
-      player.sprite = playerSprites[i];
+FORM.addEventListener("submit", function(event) {
+  for (let i = 0; i < PLAYER_SPRITES.length; i++) {
+    if(CHAR_SEL_RADIO[i].checked) {
+      player.sprite = PLAYER_SPRITES[i];
     }
   } event.preventDefault();
 }, false);
 
 // Player is initialized
-var player = new Player(202, 405);
+let player = new Player(202, 405);
 
 // OLD CODE for earlier JS
 /*
 var Player = function(x, y, sprite) {
   this.x = x;
   this.y = y;
-  this.sprite = playerSprites[0];
+  this.sprite = PLAYER_SPRITES[0];
 }
 
 Player.prototype.render = function() {
@@ -341,19 +341,19 @@ avatars.addEventListener('click', function(evt) {
   if (evt.target.nodeName === 'IMG') {
     switch (evt.target.getAttribute('src')) {
       case 'images/char-boy.png':
-      player.sprite = playerSprites[0];
+      player.sprite = PLAYER_SPRITES[0];
       break;
       case 'images/char-cat-girl.png':
-      player.sprite = playerSprites[1];
+      player.sprite = PLAYER_SPRITES[1];
       break;
       case 'images/char-horn-girl.png':
-      player.sprite = playerSprites[2];
+      player.sprite = PLAYER_SPRITES[2];
       break;
       case 'images/char-pink-girl.png':
-      player.sprite = playerSprites[3];
+      player.sprite = PLAYER_SPRITES[3];
       break;
       case 'images/char-princess-girl.png':
-      player.sprite = playerSprites[4];
+      player.sprite = PLAYER_SPRITES[4];
       break;
     }
   }
@@ -391,7 +391,7 @@ function victory() {
 // Player.handleInput() method.
 
 document.addEventListener('keyup', function(e) {
-    var allowedKeys = {
+    let allowedKeys = {
         37: 'left',
         38: 'up',
         39: 'right',
@@ -435,9 +435,9 @@ class Items {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
   }
   reset() {
-  this.x = collectibleStats.positionX[randomNum(5, 0)];
-  this.y = collectibleStats.positionY[randomNum(3, 0)];
-  this.onscreen = false;
+    this.x = COLLECTIBLES_POS.positionX[randomNum(5, 0)];
+    this.y = COLLECTIBLES_POS.positionY[randomNum(3, 0)];
+    this.onscreen = false;
   }
 }
 
@@ -447,52 +447,52 @@ class Heart extends Items {
     this.sprite = 'images/Heart.png';
     this.points = 100;
     this.onscreen = false;
-    }
-    update() {
-      if (player.x >= this.x -83
-        && player.x <= this.x + 83
-        && player.y > this.y
-        && player.y < this.y + 83
-        && this.onscreen === true) {
+  }
+  update() {
+    if (player.x >= this.x -83
+      && player.x <= this.x + 83
+      && player.y > this.y
+      && player.y < this.y + 83
+      && this.onscreen === true) {
 
-          menuStats.livesNumber ++;
-          document.getElementById('livesNumber').textContent = menuStats.livesNumber;
+        menuStats.livesNumber ++;
+        document.getElementById('livesNumber').textContent = menuStats.livesNumber;
 
-          menuStats.score += this.points;
-          document.getElementById('score').textContent = menuStats.score;
+        menuStats.score += this.points;
+        document.getElementById('score').textContent = menuStats.score;
 
-          this.onscreen = false;
-      }
+        this.onscreen = false;
     }
   }
+}
 
-  class Star extends Items {
-    constructor(x, y, sprite) {
-      super(x, y, sprite);
-      this.sprite = 'images/Star.png';
-      this.points = 100;
+class Star extends Items {
+  constructor(x, y, sprite) {
+    super(x, y, sprite);
+    this.sprite = 'images/Star.png';
+    this.points = 100;
+    this.onscreen = false;
+  }
+  update() {
+    if (player.x >= this.x -83
+      && player.x <= this.x + 83
+      && player.y > this.y
+      && player.y < this.y + 83
+      && this.onscreen === true) {
+
+      enemyStats.speedMax -=30;
+      enemyStats.speedMin -=30;
+
+      menuStats.starsNumber ++;
+      document.getElementById('starsNumber').textContent = menuStats.starsNumber;
+
+      menuStats.score += this.points;
+      document.getElementById('score').textContent = menuStats.score;
+
       this.onscreen = false;
-      }
-      update() {
-        if (player.x >= this.x -83
-          && player.x <= this.x + 83
-          && player.y > this.y
-          && player.y < this.y + 83
-          && this.onscreen === true) {
-
-          enemyStats.speedMax -=30;
-          enemyStats.speedMin -=30;
-
-          menuStats.starsNumber ++;
-          document.getElementById('starsNumber').textContent = menuStats.starsNumber;
-
-          menuStats.score += this.points;
-          document.getElementById('score').textContent = menuStats.score;
-
-          this.onscreen = false;
-      }
     }
   }
+}
 
 class Gem extends Items {
   constructor(x, y, sprite, points) {
@@ -520,7 +520,7 @@ class Gem extends Items {
 }
 
 // Object with arrays containing all the possible positions for the items
-var collectibleStats = {
+const COLLECTIBLES_POS = {
   positionX : [0, 101, 202, 303, 404],
   positionY : [50, 130, 210],
 }
@@ -590,35 +590,35 @@ Heart.prototype.update = function() {
 };
 
 Gem.prototype.reset = function() {
-  Gem.x = collectibleStats.positionX[randomNum(5, 0)];
-  Gem.y = collectibleStats.positionY[randomNum(3, 0)];
+  Gem.x = COLLECTIBLES_POS.positionX[randomNum(5, 0)];
+  Gem.y = COLLECTIBLES_POS.positionY[randomNum(3, 0)];
   Gem.onscreen = false;
 };
 
 Heart.prototype.reset = function() {
-  heart.x = collectibleStats.positionX[randomNum(5, 0)];
-  heart.y = collectibleStats.positionY[randomNum(3, 0)];
+  heart.x = COLLECTIBLES_POS.positionX[randomNum(5, 0)];
+  heart.y = COLLECTIBLES_POS.positionY[randomNum(3, 0)];
   heart.onscreen = false;
 };*/
 
 // Initialize all items
-var blueGem1 = new Gem(collectibleStats.positionX[randomNum(5, 0)], collectibleStats.positionY[randomNum(3, 0)], 'images/Gem Blue.png', 100);
+let blueGem1 = new Gem(COLLECTIBLES_POS.positionX[randomNum(5, 0)], COLLECTIBLES_POS.positionY[randomNum(3, 0)], 'images/Gem Blue.png', 100);
 
-var blueGem2 = new Gem(collectibleStats.positionX[randomNum(5, 0)], collectibleStats.positionY[randomNum(3, 0)], 'images/Gem Blue.png', 100);
+let blueGem2 = new Gem(COLLECTIBLES_POS.positionX[randomNum(5, 0)], COLLECTIBLES_POS.positionY[randomNum(3, 0)], 'images/Gem Blue.png', 100);
 
-var blueGem3 = new Gem(collectibleStats.positionX[randomNum(5, 0)], collectibleStats.positionY[randomNum(3, 0)], 'images/Gem Blue.png', 100);
+let blueGem3 = new Gem(COLLECTIBLES_POS.positionX[randomNum(5, 0)], COLLECTIBLES_POS.positionY[randomNum(3, 0)], 'images/Gem Blue.png', 100);
 
-var greenGem1 = new Gem(collectibleStats.positionX[randomNum(5, 0)], collectibleStats.positionY[randomNum(3, 0)], 'images/Gem Green.png', 250);
+let greenGem1 = new Gem(COLLECTIBLES_POS.positionX[randomNum(5, 0)], COLLECTIBLES_POS.positionY[randomNum(3, 0)], 'images/Gem Green.png', 250);
 
-var greenGem2 = new Gem(collectibleStats.positionX[randomNum(5, 0)], collectibleStats.positionY[randomNum(3, 0)], 'images/Gem Green.png', 250);
+let greenGem2 = new Gem(COLLECTIBLES_POS.positionX[randomNum(5, 0)], COLLECTIBLES_POS.positionY[randomNum(3, 0)], 'images/Gem Green.png', 250);
 
-var orangeGem = new Gem(collectibleStats.positionX[randomNum(5, 0)], collectibleStats.positionY[randomNum(3, 0)], 'images/Gem Orange.png', 500);
+let orangeGem = new Gem(COLLECTIBLES_POS.positionX[randomNum(5, 0)], COLLECTIBLES_POS.positionY[randomNum(3, 0)], 'images/Gem Orange.png', 500);
 
-var heart = new Heart(collectibleStats.positionX[randomNum(5, 0)], collectibleStats.positionY[randomNum(3, 0)]);
+let heart = new Heart(COLLECTIBLES_POS.positionX[randomNum(5, 0)], COLLECTIBLES_POS.positionY[randomNum(3, 0)]);
 
-var star = new Star(collectibleStats.positionX[randomNum(5, 0)], collectibleStats.positionY[randomNum(3, 0)]);
+let star = new Star(COLLECTIBLES_POS.positionX[randomNum(5, 0)], COLLECTIBLES_POS.positionY[randomNum(3, 0)]);
 
 // Create an array with all the items to get a random one each time
-var allItems = [blueGem1, blueGem2, blueGem3, greenGem1, greenGem2, orangeGem, heart, star];
-var randomItem = allItems[randomNum(8, 0)];
+let allItems = [blueGem1, blueGem2, blueGem3, greenGem1, greenGem2, orangeGem, heart, star];
+let randomItem = allItems[randomNum(8, 0)];
 randomItem.onscreen = true;
