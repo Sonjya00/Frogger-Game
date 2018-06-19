@@ -33,13 +33,15 @@ RESTART_GAME_BTN.onclick = function() {
   // Resetting all the main menu stats to initial values
   menuStats.livesNumber = 5;
   menuStats.gemsNumber = 0;
-  menuStats.victoriesNumber = 0;
+  menuStats.starsNumber = 0;
+  menuStats.levelNumber = 1;
   menuStats.score = 0;
   sec = 0;
 
   livesNumber.textContent = menuStats.livesNumber;
   gemsNumber.textContent = menuStats.gemsNumber;
-  victoriesNumber.textContent = menuStats.victoriesNumber;
+  starsNumber.textContent = menuStats.starsNumber;
+  levelNumber.textContent = menuStats.levelNumber;
   secondsElapsed.textContent = sec;
   score.textContent = menuStats.score;
 };

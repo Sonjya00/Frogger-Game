@@ -5,33 +5,31 @@
 var menuStats = {
   livesNumber: 5,
   gemsNumber: 0,
-  victoriesNumber: 0,
+  starsNumber: 0,
+  levelNumber: 1,
   score: 0
 }
 
 // Variables for the gameover modal
 var finalGemsNumber = document.getElementById('finalGemsNumber');
-var finalVictoriesNumber = document.getElementById('finalVictoriesNumber');
+var finalStarsNumber = document.getElementById('finalStarsNumber');
+var finalLevelNumber = document.getElementById('finalLevelNumber');
 var finalTime = document.getElementById('finalTime');
 var finalScore = document.getElementById('finalScore');
-
-// Variable to check whether a new game have started or not (for the modal)
-// Useful to decide which modal to open with the restart btn
-var newGameStarted = false;
 
 // helper function to generate a random number
 function randomNum(max, min) {
   return Math.floor(Math.random() * max) + min;
 }
 
+// Variable to check whether a new game have started or not (for the modal)
+// Useful to decide which modal to open with the restart btn
+var newGameStarted = false;
+
 // Code to pause the game if a button is clicked
 // The variable is also used to temporarily pause the game in case of victory/gameover
 var gamePause = true;
 var pauseBtn = document.getElementById('pauseBtn');
-/*
-pauseBtn.addEventListener('click', function() {
-  gamePause = !gamePause;
-})*/
 
 var restartBtn = document.getElementById('restartBtn');
 restartBtn.onclick = function() {
@@ -67,13 +65,48 @@ function clearTimer() {
 /*
  * ENEMIES
  */
+
 // Constructor function for the enemies
-var Enemy = function(x, y, speed) {
-  this.x = x;
-  this.y = y;
-  this.speed = speed;
-  this.sprite = 'images/enemy-bug.png';
-};
+class Enemy {
+  constructor(x, y, speed, sprite) {
+    this.x = x;
+    this.y = y;
+    this.speed = speed;
+    this.sprite = 'images/enemy-bug.png';
+  }
+
+  render() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+  }
+
+  reset() {
+    this.x = collectibleStats.positionX[randomNum(5, 0)];
+    this.y = collectibleStats.positionY[randomNum(3, 0)];
+    this.onscreen = false;
+  }
+
+  update(dt) {
+    this.x += this.speed * dt;
+    if (this.x > 505) {
+      this.x = -100;
+      this.speed = randomNum(enemyStats.speedMax, enemyStats.speedMin);
+    }
+    if (player.x >= this.x - 83
+      && player.x <= this.x + 83
+      && player.y > this.y
+      && player.y < this.y + 83) {
+        enemyCollision();
+    }
+  }
+
+  resetPosition(enemy) {
+    allEnemies = [];
+    enemyLocation.forEach(function([positionX, positionY]) {
+      enemy = new Enemy(positionX, positionY, randomNum(enemyStats.speedMax, enemyStats.speedMin));
+      allEnemies.push(enemy);
+    })
+  }
+}
 
 // Variables used to update the enemies speed
 var enemyStats = {
@@ -81,30 +114,13 @@ var enemyStats = {
   speedMin: 150
 }
 
-Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-
-// Update the enemies position. It moves them to the right and if they reach
-// the right border, it resets their position. Also, it checks for collision.
-// Parameter: dt, a time delta between ticks
-// Any movement is multiplied by the dt parameter
-// which will ensure the game runs at the same speed for all computers.
-Enemy.prototype.update = function(dt) {
-
-  this.x += this.speed * dt;
-  if (this.x > 505) {
-    this.x = -100;
-    this.speed = randomNum(enemyStats.speedMax, enemyStats.speedMin);
-  }
-
-  if (player.x >= this.x - 83
-    && player.x <= this.x + 83
-    && player.y > this.y
-    && player.y < this.y + 83) {
-      enemyCollision();
-  }
-};
+//Code to create enemies at the beginning
+var allEnemies = [];
+var enemyLocation = [[175, 60], [0, 140], [175, 220]];
+enemyLocation.forEach(function([positionX, positionY]) {
+    enemy = new Enemy(positionX, positionY, randomNum(enemyStats.speedMax, enemyStats.speedMin));
+    allEnemies.push(enemy);
+});
 
 // It pauses the game, decreases lives number, and calls function to check if gameover
 function enemyCollision() {
@@ -125,23 +141,32 @@ function checkIfGameover() {
 }
 
 function gameOver() {
-  // Reset player/enemies position, and enemies speed
+  // Reset player position
   player.resetPosition();
+  // Reset enemies position and speed
   enemy.resetPosition();
   enemyStats.speedMax = 400;
   enemyStats.speedMin = 150;
+  // Reset items
+  allItems.forEach(function(item) {
+    item.reset();
+  });
+  randomItem = allItems[randomNum(8, 0)];
+  randomItem.onscreen = true;
+  // Stop timer
   clearTimer();
 
   // Write modal content with final stats
   finalGemsNumber.textContent = menuStats.gemsNumber;
-  finalVictoriesNumber.textContent = menuStats.victoriesNumber;
+  finalStarsNumber.textContent = menuStats.starsNumber;
+  finalLevelNumber.textContent = menuStats.levelNumber;
   finalTime.textContent = sec;
   finalScore.textContent = menuStats.score;
   GAMEOVER_MODAL.style.display = 'block';
 }
 
+// Reset player/enemies position, and restarts current game
 function lifeLost() {
-  // Reset player/enemies position, and restarts current game
   setTimeout(player.resetPosition, 500);
   setTimeout(enemy.resetPosition, 500);
   setTimeout(function() {
@@ -149,13 +174,40 @@ function lifeLost() {
   }, 500);
 }
 
-//Code to create enemies at the beginning
-var allEnemies = [];
-var enemyLocation = [[175, 60], [0, 140], [175, 220]];
-enemyLocation.forEach(function([positionX, positionY]) {
-    enemy = new Enemy(positionX, positionY, randomNum(enemyStats.speedMax, enemyStats.speedMin));
-    allEnemies.push(enemy);
-});
+// OLD CODE for earlier JS
+/*
+var Enemy = function(x, y, speed) {
+  this.x = x;
+  this.y = y;
+  this.speed = speed;
+  this.sprite = 'images/enemy-bug.png';
+};
+
+Enemy.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+// Update the enemies position. It moves them to the right and if they reach
+// the right border, it resets their position. Also, it checks for collision.
+// Parameter: dt, a time delta between ticks
+// Any movement is multiplied by the dt parameter
+// which will ensure the game runs at the same speed for all computers.
+
+Enemy.prototype.update = function(dt) {
+
+  this.x += this.speed * dt;
+  if (this.x > 505) {
+    this.x = -100;
+    this.speed = randomNum(enemyStats.speedMax, enemyStats.speedMin);
+  }
+
+  if (player.x >= this.x - 83
+    && player.x <= this.x + 83
+    && player.y > this.y
+    && player.y < this.y + 83) {
+      enemyCollision();
+  }
+};
 
 //Code to recreate enemies if gameover
 Enemy.prototype.resetPosition = function(enemy) {
@@ -165,16 +217,54 @@ Enemy.prototype.resetPosition = function(enemy) {
         allEnemies.push(enemy);
     });
 };
+*/
 
 /*
  * PLAYER
  */
 
 //Player constructor function. It starts with a default sprite.
-var Player = function(x, y, sprite) {
-  this.x = x;
-  this.y = y;
-  this.sprite = playerSprites[0];
+class Player {
+  constructor(x, y, sprite) {
+    this.x = x;
+    this.y = y;
+    this.sprite = playerSprites[0];
+  }
+
+  render() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+  }
+
+  update() {
+  }
+
+  resetPosition() {
+    player.x = 202;
+    player.y = 405;
+  }
+
+  // Function to move the characters with the keyboard.
+  // It works only if the game isn't paused.
+  // It also contains the condition of victory.
+  handleInput(keyPressed) {
+    if (gamePause === false) {
+      if (keyPressed === 'left' && this.x > 0) {
+        this.x -= 101;
+      }
+      if (keyPressed === 'right' && this.x < 404) {
+        this.x += 101;
+      }
+      if (keyPressed === 'down' && this.y < 405) {
+        this.y += 83;
+      }
+      if (keyPressed === 'up' && this.y > -10) {
+        this.y -= 83;
+        if (this.y === -10) {
+          victory();
+        }
+      }
+    }
+  }
 }
 
 //Code for the initial modal, to change the sprite of the player.
@@ -197,29 +287,16 @@ form.addEventListener("submit", function(event) {
   } event.preventDefault();
 }, false);
 
-/*var avatars = document.getElementById('avatars');
+// Player is initialized
+var player = new Player(202, 405);
 
-avatars.addEventListener('click', function(evt) {
-  if (evt.target.nodeName === 'IMG') {
-    switch (evt.target.getAttribute('src')) {
-      case 'images/char-boy.png':
-      player.sprite = playerSprites[0];
-      break;
-      case 'images/char-cat-girl.png':
-      player.sprite = playerSprites[1];
-      break;
-      case 'images/char-horn-girl.png':
-      player.sprite = playerSprites[2];
-      break;
-      case 'images/char-pink-girl.png':
-      player.sprite = playerSprites[3];
-      break;
-      case 'images/char-princess-girl.png':
-      player.sprite = playerSprites[4];
-      break;
-    }
-  }
-});*/
+// OLD CODE for earlier JS
+/*
+var Player = function(x, y, sprite) {
+  this.x = x;
+  this.y = y;
+  this.sprite = playerSprites[0];
+}
 
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -233,9 +310,6 @@ Player.prototype.resetPosition = function() {
   player.x = 202;
   player.y = 405;
 };
-
-// Player is initialized
-var player = new Player(202, 405);
 
 // Function to move the characters with the keyboard.
 // It works only if the game isn't paused.
@@ -259,6 +333,32 @@ Player.prototype.handleInput = function(keyPressed) {
     }
   }
 };
+*/
+
+/*
+var avatars = document.getElementById('avatars');
+avatars.addEventListener('click', function(evt) {
+  if (evt.target.nodeName === 'IMG') {
+    switch (evt.target.getAttribute('src')) {
+      case 'images/char-boy.png':
+      player.sprite = playerSprites[0];
+      break;
+      case 'images/char-cat-girl.png':
+      player.sprite = playerSprites[1];
+      break;
+      case 'images/char-horn-girl.png':
+      player.sprite = playerSprites[2];
+      break;
+      case 'images/char-pink-girl.png':
+      player.sprite = playerSprites[3];
+      break;
+      case 'images/char-princess-girl.png':
+      player.sprite = playerSprites[4];
+      break;
+    }
+  }
+});
+*/
 
 // In case of victory, the game momentarily pauses, victory n. increases,
 // the random item is reset (a new one will appear),
@@ -268,13 +368,13 @@ function victory() {
   gamePause = true;
   setTimeout(player.resetPosition, 500);
 
-  menuStats.victoriesNumber ++;
-  document.getElementById('victoriesNumber').textContent = menuStats.victoriesNumber;
+  menuStats.levelNumber ++;
+  document.getElementById('levelNumber').textContent = menuStats.levelNumber;
 
-  setTimeout(allItems.forEach(function(item) {
-    item.reset();
-  }), 500);
   setTimeout(function() {
+    allItems.forEach(function(item) {
+      item.reset();
+    });
     randomItem = allItems[randomNum(8, 0)];
     randomItem.onscreen = true;
   }, 500)
@@ -382,6 +482,9 @@ class Heart extends Items {
 
           enemyStats.speedMax -=30;
           enemyStats.speedMin -=30;
+
+          menuStats.starsNumber ++;
+          document.getElementById('starsNumber').textContent = menuStats.starsNumber;
 
           menuStats.score += this.points;
           document.getElementById('score').textContent = menuStats.score;
