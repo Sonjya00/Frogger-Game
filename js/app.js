@@ -8,7 +8,7 @@ let menuStats = {
   starsNumber: 0,
   levelNumber: 1,
   score: 0
-}
+};
 
 // Variables for the gameover modal
 const F_GEMS_NUM = document.getElementById('finalGemsNumber');
@@ -40,7 +40,7 @@ restartBtn.onclick = function() {
   } else {
     INITIAL_MODAL.style.display = 'block';
   }
-}
+};
 
 /*
  * TIMER
@@ -104,15 +104,15 @@ class Enemy {
     enemyLocation.forEach(function([positionX, positionY]) {
       enemy = new Enemy(positionX, positionY, randomNum(enemyStats.speedMax, enemyStats.speedMin));
       allEnemies.push(enemy);
-    })
+    });
   }
 }
 
 // Variables used to update the enemies speed
-var enemyStats = {
+let enemyStats = {
   speedMax: 40,
   speedMin: 15
-}
+};
 
 //Code to create enemies at the beginning
 var allEnemies = [];
@@ -229,6 +229,10 @@ class Player {
     this.x = x;
     this.y = y;
     this.sprite = PLAYER_SPRITES[0];
+    this.movesLeft = -101;
+    this.movesRight = 101;
+    this.movesUp = -83;
+    this.movesDown = 83;
   }
 
   render() {
@@ -249,40 +253,99 @@ class Player {
   handleInput(keyPressed) {
     if (gamePause === false) {
       if (keyPressed === 'left' && this.x > 0) {
-        if (this.y < rock1.upperCorner
-          || this.y > rock1.bottomCorner
-          || this.x < rock1.leftCorner
-          || this.x - 101 > rock1.rightCorner) {
-          this.x -= 101;
+        checkRockLeft();
+        if (rockObst.rockLeft === false) {
+          this.x += player.movesLeft;
         }
       }
       if (keyPressed === 'right' && this.x < 404) {
-        if (this.y < rock1.upperCorner
-          || this.y > rock1.bottomCorner
-          || this.x > rock1.rightCorner
-          || this.x + 101 < rock1.leftCorner) {
-          this.x += 101;
+        checkRockRight();
+        if (rockObst.rockRight === false) {
+          this.x += player.movesRight;
         }
       }
       if (keyPressed === 'down' && this.y < 405) {
-        if (this.x < rock1.leftCorner
-          || this.x > rock1.rightCorner
-          || this.y + 83 < rock1.upperCorner
-          || this.y > rock1.bottomCorner) {
-          this.y += 83;
+          checkRockBelow();
+          if (rockObst.rockBelow === false) {
+          this.y += player.movesDown;
         }
       }
       if (keyPressed === 'up' && this.y > -10) {
-        if (this.x < rock1.leftCorner
-          || this.x > rock1.rightCorner
-          || this.y - 83 > rock1.bottomCorner
-          || this.y < rock1.upperCorner) {
-            this.y -= 83;
+        checkRockAbove();
+        if (rockObst.rockAbove === false) {
+            this.y += player.movesUp;
             if (this.y === -10) {
               victory();
-          }
+          }}
         }
       }
+    }
+  }
+
+function checkRockLeft() {
+  let count = 0;
+  for (let i = 0; i < displayedRocks.length; i++) {
+    if (player.y < displayedRocks[i].upperCorner
+    || player.y > displayedRocks[i].bottomCorner
+    || player.x + player.movesLeft > displayedRocks[i].rightCorner
+    || player.x < displayedRocks[i].leftCorner) {
+      count++;
+    }
+    if (count === displayedRocks.length) {
+      rockObst.rockLeft = false;
+    } else if (count !== displayedRocks.length) {
+      rockObst.rockLeft = true;
+    }
+  }
+}
+
+function checkRockRight() {
+  let count = 0;
+  for (let i = 0; i < displayedRocks.length; i++) {
+    if (player.y < displayedRocks[i].upperCorner
+    || player.y > displayedRocks[i].bottomCorner
+    || player.x + player.movesRight < displayedRocks[i].leftCorner
+    || player.x > displayedRocks[i].rightCorner) {
+      count++;
+    }
+    if (count === displayedRocks.length) {
+      rockObst.rockRight = false;
+    } else if (count !== displayedRocks.length) {
+      rockObst.rockRight = true;
+    }
+  }
+}
+
+function checkRockAbove() {
+  let count = 0;
+  for (let i = 0; i< displayedRocks.length; i++) {
+    if (player.x < displayedRocks[i].leftCorner
+    || player.x > displayedRocks[i].rightCorner
+    || player.y + player.movesUp > displayedRocks[i].bottomCorner
+    || player.y < displayedRocks[i].upperCorner) {
+      count++;
+    }
+    if (count === displayedRocks.length) {
+      rockObst.rockAbove = false;
+    } else if (count !== displayedRocks.length) {
+      rockObst.rockAbove = true;
+    }
+  }
+}
+
+function checkRockBelow() {
+  let count = 0;
+  for (let i = 0; i< displayedRocks.length; i++) {
+    if (player.x < displayedRocks[i].leftCorner
+    || player.x > displayedRocks[i].rightCorner
+    || player.y + player.movesDown < displayedRocks[i].upperCorner
+    || player.y > displayedRocks[i].bottomCorner) {
+      count++;
+    }
+    if (count === displayedRocks.length) {
+      rockObst.rockBelow = false;
+    } else if (count !== displayedRocks.length) {
+      rockObst.rockBelow = true;
     }
   }
 }
@@ -353,31 +416,6 @@ Player.prototype.handleInput = function(keyPressed) {
     }
   }
 };
-*/
-
-/*
-var avatars = document.getElementById('avatars');
-avatars.addEventListener('click', function(evt) {
-  if (evt.target.nodeName === 'IMG') {
-    switch (evt.target.getAttribute('src')) {
-      case 'images/char-boy.png':
-      player.sprite = PLAYER_SPRITES[0];
-      break;
-      case 'images/char-cat-girl.png':
-      player.sprite = PLAYER_SPRITES[1];
-      break;
-      case 'images/char-horn-girl.png':
-      player.sprite = PLAYER_SPRITES[2];
-      break;
-      case 'images/char-pink-girl.png':
-      player.sprite = PLAYER_SPRITES[3];
-      break;
-      case 'images/char-princess-girl.png':
-      player.sprite = PLAYER_SPRITES[4];
-      break;
-    }
-  }
-});
 */
 
 // In case of victory, the game momentarily pauses, victory n. increases,
@@ -541,7 +579,7 @@ class Gem extends Items {
 const COLLECTIBLES_POS = {
   positionX : [0, 101, 202, 303, 404],
   positionY : [50, 130, 210],
-}
+};
 
 // OLD CODE for earlier version of JS
 /*
@@ -661,13 +699,20 @@ class Rock {
   }
 }
 
-let rock1 = new Rock(303, 220);
-let rock2 = new Rock(202, 135);
-let rock3 = new Rock(404, 50);
-let rock4 = new Rock(101, 220);
+let rock1 = new Rock(404, 303);
+let rock2 = new Rock(202, 303);
+let rock3 = new Rock(404, 303);
+let rock4 = new Rock(101, 50);
 let rock5 = new Rock(0, 135);
 
-let displayedRocks = [rock1];
+let displayedRocks = [rock1, rock2];
+
+let rockObst = {
+  rockLeft: false,
+  rockRight: false,
+  rockAbove: false,
+  rockBelow: false
+};
 
 /*
 let allRocks = [rock1, rock2, rock3, rock4, rock5];
