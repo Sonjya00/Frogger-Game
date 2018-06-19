@@ -15,21 +15,34 @@ h1 {
  * Styles for Game menu
  */
 
-.game-menu {
+.main-menu {
+    display: flex;
+    flex-wrap: nowrap;
     margin: 0 auto;
-    margin-bottom: -45px;
+    width: 550px;
+}
+
+.stats-menu {
     list-style-type: none;
     width: 505px;
 }
 
-.game-menu td {
+.stats-menu td {
     vertical-align:bottom;
-    width: 20%;
 }
 
 .menu__logo {
     margin-bottom: -5px;
     width: 20px;
+}
+
+.menu__item-s {
+    width: 15%;
+    text-align: left;
+}
+
+.menu__item-l {
+    width: 18%;
 }
 
 /*
@@ -38,20 +51,31 @@ h1 {
 }
 */
 
-#restartBtn {
+.restart-btn {
     background-color: #fffff0;
     border-radius: 5px;
     cursor:pointer;
-    display: inline-block;
-    left: 620px;
-    padding: 15px;
-    position: absolute;
-    top: 590px;
+    padding: 5px 15px 5px 10px;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 5%;
 }
 
-#restartBtn:hover {
+.restart-btn:hover {
     background-color: #bfbfbf;
-    border: 2px solid #7a7777;
+}
+
+/*
+ * Styles for canvas container
+ */
+
+.game-canvas {
+    margin-top: -40px;
+}
+
+.game-canvas canvas {
+    margin: 0 auto;
 }
 
 /*
@@ -119,8 +143,12 @@ h1 {
  * Styles for initial modal only
  */
 
-.modal__character__window {
-    margin: 8% auto;
+.modal__initial__window {
+    margin: 7% auto;
+}
+
+.modal__initial__window h3 {
+    margin-bottom: -20px;
 }
 
 .instructions {
@@ -137,7 +165,6 @@ h1 {
 }
 
 .avatar-sprite, figcaption {
-    cursor: pointer;
     width: 45px;
 }
 
@@ -145,6 +172,12 @@ h1 {
     margin-bottom: 40px;
     margin-left: 60px;
     margin-right: 55px;
+}
+
+label {
+  cursor:pointer;
+  padding-top: 120px;
+  position: relative;
 }
 
 /*
@@ -176,7 +209,15 @@ h1 {
     width: 350px;
 }
 
-#confirmYesBtn, #confirmNoBtn {
+.yes-btn, .no-btn {
     display: inline-block;
     margin: 20px;
+}
+
+.no-btn {
+  background-color: #a0a0a0;
+}
+
+.no-btn:hover {
+  background-color: #666;
 }

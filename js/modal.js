@@ -1,13 +1,13 @@
 /*
- * MODAL TO SELECT NEW CHARACTER
+ * INITIAL MODAL
  */
-const CHARACTER_MODAL = document.getElementById('characterModal');
+const INITIAL_MODAL = document.getElementById('initialModal');
 const ESCAPE_MODAL_BTN1 = document.getElementsByClassName('modal__close-btn')[0];
 const NEW_GAME_BTN = document.getElementById('newGameBtn');
 
 //Close the modal and restart the game if the user clicks on "Start a new game"
 NEW_GAME_BTN.onclick = function() {
-  CHARACTER_MODAL.style.display = 'none';
+  INITIAL_MODAL.style.display = 'none';
   gamePause = false;
   newGameStarted = true;
   startTimer();
@@ -15,7 +15,7 @@ NEW_GAME_BTN.onclick = function() {
 
 //Close the modal when the player clicks on the cross button.
 ESCAPE_MODAL_BTN1.onclick = function() {
-  CHARACTER_MODAL.style.display = 'none';
+  INITIAL_MODAL.style.display = 'none';
 };
 
 /*
@@ -28,7 +28,7 @@ const RESTART_GAME_BTN = document.getElementById('restartGameBtn');
 // Close the modal and opens the initial modal if the user clicks on "Start a new game"
 RESTART_GAME_BTN.onclick = function() {
   GAMEOVER_MODAL.style.display = 'none';
-  CHARACTER_MODAL.style.display = 'block';
+  INITIAL_MODAL.style.display = 'block';
 
   // Resetting all the main menu stats to initial values
   menuStats.livesNumber = 5;

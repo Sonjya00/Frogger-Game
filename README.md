@@ -44,9 +44,14 @@ The water tiles is the goal of the character: once it is reached, a victory is a
 The bugs run from left to right at a random speed, which at the beginning is set to be between 150 and 400. Every time the player wins, the minimum and maximum speed will be both increased by 10, resulting in the game being harder.
 
 ### Collectible items
-Once a new game has started, and every time the player wins, a new item will be spawned on the board. This may be a heart, or a gem of three colors (blue, green, orange). Hearts restore 1 life. Gems can give 100, 250, or 500 points, depending on their color.
+Once a new game has started, and every time the player wins, a new item will be spawned on the board. This may be a heart, a star, or a gem of three colors (blue, green, orange). Hearts restore 1 life. Stars reduce the max and min speed of the bugs by 30. Gems can give 100, 250, or 500 points, depending on their color.
 Items position is generated randomly, but they will only spawn on the stone tiles, where the bugs are running.
-The items have different probabilities of being spawned, with more valuable items being less common: blue gems and green gems have 1/3 of probability of appearing, while hearts and orange gems have only 1/6.
+The items have different probabilities of being spawned, with more valuable items being less common:
+- **blue gems:** 3/8 probability;
+- **green gems:** 2/8 probability;
+- **orange gems:** 1/8 probability;
+- **hearts:** 1/8 probability;
+- **stars:** 1/8 probability.
 
 ### Stats menu
 It is possible to check how many lives are left, how many gems have been collected, how many times the player has won, and the current score so far on the menu on top of the board.

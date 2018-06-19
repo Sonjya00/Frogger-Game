@@ -9,20 +9,22 @@
 </head>
 <body>
   <h1>Sonia's Frogger Game</h1>
-  <table class="game-menu">
-    <td><img class="menu__logo" src="images/Heart.png"> x<span id="livesNumber">5</span></td>
-    <td><img class="menu__logo" src="images/Gem Blue.png"> x<span id="gemsNumber">0</span></td>
-    <td><img class="menu__logo" src="images/Star.png"> x<span id="victoriesNumber">0</span> wins</td>
-    <td><span id="secondsElapsed">0</span> s</td>
-    <td>Score: <span id="score">0</span></td>
-  </table>
-
-  <button id="restartBtn"><i class="fa fa-repeat"></i></button>
-  <!--<button id="pauseBtn"><i class="fa fa-pause"></i></button>-->
+  <div class="main-menu">
+    <table class="stats-menu">
+      <td class="menu__item-s"><img class="menu__logo" src="images/Heart.png"> x<span id="livesNumber">5</span></td>
+      <td class="menu__item-s"><img class="menu__logo" src="images/Gem Blue.png"> x<span id="gemsNumber">0</span></td>
+      <td class="menu__item-l"><img class="menu__logo" src="images/Star.png"> x<span id="victoriesNumber">0</span> wins</td>
+      <td class="menu__item-l"><span id="secondsElapsed">0</span> s</td>
+      <td class="menu__item-l">Score: <span id="score">0</span></td>
+    </table>
+    <button id="restartBtn" class="restart-btn"><i class="fa fa-repeat"></i></button>
+    <!--<button id="pauseBtn"><i class="fa fa-pause"></i></button>-->
+  </div>
+  <div id="gameCanvas" class="game-canvas"></div>
 
 <!--FIRST MODAL -->
-  <div id="characterModal" class="modal__background modal__character__background">
-    <div class="modal__window modal__character__window">
+  <div id="initialModal" class="modal__background">
+    <div class="modal__window modal__initial__window">
       <span class="modal__close-btn">&times;</span>
       <h2>Welcome to my Frogger Game!</h2>
       <ul class="instructions">
@@ -30,6 +32,7 @@
         <li>Avoid the bugs running across the road. If they hit you, you will lose a life. When you lose all your lives, the game is over.</li>
         <li>You can restore your lives by picking up the hearts on the board.</li>
         <li>Collect as many gems as you can to get more points. Each gem type gives you a different amount of points.</li>
+        <li>Picking up stars can help you slow down the bugs, besides giving you extra points.</li>
         <li>Every time you win, the bugs gets faster, so beware!</li>
       </ul>
       <h3>To start, select a character, then press "Start a new game!"</h3>
@@ -67,18 +70,18 @@
           </td>
         </tr>
       </table>
-
       <form class="character-selection-form">
-        <input type="radio" name="charSelection" value="Boy">
-        <input type="radio" name="charSelection" value="Cat Girl">
-        <input type="radio" name="charSelection" value="Horn Girl">
-        <input type="radio" name="charSelection" value="Pink Girl">
-        <input type="radio" name="charSelection" value="Princess Girl">
+        <label><input class="char-input" type="radio" name="charSelection" value="Boy"></label>
+        <label><input class="char-input" type="radio" name="charSelection" value="Cat Girl"></label>
+        <label><input class="char-input" type="radio" name="charSelection" value="Horn Girl"></label>
+        <label><input class="char-input" type="radio" name="charSelection" value="Pink Girl"></label>
+        <label><input class="char-input" type="radio" name="charSelection" value="Princess Girl"></label>
         <button id="newGameBtn" class="modal__restart-btn" type="submit">Start a new game!</button>
       </form>
     </div>
   </div>
 
+<!--GAME OVER MODAL -->
   <div id="gameOverModal" class="modal__background modal__gameover__background">
     <div class="modal__window modal__gameover__window">
       <span class="modal__close-btn">&times;</span>
@@ -94,13 +97,14 @@
     </div>
   </div>
 
+<!--CONFIRMATION MODAL -->
   <div id="confirmationModal" class="modal__background modal__confirmation__background">
     <div class="modal__window modal__confirmation__window">
       <span class="modal__close-btn">&times;</span>
         <h2>Game paused</h2>
         <p>Quit current game and start new game?</p>
-        <button id="confirmYesBtn" class="modal__restart-btn">Yes</button>
-        <button id="confirmNoBtn" class="modal__restart-btn">No</button>
+        <button id="confirmYesBtn" class="modal__restart-btn yes-btn">Yes</button>
+        <button id="confirmNoBtn" class="modal__restart-btn no-btn">No</button>
     </div>
   </div>
 

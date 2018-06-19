@@ -40,7 +40,7 @@ restartBtn.onclick = function() {
   if (newGameStarted === true) {
     CONFIRMATION_MODAL.style.display = 'block';
   } else {
-    CHARACTER_MODAL.style.display = 'block';
+    INITIAL_MODAL.style.display = 'block';
   }
 }
 
@@ -275,7 +275,7 @@ function victory() {
     item.reset();
   }), 500);
   setTimeout(function() {
-    randomItem = allItems[randomNum(6, 0)];
+    randomItem = allItems[randomNum(8, 0)];
     randomItem.onscreen = true;
   }, 500)
 
@@ -324,6 +324,106 @@ var allRocks = [rock1, rock2]
  */
 
 // Constructor function for hearts
+
+class Items {
+  constructor(x, y, sprite) {
+    this.x = x;
+    this.y = y;
+    this.sprite = sprite;
+  }
+  render() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+  }
+  reset() {
+  this.x = collectibleStats.positionX[randomNum(5, 0)];
+  this.y = collectibleStats.positionY[randomNum(3, 0)];
+  this.onscreen = false;
+  }
+}
+
+class Heart extends Items {
+  constructor(x, y, sprite) {
+    super(x, y, sprite);
+    this.sprite = 'images/Heart.png';
+    this.points = 100;
+    this.onscreen = false;
+    }
+    update() {
+      if (player.x >= this.x -83
+        && player.x <= this.x + 83
+        && player.y > this.y
+        && player.y < this.y + 83
+        && this.onscreen === true) {
+
+          menuStats.livesNumber ++;
+          document.getElementById('livesNumber').textContent = menuStats.livesNumber;
+
+          menuStats.score += this.points;
+          document.getElementById('score').textContent = menuStats.score;
+
+          this.onscreen = false;
+      }
+    }
+  }
+
+  class Star extends Items {
+    constructor(x, y, sprite) {
+      super(x, y, sprite);
+      this.sprite = 'images/Star.png';
+      this.points = 100;
+      this.onscreen = false;
+      }
+      update() {
+        if (player.x >= this.x -83
+          && player.x <= this.x + 83
+          && player.y > this.y
+          && player.y < this.y + 83
+          && this.onscreen === true) {
+
+          enemyStats.speedMax -=30;
+          enemyStats.speedMin -=30;
+
+          menuStats.score += this.points;
+          document.getElementById('score').textContent = menuStats.score;
+
+          this.onscreen = false;
+      }
+    }
+  }
+
+class Gem extends Items {
+  constructor(x, y, sprite, points) {
+    super(x, y, sprite);
+    this.sprite = sprite;
+    this.points = points;
+    this.onscreen = false;
+  }
+  update() {
+    if (player.x >= this.x -83
+      && player.x <= this.x + 83
+      && player.y > this.y
+      && player.y < this.y + 83
+      && this.onscreen === true) {
+
+      menuStats.gemsNumber ++;
+      document.getElementById('gemsNumber').textContent = menuStats.gemsNumber;
+
+      menuStats.score += this.points;
+      document.getElementById('score').textContent = menuStats.score;
+
+      this.onscreen = false;
+    }
+  }
+}
+
+// Object with arrays containing all the possible positions for the items
+var collectibleStats = {
+  positionX : [0, 101, 202, 303, 404],
+  positionY : [50, 130, 210],
+}
+
+// OLD CODE for earlier version of JS
+/*
 var Heart = function(x, y) {
   this.x = x;
   this.y = y;
@@ -341,12 +441,6 @@ var Gem = function(x, y, sprite, points) {
   this.onscreen = false;
 }
 
-// Object with arrays containing all the possible positions for the items
-var collectibleStats = {
-  positionX : [0, 101, 202, 303, 404],
-  positionY : [50, 130, 210],
-}
-
 Heart.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
@@ -354,6 +448,7 @@ Heart.prototype.render = function() {
 Gem.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
+
 
 //If player grabs the gem, it adds a gem to the menu, adds points, and makes the gem disappear
 Gem.prototype.update = function() {
@@ -401,12 +496,14 @@ Heart.prototype.reset = function() {
   heart.x = collectibleStats.positionX[randomNum(5, 0)];
   heart.y = collectibleStats.positionY[randomNum(3, 0)];
   heart.onscreen = false;
-};
+};*/
 
 // Initialize all items
 var blueGem1 = new Gem(collectibleStats.positionX[randomNum(5, 0)], collectibleStats.positionY[randomNum(3, 0)], 'images/Gem Blue.png', 100);
 
 var blueGem2 = new Gem(collectibleStats.positionX[randomNum(5, 0)], collectibleStats.positionY[randomNum(3, 0)], 'images/Gem Blue.png', 100);
+
+var blueGem3 = new Gem(collectibleStats.positionX[randomNum(5, 0)], collectibleStats.positionY[randomNum(3, 0)], 'images/Gem Blue.png', 100);
 
 var greenGem1 = new Gem(collectibleStats.positionX[randomNum(5, 0)], collectibleStats.positionY[randomNum(3, 0)], 'images/Gem Green.png', 250);
 
@@ -416,7 +513,9 @@ var orangeGem = new Gem(collectibleStats.positionX[randomNum(5, 0)], collectible
 
 var heart = new Heart(collectibleStats.positionX[randomNum(5, 0)], collectibleStats.positionY[randomNum(3, 0)]);
 
+var star = new Star(collectibleStats.positionX[randomNum(5, 0)], collectibleStats.positionY[randomNum(3, 0)]);
+
 // Create an array with all the items to get a random one each time
-var allItems = [blueGem1, blueGem2, greenGem1, greenGem2, orangeGem, heart];
-var randomItem = allItems[randomNum(6, 0)];
+var allItems = [blueGem1, blueGem2, blueGem3, greenGem1, greenGem2, orangeGem, heart, star];
+var randomItem = allItems[randomNum(8, 0)];
 randomItem.onscreen = true;
