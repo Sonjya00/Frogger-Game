@@ -156,9 +156,19 @@ var Engine = (function(global) {
          * the render function you have defined.
          */
 
+         displayedRocks.forEach(function(rock) {
+           rock.render();
+         });
+
         if (randomItem.onscreen) {
-        randomItem.render();
-        }
+          randomItem.render();
+        };
+
+        /*
+        if (randomRock.onscreen) {
+          randomRock.render();
+        };
+        */
 
         allEnemies.forEach(function(enemy) {
             enemy.render();

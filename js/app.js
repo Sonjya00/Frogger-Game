@@ -110,8 +110,8 @@ class Enemy {
 
 // Variables used to update the enemies speed
 var enemyStats = {
-  speedMax: 400,
-  speedMin: 150
+  speedMax: 40,
+  speedMin: 15
 }
 
 //Code to create enemies at the beginning
@@ -249,18 +249,38 @@ class Player {
   handleInput(keyPressed) {
     if (gamePause === false) {
       if (keyPressed === 'left' && this.x > 0) {
-        this.x -= 101;
+        if (this.y < rock1.upperCorner
+          || this.y > rock1.bottomCorner
+          || this.x < rock1.leftCorner
+          || this.x - 101 > rock1.rightCorner) {
+          this.x -= 101;
+        }
       }
       if (keyPressed === 'right' && this.x < 404) {
-        this.x += 101;
+        if (this.y < rock1.upperCorner
+          || this.y > rock1.bottomCorner
+          || this.x > rock1.rightCorner
+          || this.x + 101 < rock1.leftCorner) {
+          this.x += 101;
+        }
       }
       if (keyPressed === 'down' && this.y < 405) {
-        this.y += 83;
+        if (this.x < rock1.leftCorner
+          || this.x > rock1.rightCorner
+          || this.y + 83 < rock1.upperCorner
+          || this.y > rock1.bottomCorner) {
+          this.y += 83;
+        }
       }
       if (keyPressed === 'up' && this.y > -10) {
-        this.y -= 83;
-        if (this.y === -10) {
-          victory();
+        if (this.x < rock1.leftCorner
+          || this.x > rock1.rightCorner
+          || this.y - 83 > rock1.bottomCorner
+          || this.y < rock1.upperCorner) {
+            this.y -= 83;
+            if (this.y === -10) {
+              victory();
+          }
         }
       }
     }
@@ -382,9 +402,26 @@ function victory() {
     enemyStats.speedMax += 10;
     enemyStats.speedMin += 10;
 
+  addRocks();
+
   setTimeout(function() {
     return gamePause = false;
   }, 500);
+}
+
+function addRocks() {
+  switch (menuStats.levelNumber) {
+    case 2:
+      setTimeout(function() {
+        displayedRocks.push(rock2);
+      }, 500);
+    break;
+    case 4:
+      setTimeout(function() {
+        displayedRocks.push(rock3);
+      }, 500);
+    break;
+  }
 }
 
 // This listens for key presses and sends the keys to
@@ -399,25 +436,6 @@ document.addEventListener('keyup', function(e) {
     };
     player.handleInput(allowedKeys[e.keyCode]);
 });
-
-/*
-//OPTIONAL ROCK
-var Rock = function(x, y) {
-  this.x = x;
-  this.y = y;
-  this.sprite = 'images/Rock.png';
-}
-
-Rock.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-
-var rock1 = new Rock(101, 220);
-var rock2 = new Rock(202, 220);
-
-var allRocks = [rock1, rock2]
-*/
-
 
 /*
  * COLLECTIBLE ITEMS
@@ -622,3 +640,36 @@ let star = new Star(COLLECTIBLES_POS.positionX[randomNum(5, 0)], COLLECTIBLES_PO
 let allItems = [blueGem1, blueGem2, blueGem3, greenGem1, greenGem2, orangeGem, heart, star];
 let randomItem = allItems[randomNum(8, 0)];
 randomItem.onscreen = true;
+
+
+/*
+ * ROCKS
+ */
+
+class Rock {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.sprite = 'images/Rock.png';
+    this.upperCorner = this.y;
+    this.bottomCorner = this.y + 90;
+    this.leftCorner = this.x;
+    this.rightCorner= this.x + 90;
+  }
+  render() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+  }
+}
+
+let rock1 = new Rock(303, 220);
+let rock2 = new Rock(202, 135);
+let rock3 = new Rock(404, 50);
+let rock4 = new Rock(101, 220);
+let rock5 = new Rock(0, 135);
+
+let displayedRocks = [rock1];
+
+/*
+let allRocks = [rock1, rock2, rock3, rock4, rock5];
+let randomRock = allRocks[randomNum(5, 0)];
+randomRock.onscreen = true;*/

@@ -36,7 +36,7 @@ Every time the player wins, the bugs gets faster, to make the game increasingly 
 ### Game Mechanics
 
 ### Board
-The board is composed by 5x5 tiles. The character starts in the middle grass tile of the lower row.
+The board is composed by 5x6 tiles. The character starts in the middle grass tile of the lower row.
 The bugs position is set to always be on the three rows made of stone tiles, one per row.
 The water tiles is the goal of the character: once it is reached, a victory is added, and the player goes back to the original position.
 
