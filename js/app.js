@@ -24,15 +24,13 @@ function randomNum(max, min) {
 
 // Variable to check whether a new game have started or not (for the modal)
 // Useful to decide which modal to open with the restart btn
-var newGameStarted = false;
+let newGameStarted = false;
 
-// Code to pause the game if a button is clicked
+// Code to restart the game using the button on the top right corner
 // The variable is also used to temporarily pause the game in case of victory/gameover
-var gamePause = true;
-var pauseBtn = document.getElementById('pauseBtn');
-
-var restartBtn = document.getElementById('restartBtn');
-restartBtn.onclick = function() {
+let gamePause = true;
+const RESTART_BTN = document.getElementById('restartBtn');
+RESTART_BTN.onclick = function() {
   gamePause = true;
   clearTimer();
   if (newGameStarted === true) {
@@ -45,19 +43,18 @@ restartBtn.onclick = function() {
 /*
  * TIMER
  */
-var timer;
-var sec = 0;
-var secondsElapsed = document.getElementById('secondsElapsed');
+ // Code to start, pause, and clear the timer
+let timer;
+let sec = 0;
+const SEC_ELAPSED = document.getElementById('secondsElapsed');
 
 function startTimer() {
   timer = setInterval(countseconds, 1000);
 }
-
 function countseconds() {
   sec++;
-  secondsElapsed.textContent = sec;
+  SEC_ELAPSED.textContent = sec;
 }
-
 function clearTimer() {
   clearInterval(timer);
 }
@@ -74,31 +71,26 @@ class Enemy {
     this.speed = speed;
     this.sprite = 'images/enemy-bug.png';
   }
-
   render() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
   }
-
-  reset() {
-    this.x = COLLECTIBLES_POS.positionX[randomNum(5, 0)];
-    this.y = COLLECTIBLES_POS.positionY[randomNum(3, 0)];
-    this.onscreen = false;
-  }
-
+  // Make the enemies move, resets their position when they reach the right border,
+  // and sets their speed to a random number between 2 given numbers
   update(dt) {
     this.x += this.speed * dt;
     if (this.x > 505) {
       this.x = -100;
       this.speed = randomNum(enemyStats.speedMax, enemyStats.speedMin);
     }
-    if (player.x >= this.x - 83
-      && player.x <= this.x + 83
-      && player.y > this.y
-      && player.y < this.y + 83) {
+    // Detect collision with player
+    if (player.x >= this.x - 75 // player hit from left
+      && player.x <= this.x + 70 // player hit from right
+      && player.y > this.y // player on the same column of the bug
+      && player.y < this.y + 75) { //same as above
         enemyCollision();
     }
   }
-
+  // Reset position and speed for all enemies
   resetPosition(enemy) {
     allEnemies = [];
     enemyLocation.forEach(function([positionX, positionY]) {
@@ -106,7 +98,7 @@ class Enemy {
       allEnemies.push(enemy);
     });
   }
-}
+} // end of Enemy class
 
 // Variables used to update the enemies speed
 let enemyStats = {
@@ -115,8 +107,8 @@ let enemyStats = {
 };
 
 //Code to create enemies at the beginning
-var allEnemies = [];
-var enemyLocation = [[175, 60], [0, 140], [175, 220]];
+let allEnemies = [];
+let enemyLocation = [[175, 60], [0, 140], [175, 220]];
 enemyLocation.forEach(function([positionX, positionY]) {
   enemy = new Enemy(positionX, positionY, randomNum(enemyStats.speedMax, enemyStats.speedMin));
   allEnemies.push(enemy);
@@ -234,14 +226,12 @@ class Player {
     this.movesUp = -83;
     this.movesDown = 83;
   }
-
   render() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
   }
-
   update() {
   }
-
+  // The default position of the player is in the middle of the lower row.
   resetPosition() {
     player.x = 202;
     player.y = 405;
@@ -254,25 +244,25 @@ class Player {
     if (gamePause === false) {
       if (keyPressed === 'left' && this.x > 0) {
         checkRockLeft();
-        if (rockObst.rockLeft === false) {
+        if (isThereRock.rockLeft === false) {
           this.x += player.movesLeft;
         }
       }
       if (keyPressed === 'right' && this.x < 404) {
         checkRockRight();
-        if (rockObst.rockRight === false) {
+        if (isThereRock.rockRight === false) {
           this.x += player.movesRight;
         }
       }
       if (keyPressed === 'down' && this.y < 405) {
           checkRockBelow();
-          if (rockObst.rockBelow === false) {
+          if (isThereRock.rockBelow === false) {
           this.y += player.movesDown;
         }
       }
       if (keyPressed === 'up' && this.y > -10) {
         checkRockAbove();
-        if (rockObst.rockAbove === false) {
+        if (isThereRock.rockAbove === false) {
             this.y += player.movesUp;
             if (this.y === -10) {
               victory();
@@ -280,7 +270,8 @@ class Player {
         }
       }
     }
-  }
+  } // end of Player class
+
 
 function checkRockLeft() {
   let count = 0;
@@ -292,9 +283,9 @@ function checkRockLeft() {
       count++;
     }
     if (count === displayedRocks.length) {
-      rockObst.rockLeft = false;
+      isThereRock.rockLeft = false;
     } else if (count !== displayedRocks.length) {
-      rockObst.rockLeft = true;
+      isThereRock.rockLeft = true;
     }
   }
 }
@@ -309,9 +300,9 @@ function checkRockRight() {
       count++;
     }
     if (count === displayedRocks.length) {
-      rockObst.rockRight = false;
+      isThereRock.rockRight = false;
     } else if (count !== displayedRocks.length) {
-      rockObst.rockRight = true;
+      isThereRock.rockRight = true;
     }
   }
 }
@@ -326,9 +317,9 @@ function checkRockAbove() {
       count++;
     }
     if (count === displayedRocks.length) {
-      rockObst.rockAbove = false;
+      isThereRock.rockAbove = false;
     } else if (count !== displayedRocks.length) {
-      rockObst.rockAbove = true;
+      isThereRock.rockAbove = true;
     }
   }
 }
@@ -343,9 +334,9 @@ function checkRockBelow() {
       count++;
     }
     if (count === displayedRocks.length) {
-      rockObst.rockBelow = false;
+      isThereRock.rockBelow = false;
     } else if (count !== displayedRocks.length) {
-      rockObst.rockBelow = true;
+      isThereRock.rockBelow = true;
     }
   }
 }
@@ -449,14 +440,29 @@ function victory() {
 
 function addRocks() {
   switch (menuStats.levelNumber) {
-    case 2:
+    case 5:
+      setTimeout(function() {
+        displayedRocks.push(rock1);
+      }, 500);
+    break;
+    case 10:
       setTimeout(function() {
         displayedRocks.push(rock2);
       }, 500);
     break;
-    case 4:
+    case 15:
       setTimeout(function() {
         displayedRocks.push(rock3);
+      }, 500);
+    break;
+    case 12:
+      setTimeout(function() {
+        displayedRocks.push(rock4);
+      }, 500);
+    break;
+    case 25:
+      setTimeout(function() {
+        displayedRocks.push(rock5);
       }, 500);
     break;
   }
@@ -480,7 +486,6 @@ document.addEventListener('keyup', function(e) {
  */
 
 // Constructor function for hearts
-
 class Items {
   constructor(x, y, sprite) {
     this.x = x;
@@ -490,10 +495,21 @@ class Items {
   render() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
   }
+  // change the currently show item's position to a random one and hides it
   reset() {
-    this.x = COLLECTIBLES_POS.positionX[randomNum(5, 0)];
-    this.y = COLLECTIBLES_POS.positionY[randomNum(3, 0)];
+    let randomPosition = ITEMS_POS_XY[randomNum(11, 0)]
+    this.x = randomPosition[0];
+    this.y = randomPosition[1];
     this.onscreen = false;
+  }
+  // check if the player picks up an item by moving on the board
+  checkIfPicked() {
+    if (player.x >= this.x - 83
+      && player.x <= this.x + 83
+      && player.y > this.y
+      && player.y < this.y + 83
+      && this.onscreen === true)
+      {return true;}
   }
 }
 
@@ -504,24 +520,21 @@ class Heart extends Items {
     this.points = 100;
     this.onscreen = false;
   }
+  // If it's picked, +1 life and +100 points
   update() {
-    if (player.x >= this.x -83
-      && player.x <= this.x + 83
-      && player.y > this.y
-      && player.y < this.y + 83
-      && this.onscreen === true) {
+    if (this.checkIfPicked()) {
+      menuStats.livesNumber ++;
+      document.getElementById('livesNumber').textContent = menuStats.livesNumber;
 
-        menuStats.livesNumber ++;
-        document.getElementById('livesNumber').textContent = menuStats.livesNumber;
+      menuStats.score += this.points;
+      document.getElementById('score').textContent = menuStats.score;
 
-        menuStats.score += this.points;
-        document.getElementById('score').textContent = menuStats.score;
-
-        this.onscreen = false;
+      this.onscreen = false;
     }
   }
 }
 
+// Constructor function for the stars
 class Star extends Items {
   constructor(x, y, sprite) {
     super(x, y, sprite);
@@ -529,12 +542,9 @@ class Star extends Items {
     this.points = 100;
     this.onscreen = false;
   }
+  // If it's picked, -30 enemies speed and +100 points
   update() {
-    if (player.x >= this.x -83
-      && player.x <= this.x + 83
-      && player.y > this.y
-      && player.y < this.y + 83
-      && this.onscreen === true) {
+    if (this.checkIfPicked()) {
 
       enemyStats.speedMax -=30;
       enemyStats.speedMin -=30;
@@ -550,6 +560,7 @@ class Star extends Items {
   }
 }
 
+// Constructor function for the gems
 class Gem extends Items {
   constructor(x, y, sprite, points) {
     super(x, y, sprite);
@@ -557,12 +568,9 @@ class Gem extends Items {
     this.points = points;
     this.onscreen = false;
   }
+  // If it's picked, +1 gem collected and +100, +250, or +500 points
   update() {
-    if (player.x >= this.x -83
-      && player.x <= this.x + 83
-      && player.y > this.y
-      && player.y < this.y + 83
-      && this.onscreen === true) {
+    if (this.checkIfPicked()) {
 
       menuStats.gemsNumber ++;
       document.getElementById('gemsNumber').textContent = menuStats.gemsNumber;
@@ -576,10 +584,18 @@ class Gem extends Items {
 }
 
 // Object with arrays containing all the possible positions for the items
-const COLLECTIBLES_POS = {
-  positionX : [0, 101, 202, 303, 404],
-  positionY : [50, 130, 210],
-};
+/*const ITEMS_POS = {
+  x: [0, 101, 202, 303, 404],
+  y: [50, 130, 210]
+};*/
+
+// Object with arrays containing all the possible positions for the items
+const ITEMS_POS_XY = [
+  [0, 50], [0, 130], [0, 210],
+  [101, 50], [101, 130], /*[101, 210],*/
+  [202, 50], [202, 130], [202, 210],
+  [303, 50], /*[303, 130],*/ [303, 210],
+  [303, 50], [303, 130], [303, 210]];
 
 // OLD CODE for earlier version of JS
 /*
@@ -607,7 +623,6 @@ Heart.prototype.render = function() {
 Gem.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
-
 
 //If player grabs the gem, it adds a gem to the menu, adds points, and makes the gem disappear
 Gem.prototype.update = function() {
@@ -646,44 +661,46 @@ Heart.prototype.update = function() {
 };
 
 Gem.prototype.reset = function() {
-  Gem.x = COLLECTIBLES_POS.positionX[randomNum(5, 0)];
-  Gem.y = COLLECTIBLES_POS.positionY[randomNum(3, 0)];
+  Gem.x = ITEMS_POS.x[randomNum(5, 0)];
+  Gem.y = ITEMS_POS.y[randomNum(3, 0)];
   Gem.onscreen = false;
 };
 
 Heart.prototype.reset = function() {
-  heart.x = COLLECTIBLES_POS.positionX[randomNum(5, 0)];
-  heart.y = COLLECTIBLES_POS.positionY[randomNum(3, 0)];
+  heart.x = ITEMS_POS.x[randomNum(5, 0)];
+  heart.y = ITEMS_POS.y[randomNum(3, 0)];
   heart.onscreen = false;
 };*/
 
+// Generate random position for the initial item displayed
+let itemRandomPosition = ITEMS_POS_XY[randomNum(11, 0)];
+
 // Initialize all items
-let blueGem1 = new Gem(COLLECTIBLES_POS.positionX[randomNum(5, 0)], COLLECTIBLES_POS.positionY[randomNum(3, 0)], 'images/Gem Blue.png', 100);
+let blueGem1 = new Gem(itemRandomPosition[0], itemRandomPosition[1], 'images/Gem Blue.png', 100);
 
-let blueGem2 = new Gem(COLLECTIBLES_POS.positionX[randomNum(5, 0)], COLLECTIBLES_POS.positionY[randomNum(3, 0)], 'images/Gem Blue.png', 100);
+let blueGem2 = new Gem(itemRandomPosition[0], itemRandomPosition[1], 'images/Gem Blue.png', 100);
 
-let blueGem3 = new Gem(COLLECTIBLES_POS.positionX[randomNum(5, 0)], COLLECTIBLES_POS.positionY[randomNum(3, 0)], 'images/Gem Blue.png', 100);
+let blueGem3 = new Gem(itemRandomPosition[0], itemRandomPosition[1], 'images/Gem Blue.png', 100);
 
-let greenGem1 = new Gem(COLLECTIBLES_POS.positionX[randomNum(5, 0)], COLLECTIBLES_POS.positionY[randomNum(3, 0)], 'images/Gem Green.png', 250);
+let greenGem1 = new Gem(itemRandomPosition[0], itemRandomPosition[1], 'images/Gem Green.png', 250);
 
-let greenGem2 = new Gem(COLLECTIBLES_POS.positionX[randomNum(5, 0)], COLLECTIBLES_POS.positionY[randomNum(3, 0)], 'images/Gem Green.png', 250);
+let greenGem2 = new Gem(itemRandomPosition[0], itemRandomPosition[1], 'images/Gem Green.png', 250);
 
-let orangeGem = new Gem(COLLECTIBLES_POS.positionX[randomNum(5, 0)], COLLECTIBLES_POS.positionY[randomNum(3, 0)], 'images/Gem Orange.png', 500);
+let orangeGem = new Gem(itemRandomPosition[0], itemRandomPosition[1], 'images/Gem Orange.png', 500);
 
-let heart = new Heart(COLLECTIBLES_POS.positionX[randomNum(5, 0)], COLLECTIBLES_POS.positionY[randomNum(3, 0)]);
+let heart = new Heart(itemRandomPosition[0], itemRandomPosition[1]);
 
-let star = new Star(COLLECTIBLES_POS.positionX[randomNum(5, 0)], COLLECTIBLES_POS.positionY[randomNum(3, 0)]);
+let star = new Star(itemRandomPosition[0], itemRandomPosition[1]);
 
 // Create an array with all the items to get a random one each time
 let allItems = [blueGem1, blueGem2, blueGem3, greenGem1, greenGem2, orangeGem, heart, star];
 let randomItem = allItems[randomNum(8, 0)];
 randomItem.onscreen = true;
 
-
 /*
  * ROCKS
  */
-
+// Constructor function for rocks
 class Rock {
   constructor(x, y) {
     this.x = x;
@@ -699,15 +716,27 @@ class Rock {
   }
 }
 
-let rock1 = new Rock(404, 303);
-let rock2 = new Rock(202, 303);
-let rock3 = new Rock(404, 303);
-let rock4 = new Rock(101, 50);
-let rock5 = new Rock(0, 135);
+// Possible coordinates for the rocks. Not all of them are used, but with this objects
+// the rock positions are easily editable
+const ROCK_POS = {
+  x: [0, 101, 202, 303, 404],
+  y: [-20, 55, 135, 215, 305]
+}
 
-let displayedRocks = [rock1, rock2];
+// Rocks are initialized
+let rock1 = new Rock(ROCK_POS.x[2], ROCK_POS.y[4]);
+let rock2 = new Rock(ROCK_POS.x[4], ROCK_POS.y[4]);
+let rock3 = new Rock(ROCK_POS.x[1], ROCK_POS.y[0]);
+let rock4 = new Rock(ROCK_POS.x[3], ROCK_POS.y[0]);
+let rock5 = new Rock(ROCK_POS.x[4], ROCK_POS.y[0]);
+let rock6 = new Rock(ROCK_POS.x[3], ROCK_POS.y[2]);
+let rock7 = new Rock(ROCK_POS.x[1], ROCK_POS.y[3]);
 
-let rockObst = {
+// Array that contains all the rocks currently displayed (added each level)
+let displayedRocks = [rock1, rock2, rock3, rock4, rock5, rock6, rock7];
+
+// Object that hold variables that check if a rock is in the player's way in any directions
+let isThereRock = {
   rockLeft: false,
   rockRight: false,
   rockAbove: false,
