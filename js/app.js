@@ -10,12 +10,8 @@ let menuStats = {
   score: 0
 };
 
-// Variables for the gameover modal
-const F_GEMS_NUM = document.getElementById('finalGemsNumber');
-const F_STARS_NUM = document.getElementById('finalStarsNumber');
-const F_LEVEL_NUM = document.getElementById('finalLevelNumber');
-const F_TIME = document.getElementById('finalTime');
-const F_SCORE = document.getElementById('finalScore');
+// The maximum level, if reached it is an automatic victory
+const LEVEL_MAX = 40;
 
 // helper function to generate a random number
 function randomNum(max, min) {
@@ -102,8 +98,8 @@ class Enemy {
 
 // Variables used to update the enemies speed
 let enemyStats = {
-  speedMax: 40,
-  speedMin: 15
+  speedMax: 200,
+  speedMin: 150
 };
 
 //Code to create enemies at the beginning
@@ -126,9 +122,9 @@ function enemyCollision() {
 //Else, the player and the enemies get back to the original position and the game restarts
 function checkIfGameover() {
   if (menuStats.livesNumber < 1) {
-    gameOver();
+    setTimeout(gameOver, 500);
   } else {
-    lifeLost();
+    setTimeout(lifeLost, 500);
   }
 }
 
@@ -137,7 +133,7 @@ function gameOver() {
   player.resetPosition();
   // Reset enemies position and speed
   enemy.resetPosition();
-  enemyStats.speedMax = 400;
+  enemyStats.speedMax = 200;
   enemyStats.speedMin = 150;
   // Reset items
   allItems.forEach(function(item) {
@@ -149,21 +145,31 @@ function gameOver() {
   clearTimer();
 
   // Write modal content with final stats
-  F_GEMS_NUM.textContent = menuStats.gemsNumber;
-  F_STARS_NUM.textContent = menuStats.starsNumber;
-  F_LEVEL_NUM.textContent = menuStats.levelNumber;
-  F_TIME.textContent = sec;
-  F_SCORE.textContent = menuStats.score;
+  document.getElementById('finalGemsNumber').textContent = menuStats.gemsNumber;
+  document.getElementById('finalStarsNumber').textContent = menuStats.starsNumber;
+  document.getElementById('finalLevelNumber').textContent = menuStats.levelNumber;
+  document.getElementById('finalTime').textContent = sec;
+  document.getElementById('finalScore').textContent = menuStats.score;
+
+  if (menuStats.levelNumber === LEVEL_MAX) {
+    document.getElementById('gameOverTitle').textContent = 'You won the game!';
+    document.getElementById('gameOverReason').textContent = 'Congratulations! You reached the maximum level!';
+  } else if (menuStats.livesNumber === 0) {
+    document.getElementById('gameOverTitle').textContent = 'Game Over!';
+    document.getElementById('gameOverReason').textContent = 'You ran out of lives!';
+  } else {
+    document.getElementById('gameOverTitle').textContent = 'Game Over!';
+    document.getElementById('gameOverReason').textContent = 'You quit the game.';
+  }
+
   GAMEOVER_MODAL.style.display = 'block';
 }
 
 // Reset player/enemies position, and restarts current game
 function lifeLost() {
-  setTimeout(player.resetPosition, 500);
-  setTimeout(enemy.resetPosition, 500);
-  setTimeout(function() {
-    return gamePause = false;
-  }, 500);
+  player.resetPosition();
+  enemy.resetPosition();
+  gamePause = false;
 }
 
 // OLD CODE for earlier JS
@@ -265,7 +271,7 @@ class Player {
         if (isThereRock.rockAbove === false) {
             this.y += player.movesUp;
             if (this.y === -10) {
-              victory();
+              setTimeout(victory, 500);
           }}
         }
       }
@@ -415,55 +421,53 @@ Player.prototype.handleInput = function(keyPressed) {
 // Finally, the game restarts
 function victory() {
   gamePause = true;
-  setTimeout(player.resetPosition, 500);
+  player.resetPosition();
 
   menuStats.levelNumber ++;
   document.getElementById('levelNumber').textContent = menuStats.levelNumber;
+  if (menuStats.levelNumber === LEVEL_MAX) {
+    setTimeout(gameOver, 500);
+  } else {
 
-  setTimeout(function() {
-    allItems.forEach(function(item) {
-      item.reset();
-    });
-    randomItem = allItems[randomNum(8, 0)];
-    randomItem.onscreen = true;
-  }, 500)
+      allItems.forEach(function(item) {
+        item.reset();
+      });
+      randomItem = allItems[randomNum(8, 0)];
+      randomItem.onscreen = true;
 
-    enemyStats.speedMax += 10;
-    enemyStats.speedMin += 10;
+      enemyStats.speedMax += 10;
+      enemyStats.speedMin += 10;
 
-  addRocks();
+    if (menuStats.levelNumber %5 === 0) {
+      addRocks();
+    }
 
-  setTimeout(function() {
-    return gamePause = false;
-  }, 500);
+    gamePause = false;
+  }
 }
 
 function addRocks() {
   switch (menuStats.levelNumber) {
     case 5:
-      setTimeout(function() {
         displayedRocks.push(rock1);
-      }, 500);
     break;
     case 10:
-      setTimeout(function() {
         displayedRocks.push(rock2);
-      }, 500);
     break;
     case 15:
-      setTimeout(function() {
         displayedRocks.push(rock3);
-      }, 500);
     break;
-    case 12:
-      setTimeout(function() {
+    case 20:
         displayedRocks.push(rock4);
-      }, 500);
     break;
     case 25:
-      setTimeout(function() {
         displayedRocks.push(rock5);
-      }, 500);
+    break;
+    case 30:
+        displayedRocks.push(rock6);
+    break;
+    case 35:
+        displayedRocks.push(rock7);
     break;
   }
 }
@@ -727,13 +731,13 @@ const ROCK_POS = {
 let rock1 = new Rock(ROCK_POS.x[2], ROCK_POS.y[4]);
 let rock2 = new Rock(ROCK_POS.x[4], ROCK_POS.y[4]);
 let rock3 = new Rock(ROCK_POS.x[1], ROCK_POS.y[0]);
-let rock4 = new Rock(ROCK_POS.x[3], ROCK_POS.y[0]);
+let rock4 = new Rock(ROCK_POS.x[3], ROCK_POS.y[2]);
 let rock5 = new Rock(ROCK_POS.x[4], ROCK_POS.y[0]);
-let rock6 = new Rock(ROCK_POS.x[3], ROCK_POS.y[2]);
-let rock7 = new Rock(ROCK_POS.x[1], ROCK_POS.y[3]);
+let rock6 = new Rock(ROCK_POS.x[1], ROCK_POS.y[3]);
+let rock7 = new Rock(ROCK_POS.x[3], ROCK_POS.y[0]);
 
 // Array that contains all the rocks currently displayed (added each level)
-let displayedRocks = [rock1, rock2, rock3, rock4, rock5, rock6, rock7];
+let displayedRocks = [];
 
 // Object that hold variables that check if a rock is in the player's way in any directions
 let isThereRock = {
