@@ -271,6 +271,7 @@ class Player {
         if (isThereRock.rockAbove === false) {
             this.y += player.movesUp;
             if (this.y === -10) {
+              gamePause = true;
               setTimeout(victory, 500);
           }}
         }
@@ -420,11 +421,11 @@ Player.prototype.handleInput = function(keyPressed) {
 // and the enemies speed will be increased to make each level harder.
 // Finally, the game restarts
 function victory() {
-  gamePause = true;
   player.resetPosition();
 
   menuStats.levelNumber ++;
   document.getElementById('levelNumber').textContent = menuStats.levelNumber;
+
   if (menuStats.levelNumber === LEVEL_MAX) {
     setTimeout(gameOver, 500);
   } else {
@@ -441,8 +442,7 @@ function victory() {
     if (menuStats.levelNumber %5 === 0) {
       addRocks();
     }
-
-    gamePause = false;
+      gamePause = false;
   }
 }
 

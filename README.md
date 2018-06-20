@@ -1,10 +1,3 @@
-frontend-nanodegree-arcade-game
-===============================
-
-Students should use this [rubric](https://review.udacity.com/#!/projects/2696458597/rubric) for self-checking their submission. Make sure the functions you write are **object-oriented** - either class functions (like Player and Enemy) or class prototype functions such as Enemy.prototype.checkCollisions, and that the keyword 'this' is used appropriately within your class and class prototype functions to refer to the object the function is called upon. Also be sure that the **readme.md** file is updated with your instructions on both how to 1. Run and 2. Play your arcade game.
-
-For detailed instructions on how to get started, check out this [guide](https://docs.google.com/document/d/1v01aScPjSWCCWQLIpFqvg3-vXLH2e8_SZQKC8jNO0Dc/pub?embedded=true).
-
 # Arcade Game Project
 
 ## Project Description
@@ -13,7 +6,7 @@ This Arcade Game is a project made for the completion of the [Udacity's Front-En
 
 ### Instructions
 
-Build an arcade game clone using JavaScript object-oriented programming features. Detailed instructions are found on this [rubric](https://review.udacity.com/#!/projects/2696458597/rubric)
+Build an arcade game clone using JavaScript object-oriented programming features. Detailed instructions are found on this [rubric](https://review.udacity.com/#!/projects/2696458597/rubric) and [here](https://docs.google.com/document/d/1v01aScPjSWCCWQLIpFqvg3-vXLH2e8_SZQKC8jNO0Dc/pub?embedded=true).
 
 ## How to play
 
@@ -23,25 +16,25 @@ The game requires the use of the keyboard to be played, as the character is move
 
 ## Overview
 
-The objective of the game is to bring the character to the other side of the board where the river tiles are. The player can control the character by pressing on the arrow keys on the keyboard.
+The objective of the game is to bring the character to the other side of the board where the river tiles are. Every time the player can do so, the level increases. If the player reaches level 40, s/he will win the game.
 
-While attempting to do so, the player must avoid the bugs that are constantly running across the road from left to right. If they hit the character, one life is lost, and the character goes back to the start position. When all the lives are lost, the game is over.
+The player can control the character by pressing on the arrow keys on the keyboard.
 
-The player can restore the lives number by picking up the hearts that randomly spawn on the board.
+While attempting to reach the river, the player must avoid the bugs that are constantly running across the road from left to right. If they hit the character, one life is lost, and the character goes back to the start position. When all the lives are lost, the game is over.
 
-The player can also collect gems on the board to get more points. Each gem gives a different amount of point.
+The player can collect several items to gain some advantage: hearts increase the lives number; gems increase the score by 100, 250, or 500 points, and stars slow down the bugs.
 
-Every time the player wins, the bugs gets faster, to make the game increasingly hard.
+Every time the player wins, the bugs gets faster, which makes the game increasingly hard. Also, every 5 levels, a rock will spawn on the board, preventing the player from taking the most obvious path to win.
 
 ### Game Mechanics
 
 ### Board
 The board is composed by 5x6 tiles. The character starts in the middle grass tile of the lower row.
 The bugs position is set to always be on the three rows made of stone tiles, one per row.
-The water tiles is the goal of the character: once it is reached, a victory is added, and the player goes back to the original position.
+The water tiles is the goal of the character: once it is reached, the player can go to the next level, and the character goes back to the original position.
 
 ### Enemies
-The bugs run from left to right at a random speed, which at the beginning is set to be between 150 and 400. Every time the player wins, the minimum and maximum speed will be both increased by 10, resulting in the game being harder.
+The bugs run from left to right at a random speed, which at the beginning is set to be between 150 and 200. Every time the player wins, the minimum and maximum speed will be both increased by 10, resulting in the game being harder.
 
 ### Collectible items
 Once a new game has started, and every time the player wins, a new item will be spawned on the board. This may be a heart, a star, or a gem of three colors (blue, green, orange). Hearts restore 1 life. Stars reduce the max and min speed of the bugs by 30. Gems can give 100, 250, or 500 points, depending on their color.
@@ -53,14 +46,17 @@ The items have different probabilities of being spawned, with more valuable item
 - **hearts:** 1/8 probability;
 - **stars:** 1/8 probability.
 
-### Stats menu
-It is possible to check how many lives are left, how many gems have been collected, how many times the player has won, and the current score so far on the menu on top of the board.
+### Rocks
+Every 5 levels, a new rock will appear on the board, preventing the player from moving across certain tiles. A maximum of 7 rocks can be present at the same time. They are positioned on the same tiles, to avoid possible overlapping with the randomly generated items, and to force the player to take alternative paths and not the easiest ones.
 
-### Game over modal
-If the player loses the game, a game over modal will appear with the stats displayed on the menu (total of gems collected, total of victories, and final score). The modal will ask if the player wants to start a new game. If the player clicks on the "Start a new game!" button, the initial modal (the one containing the instructions and the character selection) will appear.
+### Stats menu
+It is possible to check how many lives are left, how many gems and stars have been collected, what the current level is, and the current score so far on the menu on top of the board.
+
+### Victory and game over
+The player can win the game by reaching level 40, and will lose if the lives number drops down to zero. Either way, a game over modal will appear with the stats displayed on the menu (final level, total of gems and stars collected, and final score). The modal will ask if the player wants to start a new game. If the player clicks on the "Start a new game!" button, the initial modal (the one containing the instructions and the character selection) will appear.
 
 ### Restart button
-The player can restart a game any time by clicking the restart button. The game will be paused, and a modal will ask the player if s/he wants to restart the game. If the player clicks on yes, either the game over modal, or the initial modal  will appear depending on whether a new game had already been started or not. If the player clicks on no, the game will simply restart from the pause.
+The player can restart a game any time by clicking the restart button. The game will be paused, and a modal will ask the player if s/he wants to restart the game. If the player clicks on "Yes", either the game over modal, or the initial modal  will appear depending on whether a new game had already been started. If the player clicks on "No", the game will simply restart from its pause.
 
 ## Credits
 
