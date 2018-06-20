@@ -7,7 +7,8 @@ body {
 }
 
 h1 {
-    font-size: 45px;
+    font-size: 30px;
+    letter-spacing: 2px;
     margin: 0;
 }
 
@@ -45,6 +46,11 @@ h1 {
     width: 18%;
 }
 
+.menu__level {
+    font-size: 20px;
+    font-weight: bold;
+    text-decoration: underline;
+}
 /*
 #pauseBtn {
   cursor:pointer;
@@ -59,7 +65,8 @@ h1 {
     margin-top: 10px;
     margin-left: auto;
     margin-right: auto;
-    width: 5%;
+    width: 10px;
+    height: 30px;
 }
 
 .restart-btn:hover {
@@ -71,7 +78,8 @@ h1 {
  */
 
 .game-canvas {
-    margin-top: -40px;
+    margin-top: -35px;
+
 }
 
 .game-canvas canvas {
@@ -103,6 +111,10 @@ h1 {
     padding: 20px;
     text-align: center;
     width: 700px;
+}
+
+.modal__window h2 {
+    color: #1e8495;
 }
 
 .modal__msg-default {
@@ -138,6 +150,12 @@ h1 {
 .modal__restart-btn:hover {
     background-color: #1e8495;
 }
+
+.modal__emphasized-text {
+    color: #ff6a44;
+    font-weight: bold;
+}
+
 
 /*
  * Styles for initial modal only
@@ -193,8 +211,11 @@ label {
 }
 
 .modal__gameover__window ul {
-    list-style: none;
+    text-align: justify;
     padding: 15px;
+    width: 40%;
+    margin: 0 auto;
+    line-height: 25px;
 }
 
 /*

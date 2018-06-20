@@ -34,10 +34,10 @@ The bugs position is set to always be on the three rows made of stone tiles, one
 The water tiles is the goal of the character: once it is reached, the player can go to the next level, and the character goes back to the original position.
 
 ### Enemies
-The bugs run from left to right at a random speed, which at the beginning is set to be between 150 and 200. Every time the player wins, the minimum and maximum speed will be both increased by 10, resulting in the game being harder.
+The bugs run from left to right at a random speed, which at the beginning is set to be between 150 and 200. Every time the player wins, the minimum and maximum speed will be both increased by 5, resulting in the game being harder.
 
 ### Collectible items
-Once a new game has started, and every time the player wins, a new item will be spawned on the board. This may be a heart, a star, or a gem of three colors (blue, green, orange). Hearts restore 1 life. Stars reduce the max and min speed of the bugs by 30. Gems can give 100, 250, or 500 points, depending on their color.
+Once a new game has started, and every time the player wins, a new item will be spawned on the board. This may be a heart, a star, or a gem of three colors (blue, green, orange). Hearts restore 1 life. Stars reduce the max and min speed of the bugs by 20. Gems can give 100, 250, or 500 points, depending on their color.
 Items position is generated randomly, but they will only spawn on the stone tiles, where the bugs are running.
 The items have different probabilities of being spawned, with more valuable items being less common:
 - **blue gems:** 3/8 probability;
@@ -53,7 +53,7 @@ Every 5 levels, a new rock will appear on the board, preventing the player from 
 It is possible to check how many lives are left, how many gems and stars have been collected, what the current level is, and the current score so far on the menu on top of the board.
 
 ### Victory and game over
-The player can win the game by reaching level 40, and will lose if the lives number drops down to zero. Either way, a game over modal will appear with the stats displayed on the menu (final level, total of gems and stars collected, and final score). The modal will ask if the player wants to start a new game. If the player clicks on the "Start a new game!" button, the initial modal (the one containing the instructions and the character selection) will appear.
+The player can win the game by reaching level 40, and will lose if the lives number drops down to zero. Either way, a game over modal will appear with the stats displayed on the menu (final level, total of gems and stars collected, elapsed time, and final score). The modal will ask if the player wants to start a new game. If the player clicks on the "Start a new game!" button, the initial modal (the one containing the instructions and the character selection) will appear.
 
 ### Restart button
 The player can restart a game any time by clicking the restart button. The game will be paused, and a modal will ask the player if s/he wants to restart the game. If the player clicks on "Yes", either the game over modal, or the initial modal  will appear depending on whether a new game had already been started. If the player clicks on "No", the game will simply restart from its pause.

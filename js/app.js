@@ -18,6 +18,15 @@ function randomNum(max, min) {
   return Math.floor(Math.random() * max) + min;
 }
 
+// Function that disables arrow keys scrolling on the webpage,
+// which could interfere with the game
+window.addEventListener("keydown", function(e) {
+    // space and arrow keys
+    if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+        e.preventDefault();
+    }
+}, false);
+
 // Variable to check whether a new game have started or not (for the modal)
 // Useful to decide which modal to open with the restart btn
 let newGameStarted = false;
@@ -39,17 +48,21 @@ RESTART_BTN.onclick = function() {
 /*
  * TIMER
  */
- // Code to start, pause, and clear the timer
+ // Code to start, pause, and clear the countdown
 let timer;
-let sec = 0;
+let sec = 250;
 const SEC_ELAPSED = document.getElementById('secondsElapsed');
 
 function startTimer() {
   timer = setInterval(countseconds, 1000);
 }
 function countseconds() {
-  sec++;
+  sec--;
   SEC_ELAPSED.textContent = sec;
+  if (sec === 0) {
+    gamePause = true;
+    gameOver();
+  }
 }
 function clearTimer() {
   clearInterval(timer);
@@ -157,6 +170,9 @@ function gameOver() {
   } else if (menuStats.livesNumber === 0) {
     document.getElementById('gameOverTitle').textContent = 'Game Over!';
     document.getElementById('gameOverReason').textContent = 'You ran out of lives!';
+  } else if (sec === 0) {
+    document.getElementById('gameOverTitle').textContent = 'Game Over!';
+    document.getElementById('gameOverReason').textContent = 'You ran out of time!';
   } else {
     document.getElementById('gameOverTitle').textContent = 'Game Over!';
     document.getElementById('gameOverReason').textContent = 'You quit the game.';
@@ -436,8 +452,8 @@ function victory() {
       randomItem = allItems[randomNum(8, 0)];
       randomItem.onscreen = true;
 
-      enemyStats.speedMax += 10;
-      enemyStats.speedMin += 10;
+      enemyStats.speedMax += 5;
+      enemyStats.speedMin += 5;
 
     if (menuStats.levelNumber %5 === 0) {
       addRocks();
@@ -550,8 +566,8 @@ class Star extends Items {
   update() {
     if (this.checkIfPicked()) {
 
-      enemyStats.speedMax -=30;
-      enemyStats.speedMin -=30;
+      enemyStats.speedMax -=20;
+      enemyStats.speedMin -=20;
 
       menuStats.starsNumber ++;
       document.getElementById('starsNumber').textContent = menuStats.starsNumber;

@@ -14,8 +14,8 @@
       <td class="menu__item-s"><img class="menu__logo" src="images/Heart.png"> x<span id="livesNumber">5</span></td>
       <td class="menu__item-s"><img class="menu__logo" src="images/Gem Blue.png"> x<span id="gemsNumber">0</span></td>
       <td class="menu__item-s"><img class="menu__logo" src="images/Star.png"> x<span id="starsNumber">0</span></td>
-      <td class="menu__item-l">Level <span id="levelNumber">1</span></td>
-      <td class="menu__item-l"><span id="secondsElapsed">0</span> s</td>
+      <td class="menu__item-l menu__level">Level <span id="levelNumber">1</span></td>
+      <td class="menu__item-l"><span id="secondsElapsed">250</span> s</td>
       <td class="menu__item-l">Score: <span id="score">0</span></td>
     </table>
     <button id="restartBtn" class="restart-btn"><i class="fa fa-repeat"></i></button>
@@ -29,11 +29,11 @@
       <h2>Welcome to my Frogger Game!</h2>
       <ul class="instructions">
         <li>Bring your character to the other side of the board by clicking on the arrow keys.</li>
-        <li>Avoid the bugs running across the road. If they hit you, you will lose a life. When you lose all your lives, the game is over.</li>
-        <li>You can restore your lives by picking up the hearts on the board.</li>
-        <li>Collect as many gems as you can to get more points. Each gem type gives you a different amount of points.</li>
-        <li>Picking up stars can help you slow down the bugs, besides giving you extra points.</li>
-        <li>Every time you win, the bugs gets faster, and rocks will appear blocking your way from time to time, so beware!</li>
+        <li>Avoid the <span class="modal__emphasized-text">bugs</span> running across the road. If they hit you, you will lose a life. When you lose all your lives, the game is over.</li>
+        <li>You can restore your lives by picking up the <span class="modal__emphasized-text">hearts</span> on the board.</li>
+        <li>Collect as many <span class="modal__emphasized-text">gems</span> as you can to get more points. Each gem type gives you a different amount of points.</li>
+        <li>Picking up <span class="modal__emphasized-text">stars</span> can help you slow down the bugs, besides giving you extra points.</li>
+        <li>Every time you win, the bugs gets <span class="modal__emphasized-text">faster</span>, and <span class="modal__emphasized-text">rocks</span> will appear blocking your way from time to time, so beware!</li>
       </ul>
       <h3>To start, select a character, then press "Start a new game!"</h3>
       <table class="avatars-collection" name="charSelForm">
@@ -88,11 +88,11 @@
         <h2 id="gameOverTitle">Game Over!</h2>
         <p id="gameOverReason">You ran out of lives!</p>
         <ul>
-          <li><strong>Level </strong><span id="finalLevelNumber"></span></li>
-          <li><strong>Collected gems: </strong><span id="finalGemsNumber"></span></li>
-          <li><strong>Collected stars: </strong><span id="finalStarsNumber"></span></li>
-          <li><strong>Elapsed time: </strong><span id="finalTime"></span> s</li>
-          <li><strong>Total Score: </strong><span id="finalScore"></span></li>
+          <li><span class="modal__emphasized-text">Level </span><span id="finalLevelNumber"></span></li>
+          <li><span class="modal__emphasized-text">Collected gems: </span><span id="finalGemsNumber"></span></li>
+          <li><span class="modal__emphasized-text">Collected stars: </span><span id="finalStarsNumber"></span></li>
+          <li><span class="modal__emphasized-text">Elapsed time: </span><span id="finalTime"></span> s</li>
+          <li><span class="modal__emphasized-text">Total Score: </span><span id="finalScore"></span></li>
         </ul>
         <h3>Play again?</h3>
         <button id="restartGameBtn" class="modal__restart-btn">Start a new game!</button>
