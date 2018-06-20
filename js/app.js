@@ -130,51 +130,6 @@ enemyLocation.forEach(function([positionX, positionY]) {
   allEnemies.push(enemy);
 });
 
-// OLD CODE for earlier JS
-/*
-var Enemy = function(x, y, speed) {
-  this.x = x;
-  this.y = y;
-  this.speed = speed;
-  this.sprite = 'images/enemy-bug.png';
-};
-
-Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-
-// Update the enemies position. It moves them to the right and if they reach
-// the right border, it resets their position. Also, it checks for collision.
-// Parameter: dt, a time delta between ticks
-// Any movement is multiplied by the dt parameter
-// which will ensure the game runs at the same speed for all computers.
-
-Enemy.prototype.update = function(dt) {
-
-  this.x += this.speed * dt;
-  if (this.x > 505) {
-    this.x = -100;
-    this.speed = randomNum(enemyStats.speedMax, enemyStats.speedMin);
-  }
-
-  if (player.x >= this.x - 83
-    && player.x <= this.x + 83
-    && player.y > this.y
-    && player.y < this.y + 83) {
-      enemyCollision();
-  }
-};
-
-//Code to recreate enemies if gameover
-Enemy.prototype.resetPosition = function(enemy) {
-    allEnemies = [];
-    enemyLocation.forEach(function([positionX, positionY]) {
-        enemy = new Enemy(positionX, positionY, randomNum(enemyStats.speedMax, enemyStats.speedMin));
-        allEnemies.push(enemy);
-    });
-};
-*/
-
 /*
  * PLAYER
  */
@@ -259,51 +214,6 @@ FORM.addEventListener("submit", function(event) {
 
 // Player is initialized
 let player = new Player(202, 405);
-
-// OLD CODE for earlier JS
-/*
-var Player = function(x, y, sprite) {
-  this.x = x;
-  this.y = y;
-  this.sprite = PLAYER_SPRITES[0];
-}
-
-Player.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-
-Player.prototype.update = function() {
-};
-
-// Function that resets the position of the player in case of gameover.
-Player.prototype.resetPosition = function() {
-  player.x = 202;
-  player.y = 405;
-};
-
-// Function to move the characters with the keyboard.
-// It works only if the game isn't paused.
-// It also contains the condition of victory.
-Player.prototype.handleInput = function(keyPressed) {
-  if (gamePause === false) {
-    if (keyPressed === 'left' && player.x > 0) {
-      player.x -= 101;
-    }
-    if (keyPressed === 'right' && player.x < 404) {
-      player.x += 101;
-    }
-    if (keyPressed === 'down' && player.y < 405) {
-      player.y += 83;
-    }
-    if (keyPressed === 'up' && player.y > -10) {
-      player.y -= 83;
-      if (player.y === -10) {
-        victory();
-      }
-    }
-  }
-};
-*/
 
 // This listens for key presses and sends the keys to
 // Player.handleInput() method.
@@ -434,81 +344,6 @@ const ITEMS_POS_XY = [
   [202, 50], [202, 130], [202, 210],
   [303, 50], /*[303, 130],*/ [303, 210],
   [303, 50], [303, 130], [303, 210]];
-
-// OLD CODE for earlier version of JS
-/*
-var Heart = function(x, y) {
-  this.x = x;
-  this.y = y;
-  this.sprite = 'images/Heart.png';
-  this.points = 100;
-  this.onscreen = false;
-}
-
-// Constructor function for gems
-var Gem = function(x, y, sprite, points) {
-  this.x = x;
-  this.y = y;
-  this.sprite = sprite;
-  this.points = points;
-  this.onscreen = false;
-}
-
-Heart.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-
-Gem.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-
-//If player grabs the gem, it adds a gem to the menu, adds points, and makes the gem disappear
-Gem.prototype.update = function() {
-  if (player.x >= this.x -83
-    && player.x <= this.x + 83
-    && player.y > this.y
-    && player.y < this.y + 83
-    && this.onscreen === true) {
-
-      menuStats.gemsNumber ++;
-      document.getElementById('gemsNumber').textContent = menuStats.gemsNumber;
-
-      menuStats.score += this.points;
-      document.getElementById('score').textContent = menuStats.score;
-
-      this.onscreen = false;
-  }
-};
-
-//If player grabs the heart, it adds a life to the menu, adds points, and makes the heart disappear
-Heart.prototype.update = function() {
-  if (player.x >= this.x -83
-    && player.x <= this.x + 83
-    && player.y > this.y
-    && player.y < this.y + 83
-    && this.onscreen === true) {
-
-      menuStats.livesNumber ++;
-      document.getElementById('livesNumber').textContent = menuStats.livesNumber;
-
-      menuStats.score += this.points;
-      document.getElementById('score').textContent = menuStats.score;
-
-      this.onscreen = false;
-  }
-};
-
-Gem.prototype.reset = function() {
-  Gem.x = ITEMS_POS.x[randomNum(5, 0)];
-  Gem.y = ITEMS_POS.y[randomNum(3, 0)];
-  Gem.onscreen = false;
-};
-
-Heart.prototype.reset = function() {
-  heart.x = ITEMS_POS.x[randomNum(5, 0)];
-  heart.y = ITEMS_POS.y[randomNum(3, 0)];
-  heart.onscreen = false;
-};*/
 
 // Generate random position for the initial item displayed
 let itemRandomPosition = ITEMS_POS_XY[randomNum(11, 0)];
