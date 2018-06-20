@@ -1,5 +1,23 @@
 /*
- * GLOBAL
+ * HELPER FUNCTIONS
+ */
+
+// helper function to generate a random number
+function randomNum(max, min) {
+  return Math.floor(Math.random() * max) + min;
+}
+
+// Function that disables arrow keys scrolling on the webpage,
+// which could interfere with the gameplay
+window.addEventListener("keydown", function(e) {
+    // space and arrow keys
+    if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+        e.preventDefault();
+    }
+}, false);
+
+/*
+ * GENERAL SETTINGS
  */
 // Stats on the main menu
 let menuStats = {
@@ -12,20 +30,8 @@ let menuStats = {
 
 // The maximum level, if reached it is an automatic victory
 const LEVEL_MAX = 40;
-
-// helper function to generate a random number
-function randomNum(max, min) {
-  return Math.floor(Math.random() * max) + min;
-}
-
-// Function that disables arrow keys scrolling on the webpage,
-// which could interfere with the game
-window.addEventListener("keydown", function(e) {
-    // space and arrow keys
-    if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
-        e.preventDefault();
-    }
-}, false);
+// The total time, if down to 0 it is an automatic gameOver
+let timeMax = 250;
 
 // Variable to check whether a new game have started or not (for the modal)
 // Useful to decide which modal to open with the restart btn
@@ -50,15 +56,14 @@ RESTART_BTN.onclick = function() {
  */
  // Code to start, pause, and clear the countdown
 let timer;
-let sec = 250;
-const SEC_ELAPSED = document.getElementById('secondsElapsed');
+let sec = timeMax;
 
 function startTimer() {
   timer = setInterval(countseconds, 1000);
 }
 function countseconds() {
   sec--;
-  SEC_ELAPSED.textContent = sec;
+  document.getElementById('secondsElapsed').textContent = sec;
   if (sec === 0) {
     gamePause = true;
     gameOver();
@@ -107,12 +112,14 @@ class Enemy {
       allEnemies.push(enemy);
     });
   }
-} // end of Enemy class
+} // End of Enemy class
 
 // Variables used to update the enemies speed
 let enemyStats = {
   speedMax: 200,
-  speedMin: 150
+  speedMin: 150,
+  speedIncremental: 5,
+  speedDecrmStar: -20
 };
 
 //Code to create enemies at the beginning
@@ -122,71 +129,6 @@ enemyLocation.forEach(function([positionX, positionY]) {
   enemy = new Enemy(positionX, positionY, randomNum(enemyStats.speedMax, enemyStats.speedMin));
   allEnemies.push(enemy);
 });
-
-// It pauses the game, decreases lives number, and calls function to check if gameover
-function enemyCollision() {
-  gamePause = true;
-  menuStats.livesNumber --;
-  document.getElementById('livesNumber').textContent = menuStats.livesNumber;
-  checkIfGameover();
-}
-
-//If there are no more lives left, a gameover modal appears.
-//Else, the player and the enemies get back to the original position and the game restarts
-function checkIfGameover() {
-  if (menuStats.livesNumber < 1) {
-    setTimeout(gameOver, 500);
-  } else {
-    setTimeout(lifeLost, 500);
-  }
-}
-
-function gameOver() {
-  // Reset player position
-  player.resetPosition();
-  // Reset enemies position and speed
-  enemy.resetPosition();
-  enemyStats.speedMax = 200;
-  enemyStats.speedMin = 150;
-  // Reset items
-  allItems.forEach(function(item) {
-    item.reset();
-  });
-  randomItem = allItems[randomNum(8, 0)];
-  randomItem.onscreen = true;
-  // Stop timer
-  clearTimer();
-
-  // Write modal content with final stats
-  document.getElementById('finalGemsNumber').textContent = menuStats.gemsNumber;
-  document.getElementById('finalStarsNumber').textContent = menuStats.starsNumber;
-  document.getElementById('finalLevelNumber').textContent = menuStats.levelNumber;
-  document.getElementById('finalTime').textContent = sec;
-  document.getElementById('finalScore').textContent = menuStats.score;
-
-  if (menuStats.levelNumber === LEVEL_MAX) {
-    document.getElementById('gameOverTitle').textContent = 'You won the game!';
-    document.getElementById('gameOverReason').textContent = 'Congratulations! You reached the maximum level!';
-  } else if (menuStats.livesNumber === 0) {
-    document.getElementById('gameOverTitle').textContent = 'Game Over!';
-    document.getElementById('gameOverReason').textContent = 'You ran out of lives!';
-  } else if (sec === 0) {
-    document.getElementById('gameOverTitle').textContent = 'Game Over!';
-    document.getElementById('gameOverReason').textContent = 'You ran out of time!';
-  } else {
-    document.getElementById('gameOverTitle').textContent = 'Game Over!';
-    document.getElementById('gameOverReason').textContent = 'You quit the game.';
-  }
-
-  GAMEOVER_MODAL.style.display = 'block';
-}
-
-// Reset player/enemies position, and restarts current game
-function lifeLost() {
-  player.resetPosition();
-  enemy.resetPosition();
-  gamePause = false;
-}
 
 // OLD CODE for earlier JS
 /*
@@ -258,7 +200,6 @@ class Player {
     player.x = 202;
     player.y = 405;
   }
-
   // Function to move the characters with the keyboard.
   // It works only if the game isn't paused.
   // It also contains the condition of victory.
@@ -289,80 +230,12 @@ class Player {
             if (this.y === -10) {
               gamePause = true;
               setTimeout(victory, 500);
-          }}
+            }
+          }
         }
       }
     }
-  } // end of Player class
-
-
-function checkRockLeft() {
-  let count = 0;
-  for (let i = 0; i < displayedRocks.length; i++) {
-    if (player.y < displayedRocks[i].upperCorner
-    || player.y > displayedRocks[i].bottomCorner
-    || player.x + player.movesLeft > displayedRocks[i].rightCorner
-    || player.x < displayedRocks[i].leftCorner) {
-      count++;
-    }
-    if (count === displayedRocks.length) {
-      isThereRock.rockLeft = false;
-    } else if (count !== displayedRocks.length) {
-      isThereRock.rockLeft = true;
-    }
-  }
-}
-
-function checkRockRight() {
-  let count = 0;
-  for (let i = 0; i < displayedRocks.length; i++) {
-    if (player.y < displayedRocks[i].upperCorner
-    || player.y > displayedRocks[i].bottomCorner
-    || player.x + player.movesRight < displayedRocks[i].leftCorner
-    || player.x > displayedRocks[i].rightCorner) {
-      count++;
-    }
-    if (count === displayedRocks.length) {
-      isThereRock.rockRight = false;
-    } else if (count !== displayedRocks.length) {
-      isThereRock.rockRight = true;
-    }
-  }
-}
-
-function checkRockAbove() {
-  let count = 0;
-  for (let i = 0; i< displayedRocks.length; i++) {
-    if (player.x < displayedRocks[i].leftCorner
-    || player.x > displayedRocks[i].rightCorner
-    || player.y + player.movesUp > displayedRocks[i].bottomCorner
-    || player.y < displayedRocks[i].upperCorner) {
-      count++;
-    }
-    if (count === displayedRocks.length) {
-      isThereRock.rockAbove = false;
-    } else if (count !== displayedRocks.length) {
-      isThereRock.rockAbove = true;
-    }
-  }
-}
-
-function checkRockBelow() {
-  let count = 0;
-  for (let i = 0; i< displayedRocks.length; i++) {
-    if (player.x < displayedRocks[i].leftCorner
-    || player.x > displayedRocks[i].rightCorner
-    || player.y + player.movesDown < displayedRocks[i].upperCorner
-    || player.y > displayedRocks[i].bottomCorner) {
-      count++;
-    }
-    if (count === displayedRocks.length) {
-      isThereRock.rockBelow = false;
-    } else if (count !== displayedRocks.length) {
-      isThereRock.rockBelow = true;
-    }
-  }
-}
+  } // End of Player class
 
 //Code for the initial modal, to change the sprite of the player.
 const PLAYER_SPRITES = [
@@ -432,65 +305,8 @@ Player.prototype.handleInput = function(keyPressed) {
 };
 */
 
-// In case of victory, the game momentarily pauses, victory n. increases,
-// the random item is reset (a new one will appear),
-// and the enemies speed will be increased to make each level harder.
-// Finally, the game restarts
-function victory() {
-  player.resetPosition();
-
-  menuStats.levelNumber ++;
-  document.getElementById('levelNumber').textContent = menuStats.levelNumber;
-
-  if (menuStats.levelNumber === LEVEL_MAX) {
-    setTimeout(gameOver, 500);
-  } else {
-
-      allItems.forEach(function(item) {
-        item.reset();
-      });
-      randomItem = allItems[randomNum(8, 0)];
-      randomItem.onscreen = true;
-
-      enemyStats.speedMax += 5;
-      enemyStats.speedMin += 5;
-
-    if (menuStats.levelNumber %5 === 0) {
-      addRocks();
-    }
-      gamePause = false;
-  }
-}
-
-function addRocks() {
-  switch (menuStats.levelNumber) {
-    case 5:
-        displayedRocks.push(rock1);
-    break;
-    case 10:
-        displayedRocks.push(rock2);
-    break;
-    case 15:
-        displayedRocks.push(rock3);
-    break;
-    case 20:
-        displayedRocks.push(rock4);
-    break;
-    case 25:
-        displayedRocks.push(rock5);
-    break;
-    case 30:
-        displayedRocks.push(rock6);
-    break;
-    case 35:
-        displayedRocks.push(rock7);
-    break;
-  }
-}
-
 // This listens for key presses and sends the keys to
 // Player.handleInput() method.
-
 document.addEventListener('keyup', function(e) {
     let allowedKeys = {
         37: 'left',
@@ -505,7 +321,7 @@ document.addEventListener('keyup', function(e) {
  * COLLECTIBLE ITEMS
  */
 
-// Constructor function for hearts
+// Constructor function for all collectibles
 class Items {
   constructor(x, y, sprite) {
     this.x = x;
@@ -515,24 +331,27 @@ class Items {
   render() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
   }
-  // change the currently show item's position to a random one and hides it
+  // change the currently shown item's position to a random one and hides it
+  // used in case of victory (player reaches the river) or gameover.
   reset() {
     let randomPosition = ITEMS_POS_XY[randomNum(11, 0)]
     this.x = randomPosition[0];
     this.y = randomPosition[1];
     this.onscreen = false;
   }
-  // check if the player picks up an item by moving on the board
+  // check if the player picks up an item by moving the character on the board
   checkIfPicked() {
     if (player.x >= this.x - 83
-      && player.x <= this.x + 83
-      && player.y > this.y
-      && player.y < this.y + 83
-      && this.onscreen === true)
-      {return true;}
+    && player.x <= this.x + 83
+    && player.y > this.y
+    && player.y < this.y + 83
+    && this.onscreen === true) {
+      return true;
+    }
   }
-}
+} // End of Items class
 
+// Constructor function for hearts
 class Heart extends Items {
   constructor(x, y, sprite) {
     super(x, y, sprite);
@@ -552,9 +371,9 @@ class Heart extends Items {
       this.onscreen = false;
     }
   }
-}
+} // End of Heart class
 
-// Constructor function for the stars
+// Constructor function for stars
 class Star extends Items {
   constructor(x, y, sprite) {
     super(x, y, sprite);
@@ -566,8 +385,11 @@ class Star extends Items {
   update() {
     if (this.checkIfPicked()) {
 
-      enemyStats.speedMax -=20;
-      enemyStats.speedMin -=20;
+      enemyStats.speedMax += enemyStats.speedDecrmStar;
+      enemyStats.speedMin -= enemyStats.speedDecrmStar;
+      allEnemies.forEach(function(enemy) {
+        enemy.speed -= enemyStats.speedDecrmStar;
+      });
 
       menuStats.starsNumber ++;
       document.getElementById('starsNumber').textContent = menuStats.starsNumber;
@@ -578,9 +400,9 @@ class Star extends Items {
       this.onscreen = false;
     }
   }
-}
+} // End of Star class
 
-// Constructor function for the gems
+// Constructor function for gems
 class Gem extends Items {
   constructor(x, y, sprite, points) {
     super(x, y, sprite);
@@ -601,15 +423,11 @@ class Gem extends Items {
       this.onscreen = false;
     }
   }
-}
+} // End of Gem class
 
 // Object with arrays containing all the possible positions for the items
-/*const ITEMS_POS = {
-  x: [0, 101, 202, 303, 404],
-  y: [50, 130, 210]
-};*/
-
-// Object with arrays containing all the possible positions for the items
+// Some are commented out to avoid overlapping items with rocks
+// (whose positions are already set)
 const ITEMS_POS_XY = [
   [0, 50], [0, 130], [0, 210],
   [101, 50], [101, 130], /*[101, 210],*/
@@ -697,19 +515,12 @@ let itemRandomPosition = ITEMS_POS_XY[randomNum(11, 0)];
 
 // Initialize all items
 let blueGem1 = new Gem(itemRandomPosition[0], itemRandomPosition[1], 'images/Gem Blue.png', 100);
-
 let blueGem2 = new Gem(itemRandomPosition[0], itemRandomPosition[1], 'images/Gem Blue.png', 100);
-
 let blueGem3 = new Gem(itemRandomPosition[0], itemRandomPosition[1], 'images/Gem Blue.png', 100);
-
 let greenGem1 = new Gem(itemRandomPosition[0], itemRandomPosition[1], 'images/Gem Green.png', 250);
-
 let greenGem2 = new Gem(itemRandomPosition[0], itemRandomPosition[1], 'images/Gem Green.png', 250);
-
 let orangeGem = new Gem(itemRandomPosition[0], itemRandomPosition[1], 'images/Gem Orange.png', 500);
-
 let heart = new Heart(itemRandomPosition[0], itemRandomPosition[1]);
-
 let star = new Star(itemRandomPosition[0], itemRandomPosition[1]);
 
 // Create an array with all the items to get a random one each time
@@ -734,10 +545,10 @@ class Rock {
   render() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
   }
-}
+} // End of Rock class
 
 // Possible coordinates for the rocks. Not all of them are used, but with this objects
-// the rock positions are easily editable
+// the rock positions are easy to change if it's needed.
 const ROCK_POS = {
   x: [0, 101, 202, 303, 404],
   y: [-20, 55, 135, 215, 305]
@@ -752,7 +563,7 @@ let rock5 = new Rock(ROCK_POS.x[4], ROCK_POS.y[0]);
 let rock6 = new Rock(ROCK_POS.x[1], ROCK_POS.y[3]);
 let rock7 = new Rock(ROCK_POS.x[3], ROCK_POS.y[0]);
 
-// Array that contains all the rocks currently displayed (added each level)
+// Array that contains all the rocks currently displayed (1 is added each level)
 let displayedRocks = [];
 
 // Object that hold variables that check if a rock is in the player's way in any directions
@@ -764,6 +575,191 @@ let isThereRock = {
 };
 
 /*
-let allRocks = [rock1, rock2, rock3, rock4, rock5];
-let randomRock = allRocks[randomNum(5, 0)];
-randomRock.onscreen = true;*/
+ * GAMEPLAY FUNCTIONS
+ */
+
+ // It pauses the game, decreases lives number, and calls function to check if gameover
+ function enemyCollision() {
+   gamePause = true;
+   menuStats.livesNumber --;
+   document.getElementById('livesNumber').textContent = menuStats.livesNumber;
+   setTimeout(checkIfGameover, 500);
+ }
+
+ //If there are no more lives left, a gameover modal appears.
+ //Else, the player and the enemies get back to the original position and the game restarts
+ function checkIfGameover() {
+   if (menuStats.livesNumber < 1) {
+     gameOver();
+   } else {
+     gamePause = false;
+   }
+   // Reset player and enemies position.
+   player.resetPosition();
+   enemy.resetPosition();
+   // Reset items
+   allItems.forEach(function(item) {
+     item.reset();
+   });
+   randomItem = allItems[randomNum(8, 0)];
+   randomItem.onscreen = true;
+ } // End of checkIfGameover function
+
+ // It mainly writes the content of the gameOver modal to show
+ // according to the game stats. It also clears the timer.
+ function gameOver() {
+   // Stop timer
+   clearTimer();
+
+   // Write modal content with final stats
+   document.getElementById('finalGemsNumber').textContent = menuStats.gemsNumber;
+   document.getElementById('finalStarsNumber').textContent = menuStats.starsNumber;
+   document.getElementById('finalLevelNumber').textContent = menuStats.levelNumber;
+   document.getElementById('finalTime').textContent = sec;
+   document.getElementById('finalScore').textContent = menuStats.score;
+
+   // Write modal's title and message according to the reason of gameover
+   if (menuStats.levelNumber === LEVEL_MAX) {
+     document.getElementById('gameOverTitle').textContent = 'You won the game!';
+     document.getElementById('gameOverReason').textContent = 'Congratulations! You reached the maximum level!';
+   } else if (menuStats.livesNumber === 0) {
+     document.getElementById('gameOverTitle').textContent = 'Game Over!';
+     document.getElementById('gameOverReason').textContent = 'You ran out of lives!';
+   } else if (sec === 0) {
+     document.getElementById('gameOverTitle').textContent = 'Game Over!';
+     document.getElementById('gameOverReason').textContent = 'You ran out of time!';
+   } else {
+     document.getElementById('gameOverTitle').textContent = 'Game Over!';
+     document.getElementById('gameOverReason').textContent = 'You quit the game.';
+   }
+   // display the modal
+   GAMEOVER_MODAL.style.display = 'block';
+ }// End of gameOver function
+
+// In case of victory, the game momentarily pauses and the level increases.
+// If the max level has been reached, the game is over.
+// Else, the random item is reset (a new one will appear),
+// the enemies speed increases to make the next level harder,
+// a rock is added (only each 5 levels),
+// and the game restarts
+function victory() {
+  player.resetPosition();
+
+  menuStats.levelNumber ++;
+  document.getElementById('levelNumber').textContent = menuStats.levelNumber;
+
+  if (menuStats.levelNumber === LEVEL_MAX) {
+    setTimeout(gameOver, 500);
+  } else {
+
+    allItems.forEach(function(item) {
+      item.reset();
+    });
+    randomItem = allItems[randomNum(8, 0)];
+    randomItem.onscreen = true;
+
+    enemyStats.speedMax += enemyStats.speedIncremental;
+    enemyStats.speedMin += enemyStats.speedIncremental;
+
+    if (menuStats.levelNumber %5 === 0) {
+      addRocks();
+    }
+      gamePause = false;
+  }
+} // End of victory function
+
+// Every 5 levels, a rock is added to the board
+function addRocks() {
+  switch (menuStats.levelNumber) {
+    case 5:
+        displayedRocks.push(rock1);
+    break;
+    case 10:
+        displayedRocks.push(rock2);
+    break;
+    case 15:
+        displayedRocks.push(rock3);
+    break;
+    case 20:
+        displayedRocks.push(rock4);
+    break;
+    case 25:
+        displayedRocks.push(rock5);
+    break;
+    case 30:
+        displayedRocks.push(rock6);
+    break;
+    case 35:
+        displayedRocks.push(rock7);
+    break;
+  }
+} // End of addRocks function
+
+// 4 functions to check if there is a rock in any directions
+function checkRockLeft() {
+  let count = 0;
+  for (let i = 0; i < displayedRocks.length; i++) {
+    if (player.y < displayedRocks[i].upperCorner
+    || player.y > displayedRocks[i].bottomCorner
+    || player.x + player.movesLeft > displayedRocks[i].rightCorner
+    || player.x < displayedRocks[i].leftCorner) {
+      count++;
+    }
+    if (count === displayedRocks.length) {
+      isThereRock.rockLeft = false;
+    } else if (count !== displayedRocks.length) {
+      isThereRock.rockLeft = true;
+    }
+  }
+}
+
+function checkRockRight() {
+  let count = 0;
+  for (let i = 0; i < displayedRocks.length; i++) {
+    if (player.y < displayedRocks[i].upperCorner
+    || player.y > displayedRocks[i].bottomCorner
+    || player.x + player.movesRight < displayedRocks[i].leftCorner
+    || player.x > displayedRocks[i].rightCorner) {
+      count++;
+    }
+    if (count === displayedRocks.length) {
+      isThereRock.rockRight = false;
+    } else if (count !== displayedRocks.length) {
+      isThereRock.rockRight = true;
+    }
+  }
+}
+
+function checkRockAbove() {
+  let count = 0;
+  for (let i = 0; i< displayedRocks.length; i++) {
+    if (player.x < displayedRocks[i].leftCorner
+    || player.x > displayedRocks[i].rightCorner
+    || player.y + player.movesUp > displayedRocks[i].bottomCorner
+    || player.y < displayedRocks[i].upperCorner) {
+      count++;
+    }
+    if (count === displayedRocks.length) {
+      isThereRock.rockAbove = false;
+    } else if (count !== displayedRocks.length) {
+      isThereRock.rockAbove = true;
+    }
+  }
+}
+
+function checkRockBelow() {
+  let count = 0;
+  for (let i = 0; i< displayedRocks.length; i++) {
+    if (player.x < displayedRocks[i].leftCorner
+    || player.x > displayedRocks[i].rightCorner
+    || player.y + player.movesDown < displayedRocks[i].upperCorner
+    || player.y > displayedRocks[i].bottomCorner) {
+      count++;
+    }
+    if (count === displayedRocks.length) {
+      isThereRock.rockBelow = false;
+    } else if (count !== displayedRocks.length) {
+      isThereRock.rockBelow = true;
+    }
+  }
+}

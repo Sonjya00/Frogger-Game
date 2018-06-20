@@ -36,7 +36,10 @@ RESTART_GAME_BTN.onclick = function() {
   menuStats.starsNumber = 0;
   menuStats.levelNumber = 1;
   menuStats.score = 0;
-  sec = 0;
+  sec = timeMax;
+  // Reset enemies speed
+  enemyStats.speedMax = 200;
+  enemyStats.speedMin = 150;
 
   livesNumber.textContent = menuStats.livesNumber;
   gemsNumber.textContent = menuStats.gemsNumber;

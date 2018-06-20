@@ -164,20 +164,10 @@ var Engine = (function(global) {
           randomItem.render();
         };
 
-        /*
-        if (randomRock.onscreen) {
-          randomRock.render();
-        };
-        */
-
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
 
-        /*
-        allRocks.forEach(function(rock) {
-            rock.render();
-        });*/
         player.render();
     }
 
