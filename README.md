@@ -36,7 +36,7 @@ The character always starts in the middle of the lower grass tile row. The bugs 
 The water tiles are the goal of the character: once the player lands in any of them, s/he can go to the next level. The character then goes back to the original position, and the player can repeat the same process.
 
 ### Enemies
-The bugs run from left to right at a random speed, which at the beginning is set to be between 150 and 180. Every time the player wins, the minimum and maximum speed will be both increased by 5, resulting in the game being harder.
+The bugs run from left to right at a random speed, which at the beginning is set to be between 50 and 80. Every time the player wins, the minimum and maximum speed will be both increased by 5, resulting in the game being harder.
 
 ### Collectible items
 Once a new game is started, and every time the player wins, a new random item will be spawned on the board. This may be a heart, a star, or a gem of three colors (blue, green, orange). Hearts restore 1 life. Stars reduce the max and min speed of the bugs by 20. Gems can give 100, 250, or 500 points, depending on their color.

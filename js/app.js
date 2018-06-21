@@ -117,8 +117,8 @@ class Enemy {
 
 // Variables used to update the enemies speed
 let enemyStats = {
-  speedMax: 180,
-  speedMin: 150,
+  speedMax: 80,
+  speedMin: 50,
   speedIncremental: 5,
   speedDecrmStar: -20
 };
@@ -490,7 +490,7 @@ function victory() {
   document.getElementById('levelNumber').textContent = menuStats.levelNumber;
 
   if (menuStats.levelNumber === LEVEL_MAX) {
-    setTimeout(gameOver, 500);
+    gameOver();
 
   } else {
 

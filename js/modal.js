@@ -48,8 +48,8 @@ RESTART_GAME_BTN.onclick = function() {
   score.textContent = menuStats.score;
 
   // Reset enemies speed
-  enemyStats.speedMax = 180;
-  enemyStats.speedMin = 150;
+  enemyStats.speedMax = 80;
+  enemyStats.speedMin = 50;
   allEnemies.forEach(function(enemy) {
     enemy.speed = randomNum(enemyStats.speedMax, enemyStats.speedMin);
   });
