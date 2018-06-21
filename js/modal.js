@@ -39,14 +39,6 @@ RESTART_GAME_BTN.onclick = function() {
   menuStats.levelNumber = 1;
   menuStats.score = 0;
   sec = timeMax;
-  // Reset enemies speed
-  enemyStats.speedMax = 180;
-  enemyStats.speedMin = 150;
-  allEnemies.forEach(function(enemy) {
-    enemy.speed = randomNum(enemyStats.speedMax, enemyStats.speedMin);
-  });
-  // Reset rocks
-  displayedRocks = [];
 
   livesNumber.textContent = menuStats.livesNumber;
   gemsNumber.textContent = menuStats.gemsNumber;
@@ -54,6 +46,19 @@ RESTART_GAME_BTN.onclick = function() {
   levelNumber.textContent = menuStats.levelNumber;
   secondsElapsed.textContent = sec;
   score.textContent = menuStats.score;
+
+  // Reset enemies speed
+  enemyStats.speedMax = 180;
+  enemyStats.speedMin = 150;
+  allEnemies.forEach(function(enemy) {
+    enemy.speed = randomNum(enemyStats.speedMax, enemyStats.speedMin);
+  });
+  // Reset items
+  randomItem.reset();
+  spawnRandomItem();
+  // Reset rocks
+  displayedRocks = [];
+
 };
 
 // Close the modal when the player clicks on the cross button.

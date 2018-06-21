@@ -11,10 +11,10 @@ function randomNum(max, min) {
 // Function that disables arrow keys scrolling on the webpage,
 // which could interfere with the gameplay
 window.addEventListener("keydown", function(e) {
-    // space and arrow keys
-    if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
-        e.preventDefault();
-    }
+  // space and arrow keys
+  if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+      e.preventDefault();
+  }
 }, false);
 
 /*
@@ -361,8 +361,13 @@ let star = new Star(itemRandomPosition[0], itemRandomPosition[1]);
 
 // Create an array with all the items to get a random one each time
 let allItems = [blueGem1, blueGem2, blueGem3, greenGem1, greenGem2, orangeGem, heart, star];
-let randomItem = allItems[randomNum(8, 0)];
-randomItem.onscreen = true;
+let randomItem = {};
+
+function spawnRandomItem() {
+  randomItem = allItems[randomNum(8, 0)];
+  randomItem.onscreen = true;
+}
+spawnRandomItem();
 
 /*
  * ROCKS
@@ -401,7 +406,6 @@ let rock7 = new Rock(ROCK_POS.x[3], ROCK_POS.y[0]);
 
 // Array with all rocks
 let allRocks = [rock1, rock2, rock3, rock4, rock5, rock6, rock7];
-
 // Array that contains all the rocks currently displayed (1 is added each level)
 let displayedRocks = [];
 
@@ -431,17 +435,15 @@ let isThereRock = {
    if (menuStats.livesNumber < 1) {
      gameOver();
    } else {
+     // Reset items
+     randomItem.reset();
+     spawnRandomItem();
+     // Resume game
      gamePause = false;
    }
    // Reset player and enemies position.
    player.resetPosition();
    enemy.resetPosition();
-   // Reset items
-   allItems.forEach(function(item) {
-     item.reset();
-   });
-   randomItem = allItems[randomNum(8, 0)];
-   randomItem.onscreen = true;
  } // End of checkIfGameover function
 
  // It mainly writes the content of the gameOver modal to show
@@ -489,13 +491,11 @@ function victory() {
 
   if (menuStats.levelNumber === LEVEL_MAX) {
     setTimeout(gameOver, 500);
+
   } else {
 
-    allItems.forEach(function(item) {
-      item.reset();
-    });
-    randomItem = allItems[randomNum(8, 0)];
-    randomItem.onscreen = true;
+    randomItem.reset();
+    spawnRandomItem();
 
     enemyStats.speedMax += enemyStats.speedIncremental;
     enemyStats.speedMin += enemyStats.speedIncremental;

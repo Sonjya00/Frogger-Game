@@ -10,23 +10,23 @@ Build an arcade game clone using JavaScript object-oriented programming features
 
 ## How to play
 
-To start the game, open the file index.html. A modal will appear explaining the instructions of the game, and prompting you to choose one character among the 5 characters provided. Once you hit the button "Start a new game!", the game will start.
+To start the game, download this project and open the file index.html. A modal will appear explaining the instructions of the game, and prompting you to choose one character among the 5 characters provided. Once you hit the button "Start a new game!", the game will start.
 
-The game requires the use of the keyboard to be played, as the character is moved by pressing on the arrow keys.
+The game requires the use of the keyboard to be played, as the character is moved by pressing the arrow keys.
 
 ## Overview
 
-The objective of the game is to bring the character to the other side of the board where the river tiles are. Every time the player can do so, the level increases. If the player reaches level 40, s/he will win the game.
+The objective of the game is to bring the character to the other side of the board where the **river tiles** are. Every time the player can do so, the level increases. If the player reaches **level 40**, s/he will win the game.
 
-The player can control the character by pressing on the arrow keys on the keyboard.
+The player can control the character by pressing on the **arrow keys** on the keyboard.
 
-While attempting to reach the river, the player must avoid the bugs that are constantly running across the road from left to right. If they hit the character, one life is lost, and the character goes back to the start position. When all the lives are lost, the game is over.
+While attempting to reach the river, the player must avoid the **bugs** that are constantly running across the road from left to right. If they hit the character, one life is lost, and the character goes back to the starting position. When all the lives are lost, the game is over.
 
-The player can't wait too much to make moves, and must keep track of the time too. S/he has to complete the 40 levels in 250 seconds or less. If the timer goes down to zero, it will be an automatic game over.
+The player can't wait too much to make moves, and must keep track of the **timer** too. S/he has to complete the 40 levels in 250 seconds or less. If the timer goes down to zero, it will be an automatic game over.
 
-The player can collect several items to gain some advantage: hearts increase the lives number; gems increase the score by 100, 250, or 500 points, and stars slow down the bugs.
+The player can collect several **items** to gain some advantage: hearts increase the lives number; gems increase the score by 100, 250, or 500 points, and stars slow down the bugs.
 
-Every time the player wins, the bugs gets faster, which makes the game increasingly hard. Also, every 5 levels, a rock will spawn on the board, preventing the player from taking the most obvious paths to win.
+Every time the player wins, the bugs gets faster, which makes the game increasingly hard. Also, every 5 levels, a **rock** will spawn on the board, preventing the player from taking the most obvious paths to win.
 
 ### Game Mechanics
 
