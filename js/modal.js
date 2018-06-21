@@ -1,3 +1,5 @@
+/*jshint esversion: 6 */
+
 /*
  * INITIAL MODAL
  */
@@ -30,7 +32,7 @@ RESTART_GAME_BTN.onclick = function() {
   GAMEOVER_MODAL.style.display = 'none';
   INITIAL_MODAL.style.display = 'block';
 
-  // Resetting all the main menu stats to initial values
+  // Reset all the main menu stats to initial values
   menuStats.livesNumber = 5;
   menuStats.gemsNumber = 0;
   menuStats.starsNumber = 0;
@@ -38,8 +40,13 @@ RESTART_GAME_BTN.onclick = function() {
   menuStats.score = 0;
   sec = timeMax;
   // Reset enemies speed
-  enemyStats.speedMax = 200;
+  enemyStats.speedMax = 180;
   enemyStats.speedMin = 150;
+  allEnemies.forEach(function(enemy) {
+    enemy.speed = randomNum(enemyStats.speedMax, enemyStats.speedMin);
+  });
+  // Reset rocks
+  displayedRocks = [];
 
   livesNumber.textContent = menuStats.livesNumber;
   gemsNumber.textContent = menuStats.gemsNumber;
@@ -67,16 +74,16 @@ ESCAPE_MODAL_BTN2.onclick = function() {
    CONFIRMATION_MODAL.style.display = 'none';
    newGameStarted = false;
    gameOver();
- }
+ };
 
   CONF_NO_BTN.onclick = function() {
     CONFIRMATION_MODAL.style.display = 'none';
     gamePause = false;
-    startTimer()
-  }
+    startTimer();
+  };
 
   ESCAPE_MODAL_BTN3.onclick = function() {
     CONFIRMATION_MODAL.style.display = 'none';
     gamePause = false;
-    startTimer()
+    startTimer();
   };

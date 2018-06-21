@@ -98,7 +98,7 @@ var Engine = (function(global) {
         });
         allItems.forEach(function(item) {
           item.update();
-        })
+        });
         player.update();
     }
 
@@ -125,7 +125,7 @@ var Engine = (function(global) {
             row, col;
 
         // Before drawing, clear existing canvas
-        ctx.clearRect(0,0,canvas.width,canvas.height)
+        ctx.clearRect(0,0,canvas.width,canvas.height);
 
         /* Loop through the number of rows and columns we've defined above
          * and, using the rowImages array, draw the correct image for that
@@ -162,7 +162,7 @@ var Engine = (function(global) {
 
         if (randomItem.onscreen) {
           randomItem.render();
-        };
+        }
 
         allEnemies.forEach(function(enemy) {
             enemy.render();
@@ -197,9 +197,9 @@ var Engine = (function(global) {
         'images/char-pink-girl.png',
         'images/char-princess-girl.png',
         //sprites for the collectibles
-        'images/Gem Blue.png',
-        'images/Gem Green.png',
-        'images/Gem Orange.png',
+        'images/Gem-Blue.png',
+        'images/Gem-Green.png',
+        'images/Gem-Orange.png',
         'images/Heart.png',
         'images/Star.png',
         //sprite for the rocks

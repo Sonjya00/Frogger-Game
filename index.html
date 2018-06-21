@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-US">
 <head>
     <meta charset="UTF-8">
     <title>Effective JavaScript: Frogger</title>
@@ -11,12 +11,14 @@
   <h1>Sonia's Frogger Game</h1>
   <div class="main-menu">
     <table class="stats-menu">
-      <td class="menu__item-s"><img class="menu__logo" src="images/Heart.png"> x<span id="livesNumber">5</span></td>
-      <td class="menu__item-s"><img class="menu__logo" src="images/Gem Blue.png"> x<span id="gemsNumber">0</span></td>
-      <td class="menu__item-s"><img class="menu__logo" src="images/Star.png"> x<span id="starsNumber">0</span></td>
-      <td class="menu__item-l menu__level">Level <span id="levelNumber">1</span></td>
-      <td class="menu__item-l"><span id="secondsElapsed">250</span> s</td>
-      <td class="menu__item-l">Score: <span id="score">0</span></td>
+      <tr>
+        <td class="menu__item-s"><img class="menu__logo" src="images/Heart.png" alt="Heart logo"> x<span id="livesNumber">5</span></td>
+        <td class="menu__item-s"><img class="menu__logo" src="images/Gem-Blue.png" alt="Gem logo"> x<span id="gemsNumber">0</span></td>
+        <td class="menu__item-s"><img class="menu__logo" src="images/Star.png" alt="Star logo"> x<span id="starsNumber">0</span></td>
+        <td class="menu__item-l menu__level">Level <span id="levelNumber">1</span></td>
+        <td class="menu__item-l"><span id="secondsElapsed">250</span> s</td>
+        <td class="menu__item-l">Score: <span id="score">0</span></td>
+      </tr>
     </table>
     <button id="restartBtn" class="restart-btn"><i class="fa fa-repeat"></i></button>
   </div>
@@ -36,35 +38,35 @@
         <li>Every time you win, the bugs gets <span class="modal__emphasized-text">faster</span>, and <span class="modal__emphasized-text">rocks</span> will appear blocking your way from time to time, so beware!</li>
       </ul>
       <h3>To start, select a character, then press "Start a new game!"</h3>
-      <table class="avatars-collection" name="charSelForm">
+      <table class="avatars-collection">
         <tr>
           <td>
             <figure>
-              <img class="avatar-sprite" src="images/char-boy.png">
+              <img class="avatar-sprite" src="images/char-boy.png" alt="Boy Avatar">
               <figcaption>Boy</figcaption>
             </figure>
           </td>
           <td>
             <figure>
-              <img class="avatar-sprite" src="images/char-cat-girl.png">
+              <img class="avatar-sprite" src="images/char-cat-girl.png" alt="Cat Girl Avatar">
               <figcaption>Cat Girl</figcaption>
             </figure>
           </td>
           <td>
             <figure>
-              <img class="avatar-sprite" src="images/char-horn-girl.png">
+              <img class="avatar-sprite" src="images/char-horn-girl.png" alt="Horn Girl Avatar">
               <figcaption>Horn Girl</figcaption>
             </figure>
           </td>
           <td>
             <figure>
-              <img class="avatar-sprite" src="images/char-pink-girl.png">
+              <img class="avatar-sprite" src="images/char-pink-girl.png" alt="Pink Girl Avatar">
               <figcaption>Pink Girl</figcaption>
             </figure>
           </td>
           <td>
             <figure>
-              <img class="avatar-sprite" src="images/char-princess-girl.png">
+              <img class="avatar-sprite" src="images/char-princess-girl.png" alt="Princess Girl Avatar">
               <figcaption>Princess Girl</figcaption>
             </figure>
           </td>

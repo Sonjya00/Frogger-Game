@@ -1,3 +1,4 @@
+/*jshint esversion: 6 */
 /*
  * HELPER FUNCTIONS
  */
@@ -116,7 +117,7 @@ class Enemy {
 
 // Variables used to update the enemies speed
 let enemyStats = {
-  speedMax: 200,
+  speedMax: 180,
   speedMin: 150,
   speedIncremental: 5,
   speedDecrmStar: -20
@@ -152,45 +153,43 @@ class Player {
   }
   // The default position of the player is in the middle of the lower row.
   resetPosition() {
-    player.x = 202;
-    player.y = 405;
+    this.x = 202;
+    this.y = 405;
   }
   // Function to move the characters with the keyboard.
   // It works only if the game isn't paused.
   // It also contains the condition of victory.
   handleInput(keyPressed) {
-    if (gamePause === false) {
-      if (keyPressed === 'left' && this.x > 0) {
-        checkRockLeft();
-        if (isThereRock.rockLeft === false) {
-          this.x += player.movesLeft;
-        }
-      }
-      if (keyPressed === 'right' && this.x < 404) {
-        checkRockRight();
-        if (isThereRock.rockRight === false) {
-          this.x += player.movesRight;
-        }
-      }
-      if (keyPressed === 'down' && this.y < 405) {
-          checkRockBelow();
-          if (isThereRock.rockBelow === false) {
-          this.y += player.movesDown;
-        }
-      }
-      if (keyPressed === 'up' && this.y > -10) {
-        checkRockAbove();
-        if (isThereRock.rockAbove === false) {
-            this.y += player.movesUp;
-            if (this.y === -10) {
-              gamePause = true;
-              setTimeout(victory, 500);
-            }
-          }
-        }
+    if (keyPressed === 'left' && this.x > 0) {
+      checkRockLeft();
+      if (isThereRock.rockLeft === false) {
+        this.x += this.movesLeft;
       }
     }
-  } // End of Player class
+    if (keyPressed === 'right' && this.x < 404) {
+      checkRockRight();
+      if (isThereRock.rockRight === false) {
+        this.x += this.movesRight;
+      }
+    }
+    if (keyPressed === 'down' && this.y < 405) {
+        checkRockBelow();
+        if (isThereRock.rockBelow === false) {
+        this.y += this.movesDown;
+      }
+    }
+    if (keyPressed === 'up' && this.y > -10) {
+      checkRockAbove();
+      if (isThereRock.rockAbove === false) {
+          this.y += this.movesUp;
+          if (this.y === -10) {
+            gamePause = true;
+            setTimeout(victory, 500);
+          }
+      }
+    }
+  }
+} // End of Player class
 
 //Code for the initial modal, to change the sprite of the player.
 const PLAYER_SPRITES = [
@@ -216,15 +215,17 @@ FORM.addEventListener("submit", function(event) {
 let player = new Player(202, 405);
 
 // This listens for key presses and sends the keys to
-// Player.handleInput() method.
+// Player.handleInput() method (only if game isn't paused)
 document.addEventListener('keyup', function(e) {
-    let allowedKeys = {
-        37: 'left',
-        38: 'up',
-        39: 'right',
-        40: 'down'
-    };
+  let allowedKeys = {
+      37: 'left',
+      38: 'up',
+      39: 'right',
+      40: 'down'
+  };
+  if (gamePause === false) {
     player.handleInput(allowedKeys[e.keyCode]);
+  }
 });
 
 /*
@@ -244,7 +245,7 @@ class Items {
   // change the currently shown item's position to a random one and hides it
   // used in case of victory (player reaches the river) or gameover.
   reset() {
-    let randomPosition = ITEMS_POS_XY[randomNum(11, 0)]
+    let randomPosition = ITEMS_POS_XY[randomNum(11, 0)];
     this.x = randomPosition[0];
     this.y = randomPosition[1];
     this.onscreen = false;
@@ -349,12 +350,12 @@ const ITEMS_POS_XY = [
 let itemRandomPosition = ITEMS_POS_XY[randomNum(11, 0)];
 
 // Initialize all items
-let blueGem1 = new Gem(itemRandomPosition[0], itemRandomPosition[1], 'images/Gem Blue.png', 100);
-let blueGem2 = new Gem(itemRandomPosition[0], itemRandomPosition[1], 'images/Gem Blue.png', 100);
-let blueGem3 = new Gem(itemRandomPosition[0], itemRandomPosition[1], 'images/Gem Blue.png', 100);
-let greenGem1 = new Gem(itemRandomPosition[0], itemRandomPosition[1], 'images/Gem Green.png', 250);
-let greenGem2 = new Gem(itemRandomPosition[0], itemRandomPosition[1], 'images/Gem Green.png', 250);
-let orangeGem = new Gem(itemRandomPosition[0], itemRandomPosition[1], 'images/Gem Orange.png', 500);
+let blueGem1 = new Gem(itemRandomPosition[0], itemRandomPosition[1], 'images/Gem-Blue.png', 100);
+let blueGem2 = new Gem(itemRandomPosition[0], itemRandomPosition[1], 'images/Gem-Blue.png', 100);
+let blueGem3 = new Gem(itemRandomPosition[0], itemRandomPosition[1], 'images/Gem-Blue.png', 100);
+let greenGem1 = new Gem(itemRandomPosition[0], itemRandomPosition[1], 'images/Gem-Green.png', 250);
+let greenGem2 = new Gem(itemRandomPosition[0], itemRandomPosition[1], 'images/Gem-Green.png', 250);
+let orangeGem = new Gem(itemRandomPosition[0], itemRandomPosition[1], 'images/Gem-Orange.png', 500);
 let heart = new Heart(itemRandomPosition[0], itemRandomPosition[1]);
 let star = new Star(itemRandomPosition[0], itemRandomPosition[1]);
 
@@ -383,11 +384,11 @@ class Rock {
 } // End of Rock class
 
 // Possible coordinates for the rocks. Not all of them are used, but with this objects
-// the rock positions are easy to change if it's needed.
+// the rock positions are easy to change if it's needed
 const ROCK_POS = {
   x: [0, 101, 202, 303, 404],
   y: [-20, 55, 135, 215, 305]
-}
+};
 
 // Rocks are initialized
 let rock1 = new Rock(ROCK_POS.x[2], ROCK_POS.y[4]);
@@ -397,6 +398,9 @@ let rock4 = new Rock(ROCK_POS.x[3], ROCK_POS.y[2]);
 let rock5 = new Rock(ROCK_POS.x[4], ROCK_POS.y[0]);
 let rock6 = new Rock(ROCK_POS.x[1], ROCK_POS.y[3]);
 let rock7 = new Rock(ROCK_POS.x[3], ROCK_POS.y[0]);
+
+// Array with all rocks
+let allRocks = [rock1, rock2, rock3, rock4, rock5, rock6, rock7];
 
 // Array that contains all the rocks currently displayed (1 is added each level)
 let displayedRocks = [];
@@ -421,8 +425,8 @@ let isThereRock = {
    setTimeout(checkIfGameover, 500);
  }
 
- //If there are no more lives left, a gameover modal appears.
- //Else, the player and the enemies get back to the original position and the game restarts
+ // If there are no more lives left, a gameover modal appears
+ // Else, the player and the enemies get back to the original position and the game restarts
  function checkIfGameover() {
    if (menuStats.livesNumber < 1) {
      gameOver();
@@ -503,32 +507,12 @@ function victory() {
   }
 } // End of victory function
 
-// Every 5 levels, a rock is added to the board
+// Looks for the rock to added in the allRock array searching by index
+// (for levels that are multiples of 5)
 function addRocks() {
-  switch (menuStats.levelNumber) {
-    case 5:
-        displayedRocks.push(rock1);
-    break;
-    case 10:
-        displayedRocks.push(rock2);
-    break;
-    case 15:
-        displayedRocks.push(rock3);
-    break;
-    case 20:
-        displayedRocks.push(rock4);
-    break;
-    case 25:
-        displayedRocks.push(rock5);
-    break;
-    case 30:
-        displayedRocks.push(rock6);
-    break;
-    case 35:
-        displayedRocks.push(rock7);
-    break;
+  let rockTBAdded = allRocks[menuStats.levelNumber/5-1];
+  displayedRocks.push(rockTBAdded);
   }
-} // End of addRocks function
 
 // 4 functions to check if there is a rock in any directions
 function checkRockLeft() {
