@@ -10,7 +10,7 @@ Build an arcade game clone using JavaScript object-oriented programming features
 
 ## How to play
 
-To start the game, download this project and open the file index.html. A modal will appear explaining the instructions of the game, and prompting you to choose one character among the 5 characters provided. Once you hit the button "Start a new game!", the game will start.
+To start the game, download this project and open the file index.html, or go to https://sonjya00.github.io/Frogger-Game/. A modal will appear explaining the instructions of the game, and prompting you to choose one character among the 5 characters provided. Once you hit the button "Start a new game!", the game will start.
 
 The game requires the use of the keyboard to be played, as the character is moved by pressing the arrow keys.
 
